@@ -10,12 +10,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Button } from "./ui/button"
-import { CircleUserIcon, LogOut } from "lucide-react"
+import { CircleUserIcon, Home, LogOut, Settings, Settings2 } from "lucide-react"
 
 import {
   getKindeServerSession,
   LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/server"
+import Link from "next/link"
 
 interface HeaderProps {}
 
@@ -23,7 +24,11 @@ export async function Header({}: HeaderProps) {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
   return (
-    <div className={cn("w-full justify-center py-4 flex items-center")}>
+    <div
+      className={cn(
+        "w-full justify-center py-4 flex items-center bg-white/5 shadow-lg shadow-white/5 backdrop-blur-sm"
+      )}
+    >
       <nav className="w-full max-w-7xl flex justify-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -42,7 +47,7 @@ export async function Header({}: HeaderProps) {
               </Avatar>
             )}
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="w-[240px]">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -50,6 +55,26 @@ export async function Header({}: HeaderProps) {
                 <p>{user?.given_name}</p>
                 <small>{user?.email}</small>
               </div>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild>
+              <Link
+                href="/"
+                className="flex w-full items-center justify-between"
+              >
+                <span>Home</span>
+                <Home size={18} />
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link
+                href="/admin"
+                className="flex w-full items-center justify-between"
+              >
+                <span>Admin Settings</span>
+                <Settings size={18} />
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
