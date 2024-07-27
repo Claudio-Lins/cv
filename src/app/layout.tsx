@@ -4,8 +4,9 @@ import "./globals.css"
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
-import { Header } from "@/components/header"
 import { cn } from "@/lib/utils"
+import { Navbar } from "@/components/navbar"
+import { UserTypes } from "../../@types/user-types"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -29,8 +30,13 @@ export default async function RootLayout({
   }
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-white")}>
-        <Header />
+      <body
+        className={cn(
+          inter.className,
+          "bg-purple-50 w-full flex justify-center"
+        )}
+      >
+        <Navbar user={user} />
         {children}
       </body>
     </html>

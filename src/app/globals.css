@@ -73,7 +73,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border print:text-black antialiased;
   }
   body {
     @apply bg-background text-foreground;
