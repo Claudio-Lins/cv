@@ -51,16 +51,16 @@ export function Navbar({ user }: UserTypes) {
   return (
     <div
       className={cn(
-        "max-w-7xl mx-auto justify-center px-4 py-5 md:px-8 grid grid-cols-12 fixed w-full z-10 print:hidden"
+        "max-w-7xl mx-auto justify-center px-4 py-5 md:px-8 grid grid-cols-12 w-full z-10 print:hidden"
       )}
     >
-      <div className="col-span-6 flex sm:col-span-3">
+      {/* <div className="col-span-6 flex sm:col-span-3">
         <Link href="/">
           <h1 className="text-3xl font-bold">
             My<span className="text-blue-600 font-light">Curriculum</span>
           </h1>
         </Link>
-      </div>
+      </div> */}
       <div className="hidden sm:flex justify-center items-center col-span-6">
         <NavigationMenu>
           <NavigationMenuList>
@@ -79,7 +79,7 @@ export function Navbar({ user }: UserTypes) {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-      <div className="flex items-center justify-end md:col-span-3 col-span-6">
+      {/* <div className="flex items-center justify-end md:col-span-3 col-span-6">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             {!user ? (
@@ -135,7 +135,7 @@ export function Navbar({ user }: UserTypes) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+      </div> */}
     </div>
   )
 }

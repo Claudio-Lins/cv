@@ -21,4 +21,61 @@ model User {
   profileImage String
 
   createdAt DateTime @default(now())
+  resume    Resume[]
+}
+
+model Resume {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String?  @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  contact   Contact?    @relation(fields: [contactId], references: [id])
+  contactId String?
+  education Education[]
+}
+
+model Contact {
+  id    String @id @default(cuid())
+  email String
+  phone String
+
+  createdAt DateTime @default(now())
+  address   Address? @relation(fields: [addressId], references: [id])
+  addressId String?
+  socials   Social[] @relation("ContactSocials")
+
+  resume Resume[]
+}
+
+model Address {
+  id      String  @id @default(cuid())
+  street  String
+  city    String
+  state   String
+  county  String?
+  country String
+  zip     String
+
+  createdAt DateTime  @default(now())
+  contact   Contact[]
+}
+
+model Social {
+  id       String    @id @default(cuid())
+  name     String
+  url      String
+  imageUrl String?
+  contacts Contact[] @relation("ContactSocials")
+}
+
+model Education {
+  id        String   @id @default(cuid())
+  school    String
+  field     String
+  startYear DateTime
+  endYear   DateTime
+  resume    Resume[]
 }

@@ -5,9 +5,10 @@ interface WorkExperienceProps {}
 
 export function WorkExperience({}: WorkExperienceProps) {
   return (
-    <div className={cn(" pl-20 font-light text-zinc-600 tracking-widest ")}>
+    <div className={cn(" pl-10 font-light text-zinc-600 tracking-widest ")}>
       <h3 className=" uppercase">Work Experience</h3>
-      <div className="flex flex-col mt-6 space-y-4">
+      <div className="flex flex-col mt-6 space-y-4 w-full relative">
+        <div className=" absolute size-3 bg-zinc-400 rounded-full top-5 -left-[101px]" />
         <div className="flex flex-col text-zinc-600 text-sm">
           <h4 className=" uppercase font-semibold">Full Stack Developer</h4>
           <small>Vera Cruz Group · Freelance</small>
@@ -31,7 +32,8 @@ export function WorkExperience({}: WorkExperienceProps) {
           <a href="https://vcainvest.com">VCAinvest</a>
         </p>
       </div>
-      <div className="flex flex-col mt-6 space-y-4">
+      <div className="flex flex-col mt-6 space-y-4 relative">
+        <div className=" absolute size-3 bg-zinc-400 rounded-full top-5 -left-[101px]" />
         <div className="flex flex-col text-zinc-600 text-sm">
           <h4 className=" uppercase font-semibold">Full Stack Developer</h4>
           <small>Rádio Sintoniza-T - Volunteering</small>

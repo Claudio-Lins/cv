@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Navbar } from "@/components/navbar"
 import { UserTypes } from "../../@types/user-types"
+import { ProfileAvatar } from "@/components/profile-avatar"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -33,10 +34,11 @@ export default async function RootLayout({
       <body
         className={cn(
           inter.className,
-          "bg-purple-50 w-full flex justify-center"
+          "bg-purple-100 w-full flex items-center flex-col min-h-dvh mt-20"
         )}
       >
-        <Navbar user={user} />
+        {/* <Navbar user={user} /> */}
+        <ProfileAvatar user={user} />
         {children}
       </body>
     </html>
