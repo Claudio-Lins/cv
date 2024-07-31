@@ -2,6 +2,7 @@ import { About } from "@/components/about.tsx"
 import { Contacts } from "@/components/contacts"
 import { Education } from "@/components/education"
 import { Name } from "@/components/name"
+import { NavResume } from "@/components/nav-resume"
 import { navigationItems } from "@/components/navbar"
 import { Role } from "@/components/role"
 import { Skills } from "@/components/skills"
@@ -56,25 +57,8 @@ export default async function Resume({ params }: ResumeProps) {
   const slugs = await getTitle()
   return (
     <div className={cn("w-full max-w-7xl")}>
-      <div className="">
-        <NavigationMenu>
-          <NavigationMenuList>
-            {slugs.map((slug) => (
-              <NavigationMenuItem key={slug.slug}>
-                <Link href={`/${slug.slug}`} legacyBehavior passHref>
-                  <NavigationMenuLink
-                    // active={pathname === navigationItem.href}
-                    className={navigationMenuTriggerStyle()}
-                  >
-                    {slug.title}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
-      <div className="flex  w-full max-w-7xl flex-col bg-zinc-100 rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0">
+      <NavResume slugs={slugs} />
+      <div className="flex  w-full max-w-7xl flex-col bg-white rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0">
         <Name
           picture={false}
           pictureUrl={resume?.user?.profileImage || ""}
@@ -93,7 +77,7 @@ export default async function Resume({ params }: ResumeProps) {
               // socials={resume?.contact?.socials || []}
             />
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
-            <Education />
+            <Education education={resume?.education || []} />
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
             <Skills />
           </div>

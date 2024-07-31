@@ -27,7 +27,7 @@ export async function ProfileAvatar({ user }: UserTypes) {
   // const { getUser } = getKindeServerSession()
   // const user = await getUser()
   return (
-    <div className="absolute top-10 right-10">
+    <div className="absolute top-10 right-10 print:hidden">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           {!user ? (
