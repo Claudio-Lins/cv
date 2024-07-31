@@ -3,20 +3,14 @@ import { Contacts } from "@/components/contacts"
 import { Education } from "@/components/education"
 import { Name } from "@/components/name"
 import { NavResume } from "@/components/nav-resume"
-import { navigationItems } from "@/components/navbar"
 import { Role } from "@/components/role"
 import { Skills } from "@/components/skills"
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+
 import { WorkExperience } from "@/components/work-experiense"
 import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
+import { redirect } from "next/navigation"
 
 interface ResumeProps {
   params: {
@@ -24,8 +18,11 @@ interface ResumeProps {
   }
 }
 
-async function getTitle() {
+async function getTitle(userId: string) {
   const slugs = await prisma.resume.findMany({
+    where: {
+      userId,
+    },
     select: {
       slug: true,
       title: true,
@@ -33,9 +30,10 @@ async function getTitle() {
   })
   return slugs
 }
-async function getResume(slug: string) {
+async function getResume(slug: string, userId: string) {
   const resume = await prisma.resume.findUnique({
     where: {
+      userId,
       slug,
     },
     include: {
@@ -53,8 +51,14 @@ async function getResume(slug: string) {
 }
 
 export default async function Resume({ params }: ResumeProps) {
-  const resume = await getResume(params.slug)
-  const slugs = await getTitle()
+  const { getUser } = getKindeServerSession()
+  const user = await getUser()
+  const resume = await getResume(params.slug, user?.id!)
+  const slugs = await getTitle(user?.id!)
+
+  if (!resume?.id) {
+    return redirect("/admin")
+  }
   return (
     <div className={cn("w-full max-w-7xl")}>
       <NavResume slugs={slugs} />

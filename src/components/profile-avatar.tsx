@@ -18,6 +18,7 @@ import {
 } from "@kinde-oss/kinde-auth-nextjs/server"
 import Link from "next/link"
 import { UserTypes } from "../../@types/user-types"
+import Image from "next/image"
 
 interface ProfileAvatarProps {
   user: UserTypes
@@ -35,14 +36,27 @@ export async function ProfileAvatar({ user }: UserTypes) {
               <CircleUserIcon className="w-6 h-6" />
             </Button>
           ) : (
-            <Avatar>
-              <AvatarImage
-                src={user?.picture || "https://github.com/shadcn.png"}
-              />
-              <AvatarFallback>
-                {user?.given_name?.split(" ").map((n) => n[0])}{" "}
-              </AvatarFallback>
-            </Avatar>
+            <div className="">
+              {user?.picture ? (
+                <Image
+                  src={user?.picture || "https://github.com/shadcn.png"}
+                  alt="Avatar image"
+                  height={50}
+                  width={50}
+                  className="size-12 rounded-full bg-cover border"
+                />
+              ) : (
+                user?.given_name?.split(" ").map((n) => n[0])
+              )}
+            </div>
+            // <Avatar>
+            //   <AvatarImage
+            //     src={user?.picture || "https://github.com/shadcn.png"}
+            //   />
+            //   <AvatarFallback>
+            //
+            //   </AvatarFallback>
+            // </Avatar>
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[240px]">

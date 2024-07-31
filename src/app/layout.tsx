@@ -37,7 +37,6 @@ export default async function RootLayout({
           "bg-purple-100 w-full flex items-center flex-col min-h-dvh mt-20"
         )}
       >
-        {/* <Navbar user={user} /> */}
         <ProfileAvatar user={user} />
         {children}
       </body>
