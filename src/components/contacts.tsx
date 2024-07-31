@@ -1,5 +1,13 @@
 import { cn } from "@/lib/utils"
-import { Home, Mail, Phone } from "lucide-react"
+import { FacebookIcon, Home, LinkedinIcon, Mail, Phone } from "lucide-react"
+import {
+  FaXTwitter,
+  FaInstagram,
+  FaGithub,
+  FaYoutube,
+  FaFacebook,
+  FaLinkedinIn,
+} from "react-icons/fa6"
 
 interface ContactsProps {
   phone?: string
@@ -12,9 +20,15 @@ interface ContactsProps {
     country?: string
     zip?: string
   }
+  socials?: {
+    id: string
+    name: string
+    url: string
+    imageUrl: string | null
+  }[]
 }
 
-export function Contacts({ phone, email, address }: ContactsProps) {
+export function Contacts({ phone, email, address, socials }: ContactsProps) {
   return (
     <div className={cn("font-light text-zinc-600 tracking-widest ")}>
       <h3 className=" uppercase font-light">Contacts</h3>
@@ -44,6 +58,60 @@ export function Contacts({ phone, email, address }: ContactsProps) {
             </div>
           </div>
         )}
+      </div>
+      <div className="mt-4">
+        {socials?.map((social) => (
+          <div className="" key={social.id}>
+            {social?.name.includes("Github") && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <FaGithub size={14} />
+                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                  {social?.name}
+                </a>
+              </div>
+            )}
+            {social?.name.includes("LinkedIn") && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <FaLinkedinIn size={14} />
+                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                  {social?.name}
+                </a>
+              </div>
+            )}
+            {social?.name.includes("Facebook") && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <FaFacebook size={14} />
+                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                  {social?.name}
+                </a>
+              </div>
+            )}
+            {social?.name.includes("Twitter") && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <FaXTwitter size={14} />
+                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                  {social?.name}
+                </a>
+              </div>
+            )}
+            {social?.name.includes("Instagram") && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <FaInstagram size={14} />
+                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                  {social?.name}
+                </a>
+              </div>
+            )}
+            {social?.name.includes("YouTube") && (
+              <div className="flex items-center gap-x-2 text-sm">
+                <FaYoutube size={14} />
+                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                  {social?.name}
+                </a>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   )

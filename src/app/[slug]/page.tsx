@@ -78,7 +78,7 @@ export default async function Resume({ params }: ResumeProps) {
               phone={resume?.contact?.phone || ""}
               email={resume?.contact?.email || ""}
               address={resume?.contact?.address || {}}
-              // socials={resume?.contact?.socials || []}
+              socials={resume?.contact?.socials || []}
             />
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
             <Education education={resume?.education || []} />
