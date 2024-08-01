@@ -32,9 +32,14 @@ model Resume {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 
-  contact   Contact?    @relation(fields: [contactId], references: [id])
+  contact   Contact? @relation(fields: [contactId], references: [id])
   contactId String?
+
+  about   About?  @relation(fields: [aboutId], references: [id])
+  aboutId String?
+
   education Education[]
+  skills    Skill[]
 }
 
 model Contact {
@@ -78,4 +83,26 @@ model Education {
   startYear DateTime
   endYear   DateTime
   resume    Resume[]
+}
+
+model About {
+  id      String   @id @default(cuid())
+  title   String
+  content String
+  resume  Resume[]
+}
+
+model Skill {
+  id     String    @id @default(cuid())
+  name   String
+  type   SkillType
+  resume Resume[]
+}
+
+enum SkillType {
+  TECHNICAL
+  PERSONAL
+  SOFTSKILL
+  HOBBIES
+  HARDSKILL
 }

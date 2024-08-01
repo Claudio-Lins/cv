@@ -38,6 +38,8 @@ async function getResume(slug: string, userId: string) {
     },
     include: {
       education: true,
+      about: true,
+      skills: true,
       user: true,
       contact: {
         include: {
@@ -87,13 +89,13 @@ export default async function Resume({ params }: ResumeProps) {
           </div>
           <div className="w-px sm:col-span-1 min-h-full bg-gradient-to-b from-zinc-300/10 via-zinc-500 to-zinc-400/10 mx-10" />
           <div className="sm:col-span-8 w-full flex flex-col space-y-10">
-            <About />
+            <About content={resume?.about?.content || ""} />
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
             <WorkExperience />
           </div>
         </div>
       </div>
-      <pre>{JSON.stringify(resume, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(resume, null, 2)}</pre> */}
     </div>
   )
 }

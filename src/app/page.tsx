@@ -20,5 +20,9 @@ export default async function Home() {
   const user = await getUser()
   const slugs = await getTitle(user?.id!)
 
+  if (!slugs.length) {
+    return redirect("/admin")
+  }
+
   return redirect(`/${slugs[0].slug}`)
 }
