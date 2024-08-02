@@ -1,55 +1,132 @@
 import { cn } from "@/lib/utils"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { Globe } from "lucide-react"
+import dayjs from "dayjs"
+import duration from "dayjs/plugin/duration"
+import relativeTime from "dayjs/plugin/relativeTime"
 
-interface WorkExperienceProps {}
+dayjs.extend(duration)
 
-export function WorkExperience({}: WorkExperienceProps) {
+interface WorkExperienceProps {
+  workExperiences: {
+    id: string
+    title: string
+    description: string
+    company: string
+    location: string
+    startYear: Date
+    endYear: Date | null
+    employmentType: string
+    workLocation: string
+    link: string | null
+    isCurrent?: boolean
+  }[]
+}
+
+export function WorkExperience({ workExperiences }: WorkExperienceProps) {
   return (
     <div className={cn(" pl-10 font-light text-zinc-600 tracking-widest ")}>
       <h3 className=" uppercase">Work Experience</h3>
-      <div className="flex flex-col mt-6 space-y-4 w-full relative">
-        <div className=" absolute size-3 bg-zinc-400 rounded-full top-5 -left-[101px]" />
-        <div className="flex flex-col text-zinc-600 text-sm">
-          <h4 className=" uppercase font-semibold">Full Stack Developer</h4>
-          <small>Vera Cruz Group · Freelance</small>
-          <small>May 2024 - Present · 3 mos</small>
-          <small>London Area, United Kingdom · Remote</small>
+      {workExperiences?.map((workExperience) => (
+        <div
+          className="flex flex-col mt-6 space-y-4 w-full relative"
+          key={workExperience.id}
+        >
+          <div className=" absolute size-3 bg-zinc-400 rounded-full top-5 -left-[101px]" />
+          <div className="flex flex-col text-zinc-600 text-sm">
+            <h4 className=" uppercase font-semibold">
+              {workExperience?.title}
+            </h4>
+            <small>
+              {workExperience?.company} · {workExperience?.employmentType}
+            </small>
+            <div className="flex items-center justify-start gap-2">
+              {workExperience?.endYear && (
+                <>
+                  <small>
+                    {new Intl.DateTimeFormat("pt-PT", {
+                      year: "numeric",
+                      month: "short",
+                    }).format(new Date(workExperience.startYear))}
+                  </small>
+                  <small className="text-gray-400">|</small>
+                  <small>
+                    {new Intl.DateTimeFormat("pt-PT", {
+                      year: "numeric",
+                      month: "short",
+                    }).format(new Date(workExperience.endYear))}
+                  </small>
+                  <small className="text-gray-400">|</small>
+                  <small className="text-gray-400">
+                    {dayjs(workExperience.endYear).year() !==
+                      dayjs(workExperience.startYear).year() ||
+                    dayjs(workExperience.endYear).month() !==
+                      dayjs(workExperience.startYear).month()
+                      ? dayjs(workExperience.endYear).diff(
+                          dayjs(workExperience.startYear),
+                          "year"
+                        ) +
+                        " years, " +
+                        (dayjs(workExperience.endYear).diff(
+                          dayjs(workExperience.startYear),
+                          "month"
+                        ) %
+                          12) +
+                        " months"
+                      : (dayjs(workExperience.endYear).diff(
+                          dayjs(workExperience.startYear),
+                          "month"
+                        ) %
+                          12) +
+                        " months"}
+                  </small>
+                </>
+              )}
+              {!workExperience.endYear && (
+                <>
+                  <small>
+                    {new Intl.DateTimeFormat("pt-PT", {
+                      year: "numeric",
+                      month: "short",
+                    }).format(new Date(workExperience.startYear))}
+                  </small>
+                  <small className="text-gray-400">|</small>
+                  <small className="text-gray-400">
+                    {dayjs().year() !== dayjs(workExperience.startYear).year()
+                      ? dayjs().diff(dayjs(workExperience.startYear), "year") +
+                        " years, "
+                      : null}
+                    {(dayjs().diff(dayjs(workExperience.startYear), "month") %
+                      12) +
+                      " months"}
+                  </small>
+                  <small className="text-gray-400">|</small>
+                  <small className="text-gray-400">Current</small>
+                </>
+              )}
+            </div>
+            <small>
+              {workExperience?.location} · {workExperience?.workLocation}
+            </small>
+          </div>
+
+          <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:leading-snug">
+            {workExperience?.description}
+          </p>
+          {workExperience?.link && (
+            <div className="mt-4 flex items-center space-x-2">
+              <Globe size={14} />
+              <a
+                href={workExperience?.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <small className="">Visit Website</small>
+              </a>
+            </div>
+          )}
+          <div className="w-3/4 mx-auto h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
         </div>
-        <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:leading-snug">
-          I developed intuitive and responsive user interfaces using Next.js and
-          React, alongside a mobile application utilizing React Native and Expo,
-          to deliver a seamless navigation experience for customers. On the
-          backend, I engineered and managed authentication processes with
-          Node.js, Prisma, and MySQL, ensuring robust protection of user data
-          and efficient login and registration operations. I integrated
-          authentication and authorization APIs, strictly adhering to best
-          security practices. For state management, I utilized Zustand to handle
-          global state efficiently. I designed and implemented forms with React
-          Hook Form, incorporated validations using Zod, and used Resend for
-          email submissions. Additionally, I developed multi-language
-          functionality (Internationalization) using i18n to cater to a diverse
-          user base. Explore more about the project here: VCA Invest -
-          <a href="https://vcainvest.com">VCAinvest</a>
-        </p>
-      </div>
-      <div className="flex flex-col mt-6 space-y-4 relative">
-        <div className=" absolute size-3 bg-zinc-400 rounded-full top-5 -left-[101px]" />
-        <div className="flex flex-col text-zinc-600 text-sm">
-          <h4 className=" uppercase font-semibold">Full Stack Developer</h4>
-          <small>Rádio Sintoniza-T - Volunteering</small>
-          <small>Mar 2022 - Present · 2 yrs 5 mos</small>
-          <small>Sintra | Portugal · Remote</small>
-        </div>
-        <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:leading-snug">
-          Responsible for the development of the entire Sintoniza-T Radio
-          website, including the user interface with Next.js and React, and the
-          backend with Strapi (CMS) and MySQL, enabling clients to have full
-          autonomy to modify all site content. Over time, the site has
-          experienced several versions and technology updates, including React,
-          Next.js, Strapi, Prisma, PostgreSQL, and MongoDB.
-          <a href="https://sintoniza-t.pt">Sintoniza-t</a>
-        </p>
-      </div>
+      ))}
     </div>
   )
 }

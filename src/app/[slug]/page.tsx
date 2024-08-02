@@ -12,51 +12,19 @@ import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
 
+import { getAllResume, getResumeBySlug } from "@/data/resume"
+
 interface ResumeProps {
   params: {
     slug: string
   }
 }
 
-async function getTitle(userId: string) {
-  const slugs = await prisma.resume.findMany({
-    where: {
-      userId,
-    },
-    select: {
-      slug: true,
-      title: true,
-    },
-  })
-  return slugs
-}
-async function getResume(slug: string, userId: string) {
-  const resume = await prisma.resume.findUnique({
-    where: {
-      userId,
-      slug,
-    },
-    include: {
-      education: true,
-      about: true,
-      skills: true,
-      user: true,
-      contact: {
-        include: {
-          address: true,
-          socials: true,
-        },
-      },
-    },
-  })
-  return resume
-}
-
 export default async function Resume({ params }: ResumeProps) {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
-  const resume = await getResume(params.slug, user?.id!)
-  const slugs = await getTitle(user?.id!)
+  const resume = await getResumeBySlug(params.slug, user?.id!)
+  const slugs = await getAllResume(user?.id!)
 
   if (!resume?.id) {
     return redirect("/admin")
@@ -67,9 +35,9 @@ export default async function Resume({ params }: ResumeProps) {
       <div className="flex  w-full max-w-7xl flex-col bg-white rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0">
         <Name
           picture={false}
-          pictureUrl={resume?.user?.profileImage || ""}
-          firstName={resume?.user?.firstName || ""}
-          lastName={resume?.user?.lastName || ""}
+          pictureUrl={resume?.pictureUrl || ""}
+          firstName={resume?.firstName || ""}
+          lastName={resume?.lastName || ""}
         />
         <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
         <Role role={resume?.title || ""} />
@@ -80,7 +48,7 @@ export default async function Resume({ params }: ResumeProps) {
               phone={resume?.contact?.phone || ""}
               email={resume?.contact?.email || ""}
               address={resume?.contact?.address || {}}
-              socials={resume?.contact?.socials || []}
+              socialNetworks={resume?.contact?.socialNetworks || []}
             />
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
             <Education education={resume?.education || []} />
@@ -89,13 +57,13 @@ export default async function Resume({ params }: ResumeProps) {
           </div>
           <div className="w-px sm:col-span-1 min-h-full bg-gradient-to-b from-zinc-300/10 via-zinc-500 to-zinc-400/10 mx-10" />
           <div className="sm:col-span-8 w-full flex flex-col space-y-10">
-            <About content={resume?.about?.content || ""} />
+            <About content={resume?.about || ""} />
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
-            <WorkExperience />
+            <WorkExperience workExperiences={resume?.workExperiences} />
           </div>
         </div>
       </div>
-      {/* <pre>{JSON.stringify(resume, null, 2)}</pre> */}
+      <pre>{JSON.stringify(resume, null, 2)}</pre>
     </div>
   )
 }

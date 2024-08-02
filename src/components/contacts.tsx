@@ -20,15 +20,19 @@ interface ContactsProps {
     country?: string
     zip?: string
   }
-  socials?: {
+  socialNetworks?: {
     id: string
     name: string
     url: string
-    imageUrl: string | null
   }[]
 }
 
-export function Contacts({ phone, email, address, socials }: ContactsProps) {
+export function Contacts({
+  phone,
+  email,
+  address,
+  socialNetworks,
+}: ContactsProps) {
   return (
     <div className={cn("font-light text-zinc-600 tracking-widest ")}>
       <h3 className=" uppercase font-light">Contacts</h3>
@@ -60,7 +64,7 @@ export function Contacts({ phone, email, address, socials }: ContactsProps) {
         )}
       </div>
       <div className="mt-4">
-        {socials?.map((social) => (
+        {socialNetworks?.map((social) => (
           <div className="" key={social.id}>
             {social?.name.includes("Github") && (
               <div className="flex items-center gap-x-2 text-sm">
