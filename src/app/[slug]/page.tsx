@@ -13,6 +13,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
 
 import { getAllResume, getResumeBySlug } from "@/data/resume"
+import { Footer } from "@/components/footer"
 
 interface ResumeProps {
   params: {
@@ -30,7 +31,7 @@ export default async function Resume({ params }: ResumeProps) {
     return redirect("/admin")
   }
   return (
-    <div className={cn("w-full max-w-7xl")}>
+    <div className={cn("w-full max-w-7xl pb-20")}>
       <NavResume slugs={slugs} />
       <div className="flex  w-full max-w-7xl flex-col bg-white rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0">
         <Name
@@ -53,7 +54,15 @@ export default async function Resume({ params }: ResumeProps) {
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
             <Education education={resume?.education || []} />
             <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
-            <Skills />
+            <Skills
+              skills={
+                resume?.skills?.map((skill) => ({
+                  id: skill.id,
+                  name: skill.name,
+                  type: skill.type,
+                })) || []
+              }
+            />
           </div>
           <div className="w-px sm:col-span-1 min-h-full bg-gradient-to-b from-zinc-300/10 via-zinc-500 to-zinc-400/10 mx-10" />
           <div className="sm:col-span-8 w-full flex flex-col space-y-10">
@@ -62,8 +71,9 @@ export default async function Resume({ params }: ResumeProps) {
             <WorkExperience workExperiences={resume?.workExperiences} />
           </div>
         </div>
+        <Footer />
       </div>
-      <pre>{JSON.stringify(resume, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(resume, null, 2)}</pre> */}
     </div>
   )
 }

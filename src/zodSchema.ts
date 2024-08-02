@@ -5,5 +5,5 @@ export const UserSchema = z.object({
   email: z.string().email(),
   firstName: z.string(),
   lastName: z.string(),
-  profileImage: z.string().url(),
+  pictureUrl: z.string().url(),
 })

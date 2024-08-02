@@ -18,7 +18,7 @@ import { UserSchema } from "@/zodSchema"
 import * as z from "zod"
 
 interface UserTypes {
-  user: {
+  resume: {
     id: string
     email: string
     firstName: string
@@ -27,17 +27,17 @@ interface UserTypes {
   }
 }
 
-export function UserCardForm({ user }: UserTypes) {
+export function UserCardForm({ resume }: UserTypes) {
   const { control, handleSubmit, formState, register } = useForm<
     z.infer<typeof UserSchema>
   >({
     resolver: zodResolver(UserSchema),
     defaultValues: {
       id: "",
-      email: "",
-      firstName: user.firstName,
-      lastName: "",
-      profileImage: "",
+      email: resume.email,
+      firstName: resume.firstName,
+      lastName: resume.lastName,
+      pictureUrl: resume.profileImage,
     },
   })
   return (

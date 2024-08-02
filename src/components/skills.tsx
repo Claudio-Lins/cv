@@ -1,40 +1,40 @@
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
+import { SkillType } from "@prisma/client"
 
-interface SkillsProps {}
+interface SkillsProps {
+  skills: {
+    id: string
+    name: string
+    type: SkillType
+  }[]
+}
 
-export function Skills({}: SkillsProps) {
+export function Skills({ skills }: SkillsProps) {
+  const groupedSkills = skills.reduce<
+    Record<SkillType, { id: string; name: string }[]>
+  >((groups, skill) => {
+    const { type } = skill
+    if (!groups[type]) {
+      groups[type] = []
+    }
+    groups[type].push({ id: skill.id, name: skill.name })
+    return groups
+  }, {} as Record<SkillType, { id: string; name: string }[]>)
+
   return (
-    <div className={cn("font-light text-zinc-600 tracking-widest ")}>
-      <h3 className=" uppercase font-light">Skills</h3>
+    <div className={cn("font-light text-zinc-600 tracking-widest")}>
+      <h3 className="uppercase font-light">Skills</h3>
       <div className="flex flex-col mt-6">
-        <div className="flex flex-col text-zinc-600 text-sm">
-          <h4 className=" uppercase font-semibold">Technical</h4>
-          <div className="flex mt-4 flex-col gap-y-2">
-            <span>JavaScript</span>
-            <span>NextJs</span>
-            <span>NodeJs</span>
-            <span>Html</span>
-            <span>TailwindCss</span>
-            <span>Prisma</span>
-            <span>ReactJs</span>
-            <span>TypeScript</span>
-            <span>React Hook Form</span>
-            <span>Zustand</span>
-            <span>React Native</span>
+        {Object.entries(groupedSkills).map(([type, skills]) => (
+          <div key={type} className="flex flex-col text-zinc-600 text-sm mt-4">
+            <h4 className="uppercase font-semibold">{type}</h4>
+            <div className="flex flex-col gap-y-2 mt-2">
+              {skills.map((skill) => (
+                <span key={skill.id}>{skill.name}</span>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col text-zinc-600 text-sm mt-6">
-          <h4 className=" uppercase font-semibold">Personal</h4>
-          <div className="flex mt-4 flex-col gap-y-2">
-            <span>Photography</span>
-            <span>Cooking</span>
-            <span>Travel</span>
-            <span>Gaming</span>
-            <span>Reading</span>
-            <span>Writing</span>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   )
