@@ -5,8 +5,10 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
-import { UserCardForm } from "@/components/forms/user-card-form"
 import { getAllResume } from "@/data/resume"
+import { ResumeTypes } from "../../../@types/resume-types"
+import { ResumeEditCard } from "@/components/forms/resume-edit-card"
+import { CreateResumeForm } from "@/components/forms/create-resume-form"
 
 interface AdminProps {}
 
@@ -34,11 +36,16 @@ export default async function Admin({}: AdminProps) {
             </TabsTrigger>
           ))}
           <TabsTrigger key={"add"} value={"add"} asChild>
-            <Button variant="default">+ Add Resume</Button>
+            <Button variant="outline">+ Add Resume</Button>
           </TabsTrigger>
         </TabsList>
+        <TabsContent key={"add"} value={"add"} className="p-4">
+          <CreateResumeForm />
+        </TabsContent>
         {allResumes.map((resume) => (
           <TabsContent key={resume.slug} value={resume.slug!} className="p-4">
+            <ResumeEditCard resume={resume as ResumeTypes} />
+
             <pre>{JSON.stringify(resume, null, 2)}</pre>
           </TabsContent>
         ))}

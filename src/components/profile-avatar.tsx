@@ -10,10 +10,17 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Button } from "./ui/button"
-import { CircleUserIcon, Home, LogOut, Settings, Settings2 } from "lucide-react"
+import {
+  CircleUserIcon,
+  Globe,
+  Home,
+  LogOut,
+  Settings,
+  Settings2,
+} from "lucide-react"
 
 import {
-  // getKindeServerSession,
+  getKindeServerSession,
   LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/server"
 import Link from "next/link"
@@ -21,12 +28,16 @@ import { UserTypes } from "../../@types/user-types"
 import Image from "next/image"
 
 interface ProfileAvatarProps {
-  user: UserTypes
+  // user: UserTypes
+  slug: {
+    slug: string
+    title: string
+  }[]
 }
 
-export async function ProfileAvatar({ user }: UserTypes) {
-  // const { getUser } = getKindeServerSession()
-  // const user = await getUser()
+export async function ProfileAvatar({ slug }: ProfileAvatarProps) {
+  const { getUser } = getKindeServerSession()
+  const user = await getUser()
   return (
     <div className=" top-10 right-10 print:hidden fixed">
       <DropdownMenu>
@@ -85,6 +96,19 @@ export async function ProfileAvatar({ user }: UserTypes) {
               <Settings size={18} />
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <h3 className="w-full font-bold text-center">Resumes</h3>
+          {slug?.map((path) => (
+            <DropdownMenuItem asChild key={path.slug}>
+              <Link
+                href={`/${path.slug}`}
+                className="flex w-full items-center justify-between"
+              >
+                <span>{path.title}</span>
+                <Globe size={18} />
+              </Link>
+            </DropdownMenuItem>
+          ))}
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <div className="flex items-center justify-between w-full">

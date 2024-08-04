@@ -29,9 +29,16 @@ export async function getAllResume(userId: string) {
     where: {
       userId,
     },
-    select: {
-      slug: true,
-      title: true,
+    include: {
+      education: true,
+      skills: true,
+      workExperiences: true,
+      contact: {
+        include: {
+          address: true,
+          socialNetworks: true,
+        },
+      },
     },
   })
   return slugs
