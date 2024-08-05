@@ -38,6 +38,7 @@ type ResumeFormData = z.infer<typeof ResumeSchema>
 
 export function CreateResumeForm({}: CreateResumeFormProps) {
   const [output, setOutput] = useState("")
+  const [stilWorking, setStilWorking] = useState(false)
   const {
     control,
     handleSubmit,
@@ -131,19 +132,24 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
       link: "",
       employmentType: $Enums.EmploymentType.EMPLOYEE,
       workLocation: $Enums.WorkLocation.REMOTE,
-      isCurrent: currentJob(),
+      isCurrent: stilWorking,
     })
   }
 
-  function currentJob() {
-    const endDate = workExperienceFields.map((_, index) =>
-      watch(`workExperiences.${index}.endDate`)
-    )
-    if (!endDate) {
-      return false
+  const endDate = workExperienceFields.map((_, index) =>
+    watch(`workExperiences.${index}.endDate`)
+  )
+
+  useEffect(() => {
+    if (endDate.some((date) => date)) {
+      setStilWorking(true)
+    } else {
+      setStilWorking(false)
     }
-    return true
-  }
+  }, [endDate])
+
+  console.log("stilWorking: " + stilWorking)
+  console.log("endDate: " + endDate)
 
   function deleteWorkExperience(index: number) {
     removeWorkExperience(index)
