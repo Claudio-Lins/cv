@@ -119,8 +119,8 @@ model WorkExperience {
   description    String
   company        String
   location       String
-  startYear      DateTime       @default(now())
-  endYear        DateTime?      @default(now())
+  startDate      DateTime       @default(now())
+  endDate        DateTime?      @default(now())
   isCurrent      Boolean        @default(false)
   link           String?
   employmentType EmploymentType

@@ -9,11 +9,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { $Enums } from "@prisma/client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, Controller } from "react-hook-form"
 import { ResumeSchema } from "@/zodSchema"
 import * as z from "zod"
 import { Switch } from "../ui/switch"
@@ -61,15 +69,27 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
         },
         socialNetworks: [],
       },
+      workExperiences: [],
     },
   })
-
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: socialNetworkFields,
+    append: appendSocialNetwork,
+    remove: removeSocialNetwork,
+  } = useFieldArray({
     name: "contact.socialNetworks",
     control,
   })
 
-  // Watch the title field and update the slug field accordingly
+  const {
+    fields: workExperienceFields,
+    append: appendWorkExperience,
+    remove: removeWorkExperience,
+  } = useFieldArray({
+    name: "workExperiences",
+    control,
+  })
+
   const title = watch("title")
 
   useEffect(() => {
@@ -95,10 +115,38 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
   }
 
   function addSocialNetwork() {
-    append({ name: "", url: "" })
+    appendSocialNetwork({ name: "", url: "" })
   }
-  function removeSocialNetwork(index: number) {
-    remove(index)
+  function deleteSocialNetwork(index: number) {
+    removeSocialNetwork(index)
+  }
+  function addWorkExperience() {
+    appendWorkExperience({
+      title: "",
+      description: "",
+      company: "",
+      location: "",
+      startDate: "",
+      endDate: "" || null,
+      link: "",
+      employmentType: $Enums.EmploymentType.EMPLOYEE,
+      workLocation: $Enums.WorkLocation.REMOTE,
+      isCurrent: currentJob(),
+    })
+  }
+
+  function currentJob() {
+    const endDate = workExperienceFields.map((_, index) =>
+      watch(`workExperiences.${index}.endDate`)
+    )
+    if (!endDate) {
+      return false
+    }
+    return true
+  }
+
+  function deleteWorkExperience(index: number) {
+    removeWorkExperience(index)
   }
 
   return (
@@ -202,7 +250,7 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
                 )}
               </div>
               <div className="w-full flex flex-col gap-4">
-                <h3 className="font-bold text-lg">Contact</h3>
+                <h3 className="font-bold text-xl">Contact</h3>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -331,7 +379,7 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
                 </button>
               </div>
               <div className="flex w-full items-center gap-4 flex-col ">
-                {fields.map((field, index) => {
+                {socialNetworkFields.map((field, index) => {
                   return (
                     <div key={field.id} className="flex flex-col w-full">
                       <div className="flex w-full items-center gap-4">
@@ -381,7 +429,7 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
                         </div>
                         <button
                           type="button"
-                          onClick={() => removeSocialNetwork(index)}
+                          onClick={() => deleteSocialNetwork(index)}
                           className="flex justify-end items-end pt-4"
                         >
                           <MinusCircle className="text-red-500" size={24} />
@@ -390,6 +438,228 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
                     </div>
                   )
                 })}
+              </div>
+              <div className="w-full flex flex-col gap-4">
+                <h3 className="font-bold text-xl">Work Experience</h3>
+                {workExperienceFields.map((field, index) => {
+                  return (
+                    <div
+                      key={field.id}
+                      className="flex flex-col w-full space-y-4"
+                    >
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor="title">Title</Label>
+                        <Input
+                          {...register(`workExperiences.${index}.title`)}
+                          id="title"
+                          placeholder="Title of your position"
+                          className="bg-white"
+                        />
+                        {errors?.workExperiences?.[index]?.title && (
+                          <span
+                            className={cn(
+                              "text-xs font-semibold text-red-600 -mt-2"
+                            )}
+                          >
+                            {errors?.workExperiences?.[index]?.title.message}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor="description">Description</Label>
+                        <Textarea
+                          {...register(`workExperiences.${index}.description`)}
+                          id="description"
+                          placeholder="Description of your position"
+                          className="bg-white"
+                        />
+                        {errors?.workExperiences?.[index]?.description && (
+                          <span
+                            className={cn(
+                              "text-xs font-semibold text-red-600 -mt-2"
+                            )}
+                          >
+                            {
+                              errors?.workExperiences?.[index]?.description
+                                .message
+                            }
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor="company">Company</Label>
+                        <Input
+                          {...register(`workExperiences.${index}.company`)}
+                          id="company"
+                          placeholder="Name of your company"
+                          className="bg-white"
+                        />
+                        {errors?.workExperiences?.[index]?.company && (
+                          <span
+                            className={cn(
+                              "text-xs font-semibold text-red-600 -mt-2"
+                            )}
+                          >
+                            {errors?.workExperiences?.[index]?.company.message}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor="location">Location</Label>
+                        <Input
+                          {...register(`workExperiences.${index}.location`)}
+                          id="location"
+                          placeholder="Ex.: London Area, United Kingdom"
+                          className="bg-white"
+                        />
+                        {errors?.workExperiences?.[index]?.location && (
+                          <span
+                            className={cn(
+                              "text-xs font-semibold text-red-600 -mt-2"
+                            )}
+                          >
+                            {errors?.workExperiences?.[index]?.location.message}
+                          </span>
+                        )}
+                      </div>
+                      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div className="flex flex-col space-y-1.5 w-full">
+                          <Label htmlFor="startDate">Start Date</Label>
+                          <Input
+                            type="date"
+                            {...register(`workExperiences.${index}.startDate`)}
+                            id="startDate"
+                            placeholder="The start date"
+                            className="bg-white"
+                          />
+                          {errors?.workExperiences?.[index]?.startDate && (
+                            <span
+                              className={cn(
+                                "text-xs font-semibold text-red-600 -mt-2"
+                              )}
+                            >
+                              {
+                                errors?.workExperiences?.[index]?.startDate
+                                  .message
+                              }
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-col space-y-1.5 w-full">
+                          <Label htmlFor="endDate">End Date</Label>
+                          <Input
+                            type="date"
+                            {...register(`workExperiences.${index}.endDate`)}
+                            id="endDate"
+                            placeholder="The end date"
+                            className="bg-white w-full"
+                          />
+                          {errors?.workExperiences?.[index]?.endDate && (
+                            <span
+                              className={cn(
+                                "text-xs font-semibold text-red-600 -mt-2"
+                              )}
+                            >
+                              {
+                                errors?.workExperiences?.[index]?.endDate
+                                  .message
+                              }
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-col space-y-1.5 w-full">
+                          <Label>Work Location</Label>
+                          <Controller
+                            control={control}
+                            name={`workExperiences.${index}.workLocation`}
+                            render={({ field }) => (
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Work Location" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {Object.values($Enums.WorkLocation).map(
+                                    (location) => (
+                                      <SelectItem
+                                        key={location}
+                                        value={location}
+                                      >
+                                        {location}
+                                      </SelectItem>
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                            )}
+                          />
+                        </div>
+                        <div className="flex flex-col space-y-1.5 w-full">
+                          <Label>Employment Tpe</Label>
+                          <Controller
+                            control={control}
+                            name={`workExperiences.${index}.employmentType`}
+                            render={({ field }) => (
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Employment Type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {Object.values($Enums.EmploymentType).map(
+                                    (location) => (
+                                      <SelectItem
+                                        key={location}
+                                        value={location}
+                                      >
+                                        {location}
+                                      </SelectItem>
+                                    )
+                                  )}
+                                </SelectContent>
+                              </Select>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor="link">Site</Label>
+                        <Input
+                          {...register(`workExperiences.${index}.link`)}
+                          id="link"
+                          placeholder="Ex.: www.companyName.com"
+                          className="bg-white"
+                        />
+                        {errors?.workExperiences?.[index]?.link && (
+                          <span
+                            className={cn(
+                              "text-xs font-semibold text-red-600 -mt-2"
+                            )}
+                          >
+                            {errors?.workExperiences?.[index]?.link.message}
+                          </span>
+                        )}
+                      </div>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="ml-auto"
+                        onClick={() => deleteWorkExperience(index)}
+                      >
+                        Delete Work Experience
+                      </Button>
+                    </div>
+                  )
+                })}
+                <div className="w-full flex items-center justify-center mt-8 border-t p-10">
+                  <Button type="button" onClick={addWorkExperience}>
+                    <Plus size={24} /> Add Work Experience
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
