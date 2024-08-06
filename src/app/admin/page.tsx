@@ -1,4 +1,3 @@
-import { NavResume } from "@/components/nav-resume"
 import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
@@ -6,8 +5,6 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { getAllResume } from "@/data/resume"
-import { ResumeTypes, SkillTypes } from "../../../@types/resume-types"
-import { ResumeEditCard } from "@/components/forms/resume-edit-card"
 import { CreateResumeForm } from "@/components/forms/create-resume-form"
 
 interface AdminProps {}
@@ -21,16 +18,9 @@ async function getTitle(userId: string) {
   return slugs
 }
 
-async function getSkills(userId: string) {
-  const skills = await prisma.resume.findMany({
-    where: {
-      userId,
-    },
-    select: {
-      skills: true,
-    },
-  })
-  return skills.map((skill) => skill.skills).flat()
+async function getSkills() {
+  const skills = await prisma.skill.findMany()
+  return skills
 }
 
 export default async function Admin({}: AdminProps) {
@@ -38,7 +28,7 @@ export default async function Admin({}: AdminProps) {
   const user = await getUser()
   const slugs = await getTitle(user?.id!)
   const allResumes = await getAllResume(user?.id!)
-  const skills = await getSkills(user?.id!)
+  const skills = await getSkills()
   return (
     <div className={cn("w-full max-w-7xl mx-auto bg-white")}>
       <Tabs defaultValue={allResumes[0].slug!} className="w-full">

@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { $Enums } from "@prisma/client"
+import SelectReact from "react-select"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray, Controller } from "react-hook-form"
@@ -31,6 +32,7 @@ import { cn } from "@/lib/utils"
 import { startTransition, useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea"
 import { Check, MinusCircle, MinusIcon, Plus } from "lucide-react"
+import { Badge } from "../ui/badge"
 
 interface CreateResumeFormProps {
   skills: SkillTypes[]
@@ -158,6 +160,17 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
   function deleteWorkExperience(index: number) {
     removeWorkExperience(index)
   }
+
+  const groupedSkills = skills.reduce(
+    (acc: Record<string, SkillTypes[]>, skill) => {
+      if (!acc[skill.type]) {
+        acc[skill.type] = []
+      }
+      acc[skill.type].push(skill)
+      return acc
+    },
+    {}
+  )
 
   return (
     <>
@@ -665,32 +678,63 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                     </div>
                   )
                 })}
-                <div className="w-full flex items-center justify-center mt-8 border-t p-10">
+                <div className="w-full flex items-center justify-center mt-8 border-y p-10">
                   <Button type="button" onClick={addWorkExperience}>
                     <Plus size={24} /> Add Work Experience
                   </Button>
                 </div>
               </div>
+
               <div className="w-full flex flex-col gap-4">
-                <h3 className="font-bold text-xl">Skills</h3>
-                {skills?.length > 0 ? (
-                  <div className="flex flex-wrap gap-4">
-                    {skills?.map((skill, index) => (
-                      <div key={skill.id} className=" shadow-sm">
-                        <Label htmlFor="skills">{skill.name}</Label>
-                        <Input
-                          type="checkbox"
-                          {...register(`skills.${index}.name`)}
-                          id="skills"
-                          value={skill.name}
-                          className="bg-white"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <span>No skills found</span>
-                )}
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-xl">Skills</h3>
+                  <button
+                    type="button"
+                    onClick={addSocialNetwork}
+                    className=" items-end"
+                  >
+                    <Plus size={24} />
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  {skills.length > 0 && (
+                    <>
+                      {skills.map((skill) => (
+                        <Badge
+                          variant="outline"
+                          className=" flex items-center gap-1"
+                          key={skill.id}
+                          title={skill.type}
+                        >
+                          <Controller
+                            name="skills"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="checkbox"
+                                {...field}
+                                value={skill.id}
+                                checked={field.value.some(
+                                  (s) => s.id === skill.id
+                                )}
+                                onChange={(e) => {
+                                  const newValue = e.target.checked
+                                    ? [...field.value, skill]
+                                    : field.value.filter(
+                                        (s) => s.id !== skill.id
+                                      )
+                                  field.onChange(newValue)
+                                }}
+                              />
+                            )}
+                          />
+                          <span>{skill.name}</span>
+                        </Badge>
+                      ))}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </CardContent>
