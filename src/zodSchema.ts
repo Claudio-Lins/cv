@@ -50,7 +50,7 @@ export const EducationSchema = z.object({
 
 export const SkillSchema = z.object({
   id: z.string().cuid().optional(),
-  name: z.string(),
+  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
   type: z.enum(["TECHNICAL", "PERSONAL", "SOFTSKILL", "HOBBIES", "HARDSKILL"]),
 })
 

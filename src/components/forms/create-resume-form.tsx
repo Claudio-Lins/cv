@@ -33,6 +33,7 @@ import { startTransition, useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea"
 import { Check, MinusCircle, MinusIcon, Plus } from "lucide-react"
 import { Badge } from "../ui/badge"
+import { CreateSkillsForm } from "./create-skills-form"
 
 interface CreateResumeFormProps {
   skills: SkillTypes[]
@@ -97,6 +98,15 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
     control,
   })
 
+  const {
+    fields: skillsFields,
+    append: appendSkills,
+    remove: removeSkills,
+  } = useFieldArray({
+    name: "skills",
+    control,
+  })
+
   const title = watch("title")
 
   useEffect(() => {
@@ -142,6 +152,18 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
     })
   }
 
+  function addSkill() {
+    appendSkills({
+      id: "",
+      name: "",
+      type: $Enums.SkillType.TECHNICAL,
+    })
+  }
+
+  function deleteSkill(index: number) {
+    removeSkills(index)
+  }
+
   const endDate = workExperienceFields.map((_, index) =>
     watch(`workExperiences.${index}.endDate`)
   )
@@ -154,23 +176,12 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
     }
   }, [endDate])
 
-  console.log("stillWorking: " + stillWorking)
-  console.log("endDate: " + endDate)
-
   function deleteWorkExperience(index: number) {
     removeWorkExperience(index)
   }
 
-  const groupedSkills = skills.reduce(
-    (acc: Record<string, SkillTypes[]>, skill) => {
-      if (!acc[skill.type]) {
-        acc[skill.type] = []
-      }
-      acc[skill.type].push(skill)
-      return acc
-    },
-    {}
-  )
+  console.log("stillWorking: " + stillWorking)
+  console.log("endDate: " + endDate)
 
   return (
     <>
@@ -391,6 +402,7 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                   )}
                 </div>
               </div>
+
               <div className="flex items-center gap-4">
                 <h3 className="font-bold text-base">Social Network</h3>
                 <button
@@ -688,13 +700,7 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
               <div className="w-full flex flex-col gap-4">
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-xl">Skills</h3>
-                  <button
-                    type="button"
-                    onClick={addSocialNetwork}
-                    className=" items-end"
-                  >
-                    <Plus size={24} />
-                  </button>
+                  <CreateSkillsForm />
                 </div>
 
                 <div className="flex flex-wrap gap-4">
@@ -734,6 +740,66 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                       ))}
                     </>
                   )}
+                  {/* 
+                  {skillsFields.map((field, index) => {
+                    return (
+                      <div key={field.id} className="flex flex-col w-full">
+                        <div className="flex w-full items-center gap-4">
+                          <div className="flex w-full max-w-xs flex-col space-y-1.5">
+                            <Label htmlFor="name">Name</Label>
+                            <Input
+                              {...register(`skills.${index}.name`)}
+                              id="name"
+                              placeholder="Name of Skill"
+                              className="bg-white"
+                            />
+                            {errors.skills?.[index]?.name && (
+                              <span
+                                className={cn(
+                                  "text-xs font-semibold text-red-600 -mt-2"
+                                )}
+                              >
+                                {errors.skills?.[index]?.name.message}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex flex-col space-y-1.5 w-full">
+                            <Label>Type</Label>
+                            <Controller
+                              control={control}
+                              name={`skills.${index}.type`}
+                              render={({ field }) => (
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue placeholder="Type of Skills" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {Object.values($Enums.SkillType).map(
+                                      (type) => (
+                                        <SelectItem key={type} value={type}>
+                                          {type}
+                                        </SelectItem>
+                                      )
+                                    )}
+                                  </SelectContent>
+                                </Select>
+                              )}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => deleteSkill(index)}
+                            className="flex justify-end items-end pt-4"
+                          >
+                            <MinusCircle className="text-red-500" size={24} />
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })} */}
                 </div>
               </div>
             </div>
