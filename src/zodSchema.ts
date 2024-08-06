@@ -51,7 +51,7 @@ export const EducationSchema = z.object({
 export const SkillSchema = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
-  type: z.enum(["TECHNICAL", "PERSONAL", "SOFTSKILL", "HOBBIES", "HARDSKILL"]),
+  type: z.string(),
 })
 
 export const WorkExperienceSchema = z.object({
@@ -95,6 +95,6 @@ export const ResumeSchema = z.object({
   // contactId: z.string().cuid(),
   contact: ContactSchema,
   // education: z.array(EducationSchema),
-  // skills: z.array(SkillSchema),
+  skills: z.array(SkillSchema),
   workExperiences: z.array(WorkExperienceSchema),
 })

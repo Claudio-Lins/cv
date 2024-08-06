@@ -98,20 +98,20 @@ model Education {
 }
 
 model Skill {
-  id   String    @id @default(cuid())
+  id   String @id @default(cuid())
   name String
-  type SkillType
+  type String
 
   resume Resume[]
 }
 
-enum SkillType {
-  TECHNICAL
-  PERSONAL
-  SOFTSKILL
-  HOBBIES
-  HARDSKILL
-}
+// enum SkillType {
+//   TECHNICAL
+//   PERSONAL
+//   SOFTSKILL
+//   HOBBIES
+//   HARDSKILL
+// }
 
 model WorkExperience {
   id             String         @id @default(cuid())

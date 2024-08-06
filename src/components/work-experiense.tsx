@@ -3,6 +3,7 @@ import { Globe } from "lucide-react"
 import dayjs from "dayjs"
 import duration from "dayjs/plugin/duration"
 import relativeTime from "dayjs/plugin/relativeTime"
+import { calculateDuration } from "@/utils/caculate-duration-data"
 
 dayjs.extend(duration)
 
@@ -13,8 +14,8 @@ interface WorkExperienceProps {
     description: string
     company: string
     location: string
-    startYear: Date
-    endYear: Date | null
+    startDate: Date
+    endDate: Date | null
     employmentType: string
     workLocation: string
     link: string | null
@@ -23,6 +24,18 @@ interface WorkExperienceProps {
 }
 
 export function WorkExperience({ workExperiences }: WorkExperienceProps) {
+  // function calculateDuration(startDate: string, endDate?: string): string {
+  //   const start = dayjs(startDate)
+  //   const end = endDate ? dayjs(endDate) : dayjs()
+
+  //   const diffYears = end.diff(start, "year")
+  //   start.add(diffYears, "year")
+
+  //   const diffMonths = end.diff(start, "month")
+
+  //   return `${diffYears} years, ${diffMonths} months`
+  // }
+
   return (
     <div className={cn(" pl-10 font-light text-zinc-600 tracking-widest ")}>
       <h3 className=" uppercase">Work Experience</h3>
@@ -40,67 +53,49 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
               {workExperience?.company} · {workExperience?.employmentType}
             </small>
             <div className="flex items-center justify-start gap-2">
-              {workExperience?.endYear && (
+              {workExperience?.isCurrent ? (
                 <>
                   <small>
                     {new Intl.DateTimeFormat("pt-PT", {
                       year: "numeric",
                       month: "short",
-                    }).format(new Date(workExperience.startYear))}
+                    }).format(new Date(workExperience.startDate))}
                   </small>
                   <small className="text-gray-400">|</small>
-                  <small>
-                    {new Intl.DateTimeFormat("pt-PT", {
-                      year: "numeric",
-                      month: "short",
-                    }).format(new Date(workExperience.endYear))}
-                  </small>
-                  <small className="text-gray-400">|</small>
-                  <small className="text-gray-400">
-                    {dayjs(workExperience.endYear).year() !==
-                      dayjs(workExperience.startYear).year() ||
-                    dayjs(workExperience.endYear).month() !==
-                      dayjs(workExperience.startYear).month()
-                      ? dayjs(workExperience.endYear).diff(
-                          dayjs(workExperience.startYear),
-                          "year"
-                        ) +
-                        " years, " +
-                        (dayjs(workExperience.endYear).diff(
-                          dayjs(workExperience.startYear),
-                          "month"
-                        ) %
-                          12) +
-                        " months"
-                      : (dayjs(workExperience.endYear).diff(
-                          dayjs(workExperience.startYear),
-                          "month"
-                        ) %
-                          12) +
-                        " months"}
-                  </small>
-                </>
-              )}
-              {!workExperience.endYear && (
-                <>
-                  <small>
-                    {new Intl.DateTimeFormat("pt-PT", {
-                      year: "numeric",
-                      month: "short",
-                    }).format(new Date(workExperience.startYear))}
-                  </small>
-                  <small className="text-gray-400">|</small>
-                  <small className="text-gray-400">
-                    {dayjs().year() !== dayjs(workExperience.startYear).year()
-                      ? dayjs().diff(dayjs(workExperience.startYear), "year") +
-                        " years, "
-                      : null}
-                    {(dayjs().diff(dayjs(workExperience.startYear), "month") %
-                      12) +
-                      " months"}
+                  <small className="text-gray-400 text-xs">
+                    {calculateDuration(
+                      workExperience.startDate?.toISOString(),
+                      workExperience.endDate?.toISOString()
+                    )}
                   </small>
                   <small className="text-gray-400">|</small>
                   <small className="text-gray-400">Current</small>
+                </>
+              ) : (
+                <>
+                  <small>
+                    {new Intl.DateTimeFormat("pt-PT", {
+                      year: "numeric",
+                      month: "short",
+                    }).format(new Date(workExperience.startDate))}
+                  </small>
+                  <small className="text-gray-400">|</small>
+                  <small>
+                    {workExperience.endDate &&
+                      new Intl.DateTimeFormat("pt-PT", {
+                        year: "numeric",
+                        month: "short",
+                      }).format(new Date(workExperience.endDate))}
+                  </small>
+                  <small className="text-gray-400">|</small>
+                  <small className="text-gray-400">
+                    <small className="text-gray-400 text-xs">
+                      {calculateDuration(
+                        workExperience.startDate?.toISOString(),
+                        workExperience.endDate?.toISOString()
+                      )}
+                    </small>
+                  </small>
                 </>
               )}
             </div>

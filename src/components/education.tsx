@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import dayjs from "dayjs"
 import duration from "dayjs/plugin/duration"
 import relativeTime from "dayjs/plugin/relativeTime"
+import { calculateDuration } from "@/utils/caculate-duration-data"
 
 dayjs.extend(duration)
 
@@ -39,11 +40,10 @@ export function Education({ education }: EducationProps) {
                 }).format(edu.endYear)}
               </small>
               <small className="text-gray-400">
-                {dayjs(edu.endYear).diff(dayjs(edu.startYear), "year") +
-                  " years, " +
-                  (dayjs(edu.endYear).diff(dayjs(edu.startYear), "month") %
-                    12) +
-                  " months, "}
+                {calculateDuration(
+                  edu.startYear.toString(),
+                  edu.endYear.toString()
+                )}
               </small>
             </div>
           </div>

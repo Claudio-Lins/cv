@@ -1,3 +1,5 @@
+import { $Enums } from "@prisma/client"
+
 export interface ResumeTypes {
   id: string
   title: string
@@ -12,7 +14,7 @@ export interface ResumeTypes {
   userId: string
   contactId: string | null
   education: Education[]
-  skills: Skill[] | null
+  skills: SkillTypes[] | null
   workExperiences: WorkExperience[]
   contact: Contact
 }
@@ -54,10 +56,10 @@ export interface Education {
   endYear: Date
 }
 
-export interface Skill {
+export interface SkillTypes {
   id: string
   name: string
-  type: Type
+  type: string
 }
 
 export enum Type {
@@ -71,8 +73,8 @@ export interface WorkExperience {
   description: string
   company: string
   location: string
-  startYear: Date
-  endYear: Date | null
+  startDate: Date
+  endDate: Date | null
   isCurrent: boolean
   link: null | string
   employmentType: string

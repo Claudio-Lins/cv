@@ -26,19 +26,21 @@ import { ResumeSchema } from "@/zodSchema"
 import * as z from "zod"
 import { Switch } from "../ui/switch"
 import { Separator } from "../ui/separator"
-import { ResumeTypes } from "../../../@types/resume-types"
+import { ResumeTypes, SkillTypes } from "../../../@types/resume-types"
 import { cn } from "@/lib/utils"
 import { startTransition, useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea"
-import { MinusCircle, MinusIcon, Plus } from "lucide-react"
+import { Check, MinusCircle, MinusIcon, Plus } from "lucide-react"
 
-interface CreateResumeFormProps {}
+interface CreateResumeFormProps {
+  skills: SkillTypes[]
+}
 
 type ResumeFormData = z.infer<typeof ResumeSchema>
 
-export function CreateResumeForm({}: CreateResumeFormProps) {
+export function CreateResumeForm({ skills }: CreateResumeFormProps) {
   const [output, setOutput] = useState("")
-  const [stilWorking, setStilWorking] = useState(false)
+  const [stillWorking, setStillWorking] = useState(false)
   const {
     control,
     handleSubmit,
@@ -71,6 +73,8 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
         socialNetworks: [],
       },
       workExperiences: [],
+      // education: [],
+      skills: [],
     },
   })
   const {
@@ -132,7 +136,7 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
       link: "",
       employmentType: $Enums.EmploymentType.EMPLOYEE,
       workLocation: $Enums.WorkLocation.REMOTE,
-      isCurrent: stilWorking,
+      isCurrent: stillWorking,
     })
   }
 
@@ -142,13 +146,13 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
 
   useEffect(() => {
     if (endDate.some((date) => date)) {
-      setStilWorking(true)
+      setStillWorking(true)
     } else {
-      setStilWorking(false)
+      setStillWorking(false)
     }
   }, [endDate])
 
-  console.log("stilWorking: " + stilWorking)
+  console.log("stillWorking: " + stillWorking)
   console.log("endDate: " + endDate)
 
   function deleteWorkExperience(index: number) {
@@ -666,6 +670,27 @@ export function CreateResumeForm({}: CreateResumeFormProps) {
                     <Plus size={24} /> Add Work Experience
                   </Button>
                 </div>
+              </div>
+              <div className="w-full flex flex-col gap-4">
+                <h3 className="font-bold text-xl">Skills</h3>
+                {skills?.length > 0 ? (
+                  <div className="flex flex-wrap gap-4">
+                    {skills?.map((skill, index) => (
+                      <div key={skill.id} className=" shadow-sm">
+                        <Label htmlFor="skills">{skill.name}</Label>
+                        <Input
+                          type="checkbox"
+                          {...register(`skills.${index}.name`)}
+                          id="skills"
+                          value={skill.name}
+                          className="bg-white"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <span>No skills found</span>
+                )}
               </div>
             </div>
           </CardContent>

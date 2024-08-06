@@ -10,7 +10,7 @@ export async function getResumeBySlug(slug: string, userId: string) {
       education: true,
       skills: true,
       workExperiences: {
-        orderBy: { endYear: "desc" },
+        orderBy: { endDate: "desc" },
       },
 
       contact: {
