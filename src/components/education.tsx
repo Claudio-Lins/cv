@@ -11,8 +11,8 @@ interface EducationProps {
     id: string
     school: string
     field: string
-    startYear: Date
-    endYear: Date
+    startDate: Date
+    endDate: Date
   }[]
 }
 
@@ -30,19 +30,19 @@ export function Education({ education }: EducationProps) {
                 {new Intl.DateTimeFormat("pt-PT", {
                   year: "numeric",
                   month: "short",
-                }).format(edu.startYear)}
+                }).format(edu.startDate)}
               </small>
               <span>|</span>
               <small>
                 {new Intl.DateTimeFormat("pt-PT", {
                   year: "numeric",
                   month: "short",
-                }).format(edu.endYear)}
+                }).format(edu.endDate)}
               </small>
               <small className="text-gray-400">
                 {calculateDuration(
-                  edu.startYear.toString(),
-                  edu.endYear.toString()
+                  edu.startDate.toString(),
+                  edu.endDate.toString()
                 )}
               </small>
             </div>

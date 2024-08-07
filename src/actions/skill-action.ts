@@ -35,3 +35,13 @@ export async function createSkill(values: z.infer<typeof SkillSchema>) {
 
   return revalidatePath("/admin")
 }
+
+export async function deleteSkill(id: string) {
+  await prisma.skill.delete({
+    where: {
+      id,
+    },
+  })
+
+  return revalidatePath("/admin")
+}

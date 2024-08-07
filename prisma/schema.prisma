@@ -88,11 +88,11 @@ model SocialNetwork {
 }
 
 model Education {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   school    String
   field     String
-  startYear DateTime
-  endYear   DateTime
+  startDate DateTime
+  endDate   DateTime?
 
   resume Resume[]
 }

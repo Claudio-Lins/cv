@@ -33,6 +33,7 @@ export async function getAllResume(userId: string) {
       education: true,
       skills: true,
       workExperiences: true,
+      references: true,
       contact: {
         include: {
           address: true,

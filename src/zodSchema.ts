@@ -42,10 +42,12 @@ export const ContactSchema = z.object({
 
 export const EducationSchema = z.object({
   id: z.string().cuid().optional(),
-  school: z.string(),
-  field: z.string(),
-  startYear: z.string(),
-  endYear: z.string(),
+  school: z
+    .string()
+    .min(3, { message: "School must be at least 3 characters" }),
+  field: z.string().min(3, { message: "Field must be at least 3 characters" }),
+  startDate: z.string().date(),
+  endDate: z.string().date().optional().nullable(),
 })
 
 export const SkillSchema = z.object({
@@ -68,11 +70,25 @@ export const WorkExperienceSchema = z.object({
     .min(3, { message: "Location must be at least 3 characters" }),
   startDate: z.string().date(),
   endDate: z.string().date().optional().nullable(),
-  isCurrent: z.boolean(),
+  isCurrent: z.boolean().optional(),
   link: z.string().url().nullable(),
   employmentType: z.enum(["FREELANCER", "VOLUNTEER", "EMPLOYEE"]),
   workLocation: z.enum(["REMOTE", "ONSITE", "HYBRID"]),
   resumeId: z.string().cuid().optional(),
+})
+
+// references": [
+//     {
+//       "id": "clzj97vlz0001q0w8f6l28apj",
+//       "name": "Paulo",
+//       "email": "pf@lins.com",
+//       "phone": "123123123"
+//     },
+export const ReferenceSchema = z.object({
+  id: z.string().cuid().optional(),
+  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
+  email: z.string().email(),
+  phone: phoneSchema,
 })
 
 export const ResumeSchema = z.object({
@@ -94,7 +110,8 @@ export const ResumeSchema = z.object({
   // userId: z.string().cuid(),
   // contactId: z.string().cuid(),
   contact: ContactSchema,
-  // education: z.array(EducationSchema),
+  education: z.array(EducationSchema),
   workExperiences: z.array(WorkExperienceSchema),
   skills: z.array(SkillSchema),
+  references: z.array(ReferenceSchema),
 })

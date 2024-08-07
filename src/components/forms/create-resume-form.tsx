@@ -34,6 +34,7 @@ import { Textarea } from "../ui/textarea"
 import { Check, MinusCircle, MinusIcon, Plus } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { CreateSkillsForm } from "./create-skills-form"
+import { deleteSkill } from "@/actions/skill-action"
 
 interface CreateResumeFormProps {
   skills: SkillTypes[]
@@ -76,8 +77,9 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
         socialNetworks: [],
       },
       workExperiences: [],
-      // education: [],
+      education: [],
       skills: [],
+      references: [],
     },
   })
   const {
@@ -99,11 +101,20 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
   })
 
   const {
-    fields: skillsFields,
-    append: appendSkills,
-    remove: removeSkills,
+    fields: educationFields,
+    append: appendEducation,
+    remove: removeEducation,
   } = useFieldArray({
-    name: "skills",
+    name: "education",
+    control,
+  })
+
+  const {
+    fields: referenceFields,
+    append: appendReference,
+    remove: removeReference,
+  } = useFieldArray({
+    name: "references",
     control,
   })
 
@@ -124,7 +135,7 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
         console.log("Submitting Product form...", values)
 
         setOutput(JSON.stringify(values, null, 2))
-        // reset()
+        reset()
       } catch (error) {
         console.error("Error creating product:", error)
       }
@@ -148,20 +159,29 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
       link: "",
       employmentType: $Enums.EmploymentType.EMPLOYEE,
       workLocation: $Enums.WorkLocation.REMOTE,
-      isCurrent: stillWorking,
+      isCurrent: stillWorking ? true : false,
     })
   }
 
-  function addSkill() {
-    appendSkills({
-      id: "",
+  function addEducation() {
+    appendEducation({
+      school: "",
+      field: "",
+      startDate: "",
+      endDate: "",
+    })
+  }
+
+  function addReference() {
+    appendReference({
       name: "",
-      type: $Enums.SkillType.TECHNICAL,
+      email: "",
+      phone: "",
     })
   }
 
-  function deleteSkill(index: number) {
-    removeSkills(index)
+  function deleteReference(index: number) {
+    removeReference(index)
   }
 
   const endDate = workExperienceFields.map((_, index) =>
@@ -180,8 +200,9 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
     removeWorkExperience(index)
   }
 
-  console.log("stillWorking: " + stillWorking)
-  console.log("endDate: " + endDate)
+  function deleteEducation(index: number) {
+    removeEducation(index)
+  }
 
   return (
     <>
@@ -283,6 +304,7 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                   </span>
                 )}
               </div>
+
               <div className="w-full flex flex-col gap-4">
                 <h3 className="font-bold text-xl">Contact</h3>
                 <div className="flex flex-col space-y-1.5">
@@ -474,8 +496,19 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                   )
                 })}
               </div>
+              <Separator className="w-full mx-auto" />
+
               <div className="w-full flex flex-col gap-4">
-                <h3 className="font-bold text-xl">Work Experience</h3>
+                <div className="flex items-center gap-1">
+                  <h3 className="font-bold text-xl">Work Experience</h3>
+                  <button
+                    type="button"
+                    onClick={addWorkExperience}
+                    className=" items-end"
+                  >
+                    <Plus size={24} />
+                  </button>
+                </div>
                 {workExperienceFields.map((field, index) => {
                   return (
                     <div
@@ -690,12 +723,8 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                     </div>
                   )
                 })}
-                <div className="w-full flex items-center justify-center mt-8 border-y p-10">
-                  <Button type="button" onClick={addWorkExperience}>
-                    <Plus size={24} /> Add Work Experience
-                  </Button>
-                </div>
               </div>
+              <Separator className="w-full mx-auto" />
 
               <div className="w-full flex flex-col gap-4">
                 <div className="flex items-center gap-2">
@@ -707,9 +736,8 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                   {skills.length > 0 && (
                     <>
                       {skills.map((skill) => (
-                        <Badge
-                          variant="outline"
-                          className=" flex items-center gap-1"
+                        <div
+                          className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
                           key={skill.id}
                           title={skill.type}
                         >
@@ -735,72 +763,126 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                               />
                             )}
                           />
-                          <span>{skill.name}</span>
-                        </Badge>
+                          <span className="text-sm">{skill.name}</span>
+                          <button
+                            type="button"
+                            onClick={() => deleteSkill(skill.id)}
+                            className=""
+                          >
+                            <MinusCircle className="text-red-500" size={20} />
+                          </button>
+                        </div>
                       ))}
                     </>
                   )}
-                  {/* 
-                  {skillsFields.map((field, index) => {
-                    return (
-                      <div key={field.id} className="flex flex-col w-full">
-                        <div className="flex w-full items-center gap-4">
-                          <div className="flex w-full max-w-xs flex-col space-y-1.5">
-                            <Label htmlFor="name">Name</Label>
-                            <Input
-                              {...register(`skills.${index}.name`)}
-                              id="name"
-                              placeholder="Name of Skill"
-                              className="bg-white"
-                            />
-                            {errors.skills?.[index]?.name && (
-                              <span
-                                className={cn(
-                                  "text-xs font-semibold text-red-600 -mt-2"
-                                )}
-                              >
-                                {errors.skills?.[index]?.name.message}
-                              </span>
+                </div>
+              </div>
+              <Separator className="w-full mx-auto" />
+
+              <div className="w-full flex flex-col gap-4">
+                <div className="flex items-center gap-1">
+                  <h3 className="font-bold text-xl">Education</h3>
+                  <button
+                    type="button"
+                    onClick={addEducation}
+                    className=" items-end"
+                  >
+                    <Plus size={24} />
+                  </button>
+                </div>
+                {educationFields.map((field, index) => {
+                  return (
+                    <div
+                      key={field.id}
+                      className="flex flex-col w-full space-y-4"
+                    >
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor="field">Field of Study</Label>
+                        <Input
+                          {...register(`education.${index}.field`)}
+                          id="field"
+                          placeholder="Title of your field of study"
+                          className="bg-white"
+                        />
+                        {errors?.education?.[index]?.field && (
+                          <span
+                            className={cn(
+                              "text-xs font-semibold text-red-600 -mt-2"
                             )}
-                          </div>
-                          <div className="flex flex-col space-y-1.5 w-full">
-                            <Label>Type</Label>
-                            <Controller
-                              control={control}
-                              name={`skills.${index}.type`}
-                              render={({ field }) => (
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue={field.value}
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Type of Skills" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    {Object.values($Enums.SkillType).map(
-                                      (type) => (
-                                        <SelectItem key={type} value={type}>
-                                          {type}
-                                        </SelectItem>
-                                      )
-                                    )}
-                                  </SelectContent>
-                                </Select>
-                              )}
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => deleteSkill(index)}
-                            className="flex justify-end items-end pt-4"
                           >
-                            <MinusCircle className="text-red-500" size={24} />
-                          </button>
+                            {errors?.education?.[index]?.field.message}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-col space-y-1.5">
+                        <Label htmlFor="school">School</Label>
+                        <Input
+                          {...register(`education.${index}.school`)}
+                          id="school"
+                          placeholder="Name of your school"
+                          className="bg-white"
+                        />
+                        {errors?.education?.[index]?.school && (
+                          <span
+                            className={cn(
+                              "text-xs font-semibold text-red-600 -mt-2"
+                            )}
+                          >
+                            {errors?.education?.[index]?.school.message}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 md:flex-row flex-col">
+                        <div className="flex flex-col space-y-1.5 w-full">
+                          <Label htmlFor="startDate">Start Date</Label>
+                          <Input
+                            type="date"
+                            {...register(`education.${index}.startDate`)}
+                            id="startDate"
+                            placeholder="The start date"
+                            className="bg-white"
+                          />
+                          {errors?.education?.[index]?.startDate && (
+                            <span
+                              className={cn(
+                                "text-xs font-semibold text-red-600 -mt-2"
+                              )}
+                            >
+                              {errors?.education?.[index]?.startDate.message}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-col space-y-1.5 w-full">
+                          <Label htmlFor="startDate">End Date</Label>
+                          <Input
+                            type="date"
+                            {...register(`education.${index}.endDate`)}
+                            id="startDate"
+                            placeholder="The start date"
+                            className="bg-white"
+                          />
+                          {errors?.education?.[index]?.endDate && (
+                            <span
+                              className={cn(
+                                "text-xs font-semibold text-red-600 -mt-2"
+                              )}
+                            >
+                              {errors?.education?.[index]?.endDate.message}
+                            </span>
+                          )}
                         </div>
                       </div>
-                    )
-                  })} */}
-                </div>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="ml-auto"
+                        onClick={() => deleteEducation(index)}
+                      >
+                        Delete Education
+                      </Button>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           </CardContent>
