@@ -329,33 +329,15 @@ export function CreateResumeForm({
                         htmlFor={address.id}
                       >
                         <Controller
-                          name="contact.addresses" // Nome do campo no formulário
+                          name="contact.address"
                           control={control}
                           render={({ field }) => (
                             <input
                               type="checkbox"
                               {...field}
                               value={address.id} // O valor do checkbox é o ID do endereço
-                              checked={
-                                Array.isArray(field.value) &&
-                                field.value.some(
-                                  (addr) => addr.id === address.id
-                                ) // Check if the address ID matches
-                              }
-                              onChange={(e) => {
-                                const selectedValues = field.value || []
-                                if (e.target.checked) {
-                                  // Add the entire address object if the checkbox is checked
-                                  field.onChange([...selectedValues, address])
-                                } else {
-                                  // Remove the address object if the checkbox is unchecked
-                                  field.onChange(
-                                    selectedValues.filter(
-                                      (addr) => addr.id !== address.id
-                                    )
-                                  )
-                                }
-                              }}
+                              checked={field.value === address.id}
+                              onChange={() => field.onChange(address.id)}
                             />
                           )}
                         />

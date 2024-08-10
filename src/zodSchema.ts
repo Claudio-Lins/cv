@@ -29,7 +29,7 @@ export const AddressSchema = z.object({
 
 export const ContactSchema = z.object({
   id: z.string().cuid().optional(),
-  addresses: z.array(AddressSchema),
+  address: z.string(),
   socialNetworks: z.array(SocialNetworkSchema).optional(),
 })
 
