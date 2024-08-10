@@ -25,22 +25,24 @@ model User {
 }
 
 model Resume {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   title      String
-  slug       String   @unique
+  slug       String    @unique
   active     Boolean
   firstName  String
   lastName   String
-  birthday   DateTime
+  email      String
+  phone      String
+  birthday   DateTime?
   pictureUrl String?
   about      String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  contact   Contact? @relation(fields: [contactId], references: [id])
-  contactId String?
+  contact   Contact @relation(fields: [contactId], references: [id])
+  contactId String  @unique
 
   skills          Skill[]
   education       Education[]
@@ -49,31 +51,27 @@ model Resume {
 }
 
 model Contact {
-  id    String @id @default(cuid())
-  email String
-  phone String
+  id String @id @default(cuid())
 
   createdAt DateTime @default(now())
 
-  address   Address? @relation(fields: [addressId], references: [id])
-  addressId String?
-
   socialNetworks SocialNetwork[]
-  resume         Resume[]
+  resume         Resume?
+  addresses      Address[]
 }
 
 model Address {
-  id      String  @id @default(cuid())
+  id      String @id @default(cuid())
+  title   String
   street  String
   city    String
   state   String
-  county  String?
   country String
   zip     String
 
   createdAt DateTime @default(now())
-
-  contact Contact[]
+  contactId String
+  contact   Contact  @relation(fields: [contactId], references: [id])
 }
 
 model SocialNetwork {
@@ -94,7 +92,7 @@ model Education {
   startDate DateTime
   endDate   DateTime?
 
-  resume Resume[]
+  resumes Resume[]
 }
 
 model Skill {
@@ -102,7 +100,7 @@ model Skill {
   name String
   type SkillType
 
-  resume Resume[]
+  resumes Resume[]
 }
 
 enum SkillType {
@@ -120,7 +118,7 @@ model WorkExperience {
   company        String
   location       String
   startDate      DateTime       @default(now())
-  endDate        DateTime?      @default(now())
+  endDate        DateTime?
   isCurrent      Boolean        @default(false)
   link           String?
   employmentType EmploymentType
@@ -143,10 +141,11 @@ enum WorkLocation {
 }
 
 model Reference {
-  id    String @id @default(cuid())
+  id    String  @id @default(cuid())
   name  String
   email String
   phone String
+  role  String?
 
-  resume Resume[]
+  resumes Resume[]
 }

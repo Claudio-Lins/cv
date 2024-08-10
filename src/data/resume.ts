@@ -15,7 +15,7 @@ export async function getResumeBySlug(slug: string, userId: string) {
 
       contact: {
         include: {
-          address: true,
+          addresses: true,
           socialNetworks: true,
         },
       },
@@ -36,7 +36,7 @@ export async function getAllResume(userId: string) {
       references: true,
       contact: {
         include: {
-          address: true,
+          addresses: true,
           socialNetworks: true,
         },
       },

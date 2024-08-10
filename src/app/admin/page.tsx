@@ -22,6 +22,20 @@ async function getSkills() {
   const skills = await prisma.skill.findMany()
   return skills
 }
+async function getReferences() {
+  const references = await prisma.reference.findMany()
+  return references
+}
+
+async function getContacts() {
+  const contacts = await prisma.contact.findMany()
+  return contacts
+}
+
+async function getAddresses() {
+  const addresses = await prisma.address.findMany()
+  return addresses
+}
 
 export default async function Admin({}: AdminProps) {
   const { getUser } = getKindeServerSession()
@@ -29,9 +43,12 @@ export default async function Admin({}: AdminProps) {
   const slugs = await getTitle(user?.id!)
   const allResumes = await getAllResume(user?.id!)
   const skills = await getSkills()
+  const references = await getReferences()
+  const contacts = await getContacts()
+  const addresses = await getAddresses()
   return (
     <div className={cn("w-full max-w-7xl mx-auto bg-white")}>
-      <Tabs defaultValue={allResumes[0].slug!} className="w-full">
+      <Tabs defaultValue={allResumes[0]?.slug!} className="w-full">
         <TabsList>
           {allResumes.map((resume) => (
             <TabsTrigger key={resume?.slug} value={resume?.slug!}>
@@ -43,7 +60,11 @@ export default async function Admin({}: AdminProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent key={"add"} value={"add"} className="p-4">
-          <CreateResumeForm skills={skills} />
+          <CreateResumeForm
+            skills={skills}
+            references={references}
+            addresses={addresses}
+          />
         </TabsContent>
         {allResumes.map((resume) => (
           <TabsContent key={resume.slug} value={resume.slug!} className="p-4">

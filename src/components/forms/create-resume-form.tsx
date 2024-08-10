@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { $Enums } from "@prisma/client"
@@ -27,24 +28,37 @@ import { ResumeSchema } from "@/zodSchema"
 import * as z from "zod"
 import { Switch } from "../ui/switch"
 import { Separator } from "../ui/separator"
-import { ResumeTypes, SkillTypes } from "../../../@types/resume-types"
+import {
+  ResumeTypes,
+  SkillTypes,
+  ReferenceTypes,
+  AddressTypes,
+} from "../../../@types/resume-types"
 import { cn } from "@/lib/utils"
 import { startTransition, useEffect, useState } from "react"
 import { Textarea } from "../ui/textarea"
-import { Check, MinusCircle, MinusIcon, Plus } from "lucide-react"
-import { Badge } from "../ui/badge"
+import { Check, MinusCircle, MinusIcon, Plus, X, XCircle } from "lucide-react"
 import { CreateSkillsForm } from "./create-skills-form"
 import { deleteSkill } from "@/actions/skill-action"
+import { CreateReferenceForm } from "./create-reference-form"
+import { deleteReference } from "@/actions/reference-action"
+import { CreateContactForm } from "./create-contact-form"
+import { CreateAddressForm } from "./create-address-form"
 
 interface CreateResumeFormProps {
   skills: SkillTypes[]
+  references: ReferenceTypes[]
+  addresses: AddressTypes[]
 }
 
 type ResumeFormData = z.infer<typeof ResumeSchema>
 
-export function CreateResumeForm({ skills }: CreateResumeFormProps) {
+export function CreateResumeForm({
+  skills,
+  references,
+  addresses,
+}: CreateResumeFormProps) {
   const [output, setOutput] = useState("")
-  const [stillWorking, setStillWorking] = useState(false)
   const {
     control,
     handleSubmit,
@@ -56,67 +70,43 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
   } = useForm<z.infer<typeof ResumeSchema>>({
     resolver: zodResolver(ResumeSchema),
     defaultValues: {
-      title: "",
-      slug: "",
-      active: true,
-      firstName: "",
-      lastName: "",
-      birthday: "",
-      pictureUrl: "https://github.com/shadcn.png",
-      about: "",
-      contact: {
-        email: "",
-        phone: "",
-        address: {
-          street: "",
-          city: "",
-          state: "",
-          country: "",
-          zip: "",
-        },
-        socialNetworks: [],
-      },
-      workExperiences: [],
-      education: [],
-      skills: [],
-      references: [],
+      title: "Resume Title",
+      slug: "resume_title",
+      active: false,
+      firstName: "Claudio",
+      lastName: "Lins",
+      email: "Lins@me.com",
+      phone: "12312312312",
+      about: "fasdfasfgasdgfsda fsdf sdf saf sd f sdf as",
     },
   })
-  const {
-    fields: socialNetworkFields,
-    append: appendSocialNetwork,
-    remove: removeSocialNetwork,
-  } = useFieldArray({
-    name: "contact.socialNetworks",
-    control,
-  })
 
-  const {
-    fields: workExperienceFields,
-    append: appendWorkExperience,
-    remove: removeWorkExperience,
-  } = useFieldArray({
-    name: "workExperiences",
-    control,
-  })
+  // const {
+  //   fields: socialNetworkFields,
+  //   append: appendSocialNetwork,
+  //   remove: removeSocialNetwork,
+  // } = useFieldArray({
+  //   name: "contact.socialNetworks",
+  //   control,
+  // })
 
-  const {
-    fields: educationFields,
-    append: appendEducation,
-    remove: removeEducation,
-  } = useFieldArray({
-    name: "education",
-    control,
-  })
+  // const {
+  //   fields: workExperienceFields,
+  //   append: appendWorkExperience,
+  //   remove: removeWorkExperience,
+  // } = useFieldArray({
+  //   name: "workExperiences",
+  //   control,
+  // })
 
-  const {
-    fields: referenceFields,
-    append: appendReference,
-    remove: removeReference,
-  } = useFieldArray({
-    name: "references",
-    control,
-  })
+  // const {
+  //   fields: educationFields,
+  //   append: appendEducation,
+  //   remove: removeEducation,
+  // } = useFieldArray({
+  //   name: "education",
+  //   control,
+  // })
 
   const title = watch("title")
 
@@ -127,82 +117,67 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
     }
   }, [title, setValue])
 
-  console.log(errors ? errors : "No errors")
+  console.log(errors)
 
   async function createResumeForm(values: ResumeFormData) {
     startTransition(async () => {
       try {
-        console.log("Submitting Product form...", values)
-
         setOutput(JSON.stringify(values, null, 2))
-        reset()
+        // reset()
       } catch (error) {
         console.error("Error creating product:", error)
       }
     })
   }
 
-  function addSocialNetwork() {
-    appendSocialNetwork({ name: "", url: "" })
-  }
-  function deleteSocialNetwork(index: number) {
-    removeSocialNetwork(index)
-  }
-  function addWorkExperience() {
-    appendWorkExperience({
-      title: "",
-      description: "",
-      company: "",
-      location: "",
-      startDate: "",
-      endDate: "" || null,
-      link: "",
-      employmentType: $Enums.EmploymentType.EMPLOYEE,
-      workLocation: $Enums.WorkLocation.REMOTE,
-      isCurrent: stillWorking ? true : false,
-    })
-  }
+  // function addSocialNetwork() {
+  //   appendSocialNetwork({ name: "", url: "" })
+  // }
+  // function deleteSocialNetwork(index: number) {
+  //   removeSocialNetwork(index)
+  // }
+  // function addWorkExperience() {
+  //   appendWorkExperience({
+  //     title: "",
+  //     description: "",
+  //     company: "",
+  //     location: "",
+  //     startDate: "",
+  //     endDate: "",
+  //     link: "",
+  //     employmentType: $Enums.EmploymentType.EMPLOYEE,
+  //     workLocation: $Enums.WorkLocation.REMOTE,
+  //   })
+  // }
 
-  function addEducation() {
-    appendEducation({
-      school: "",
-      field: "",
-      startDate: "",
-      endDate: "",
-    })
-  }
+  // function addEducation() {
+  //   appendEducation({
+  //     school: "",
+  //     field: "",
+  //     startDate: "",
+  //     endDate: "",
+  //   })
+  // }
 
-  function addReference() {
-    appendReference({
-      name: "",
-      email: "",
-      phone: "",
-    })
-  }
+  // const endDate = workExperienceFields.map((_, index) =>
+  //   watch(`workExperiences.${index}.endDate`)
+  // )
 
-  function deleteReference(index: number) {
-    removeReference(index)
-  }
+  // useEffect(() => {
+  //   if (endDate.some((date) => date)) {
+  //     setStillWorking(true)
+  //   } else {
+  //     setStillWorking(false)
+  //   }
+  // }, [endDate])
 
-  const endDate = workExperienceFields.map((_, index) =>
-    watch(`workExperiences.${index}.endDate`)
-  )
+  // function deleteWorkExperience(index: number) {
+  //   removeWorkExperience(index)
+  // }
 
-  useEffect(() => {
-    if (endDate.some((date) => date)) {
-      setStillWorking(true)
-    } else {
-      setStillWorking(false)
-    }
-  }, [endDate])
-
-  function deleteWorkExperience(index: number) {
-    removeWorkExperience(index)
-  }
-
-  function deleteEducation(index: number) {
-    removeEducation(index)
-  }
+  // function deleteEducation(index: number) {
+  //   removeEducation(index)
+  // }
 
   return (
     <>
@@ -272,6 +247,38 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                 </div>
               </div>
               <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  {...register("email")}
+                  id="email"
+                  placeholder="Your email"
+                  className="bg-white"
+                />
+                {errors?.email && (
+                  <span
+                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
+                  >
+                    {errors?.email.message}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  {...register("phone")}
+                  id="phone"
+                  placeholder="Your phone"
+                  className="bg-white"
+                />
+                {errors?.phone && (
+                  <span
+                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
+                  >
+                    {errors?.phone.message}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="birthday">Birthday</Label>
                 <Input
                   type="date"
@@ -306,126 +313,70 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
               </div>
 
               <div className="w-full flex flex-col gap-4">
-                <h3 className="font-bold text-xl">Contact</h3>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    {...register("contact.email")}
-                    id="email"
-                    placeholder="Your email"
-                    className="bg-white"
-                  />
-                  {errors.contact?.email && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.contact?.email.message}
-                    </span>
-                  )}
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-xl">Contact</h3>
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    {...register("contact.phone")}
-                    id="phone"
-                    placeholder="Your phone"
-                    className="bg-white"
-                  />
-                  {errors.contact?.phone && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.contact?.phone.message}
-                    </span>
-                  )}
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-lg">Address</h3>
+                  <CreateAddressForm />
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="street">Street</Label>
-                  <Input
-                    {...register("contact.address.street")}
-                    id="street"
-                    placeholder="Your street"
-                    className="bg-white"
-                  />
-                  {errors.contact?.address?.street && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.contact?.address?.street.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="flex w-full items-center gap-4 flex-col md:flex-row">
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    {...register("contact.address.city")}
-                    id="city"
-                    placeholder="City"
-                    className="bg-white"
-                  />
-                  {errors.contact?.address?.city && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.contact?.address?.city.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="state">State</Label>
-                  <Input
-                    {...register("contact.address.state")}
-                    id="state"
-                    placeholder="state"
-                    className="bg-white"
-                  />
-                  {errors.contact?.address?.state && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.contact?.address?.state.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="flex w-full items-center gap-4 flex-col md:flex-row">
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="country">Country</Label>
-                  <Input
-                    {...register("contact.address.country")}
-                    id="country"
-                    placeholder="Country"
-                    className="bg-white"
-                  />
-                  {errors.contact?.address?.country && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.contact?.address?.country.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="zip">Zip</Label>
-                  <Input
-                    {...register("contact.address.zip")}
-                    id="zip"
-                    placeholder="zip"
-                    className="bg-white"
-                  />
-                  {errors.contact?.address?.zip && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.contact?.address?.zip.message}
-                    </span>
-                  )}
+                <div className="flex flex-wrap gap-6">
+                  {addresses.length > 0 &&
+                    addresses.map((address) => (
+                      <label
+                        className="flex items-center gap-1 bg-white border rounded-md p-4 relative shadow-sm w-full max-w-xs cursor-pointer"
+                        key={address.id}
+                        htmlFor={address.id}
+                      >
+                        <Controller
+                          name="contact.addresses" // Nome do campo no formulário
+                          control={control}
+                          render={({ field }) => (
+                            <input
+                              type="checkbox"
+                              {...field}
+                              value={address.id} // O valor do checkbox é o ID do endereço
+                              checked={
+                                Array.isArray(field.value) &&
+                                field.value.some(
+                                  (addr) => addr.id === address.id
+                                ) // Check if the address ID matches
+                              }
+                              onChange={(e) => {
+                                const selectedValues = field.value || []
+                                if (e.target.checked) {
+                                  // Add the entire address object if the checkbox is checked
+                                  field.onChange([...selectedValues, address])
+                                } else {
+                                  // Remove the address object if the checkbox is unchecked
+                                  field.onChange(
+                                    selectedValues.filter(
+                                      (addr) => addr.id !== address.id
+                                    )
+                                  )
+                                }
+                              }}
+                            />
+                          )}
+                        />
+                        <div className="flex-1 flex-col flex border-l ml-2 pl-4">
+                          <strong className="text-lg">{address.title}</strong>
+                          <small className="text-zinc-600">
+                            {address.street}
+                          </small>
+                          <small className="text-zinc-600">
+                            {address.city}
+                          </small>
+                          <small className="text-zinc-600">
+                            {address.state}
+                          </small>
+                        </div>
+                      </label>
+                    ))}
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              {/* <div className="flex items-center gap-4">
                 <h3 className="font-bold text-base">Social Network</h3>
                 <button
                   type="button"
@@ -434,8 +385,8 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                 >
                   <Plus size={24} />
                 </button>
-              </div>
-              <div className="flex w-full items-center gap-4 flex-col ">
+              </div> */}
+              {/* <div className="flex w-full items-center gap-4 flex-col ">
                 {socialNetworkFields.map((field, index) => {
                   return (
                     <div key={field.id} className="flex flex-col w-full">
@@ -495,10 +446,10 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                     </div>
                   )
                 })}
-              </div>
+              </div> */}
               <Separator className="w-full mx-auto" />
 
-              <div className="w-full flex flex-col gap-4">
+              {/* <div className="w-full flex flex-col gap-4">
                 <div className="flex items-center gap-1">
                   <h3 className="font-bold text-xl">Work Experience</h3>
                   <button
@@ -723,7 +674,7 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                     </div>
                   )
                 })}
-              </div>
+              </div> */}
               <Separator className="w-full mx-auto" />
 
               <div className="w-full flex flex-col gap-4">
@@ -749,13 +700,15 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                                 type="checkbox"
                                 {...field}
                                 value={skill.id}
-                                checked={field.value.some(
-                                  (s) => s.id === skill.id
-                                )}
+                                checked={
+                                  Array.isArray(field.value)
+                                    ? field.value.some((s) => s.id === skill.id)
+                                    : false
+                                }
                                 onChange={(e) => {
                                   const newValue = e.target.checked
-                                    ? [...field.value, skill]
-                                    : field.value.filter(
+                                    ? [...(field.value || []), skill]
+                                    : (field.value || []).filter(
                                         (s) => s.id !== skill.id
                                       )
                                   field.onChange(newValue)
@@ -779,7 +732,7 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
               </div>
               <Separator className="w-full mx-auto" />
 
-              <div className="w-full flex flex-col gap-4">
+              {/* <div className="w-full flex flex-col gap-4">
                 <div className="flex items-center gap-1">
                   <h3 className="font-bold text-xl">Education</h3>
                   <button
@@ -883,7 +836,83 @@ export function CreateResumeForm({ skills }: CreateResumeFormProps) {
                     </div>
                   )
                 })}
+              </div> */}
+              <Separator className="w-full mx-auto" />
+
+              <div className="w-full flex flex-col gap-4">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-xl">References</h3>
+                  <CreateReferenceForm />
+                </div>
+
+                <div className="flex flex-wrap gap-6">
+                  {references.length > 0 && (
+                    <>
+                      {references.map((reference) => (
+                        <label
+                          className=" flex items-center gap-1 bg-white border rounded-md p-4 relative shadow-sm w-full max-w-xs cursor-pointer"
+                          key={reference.id}
+                          title={reference.name}
+                          htmlFor={reference.id}
+                        >
+                          <Controller
+                            name="references"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                id={reference.id}
+                                type="checkbox"
+                                {...field}
+                                value={reference.id}
+                                checked={
+                                  Array.isArray(field.value)
+                                    ? field.value.some(
+                                        (s) => s.id === reference.id
+                                      )
+                                    : false
+                                }
+                                onChange={(e) => {
+                                  const newValue = e.target.checked
+                                    ? [...(field.value || []), reference]
+                                    : (field.value || []).filter(
+                                        (s) => s.id !== reference.id
+                                      )
+                                  field.onChange(newValue)
+                                }}
+                              />
+                            )}
+                          />
+                          <div className="flex-1 flex-col flex border-l ml-2 pl-4">
+                            <strong className="text-lg">
+                              {reference.name}
+                            </strong>
+                            <small className="text-zinc-600">
+                              {reference.role}
+                            </small>
+                            <small className="text-zinc-600">
+                              {reference.email}
+                            </small>
+                            <small className="text-zinc-600">
+                              {reference.phone.replace(
+                                /(\d{3})(\d{3})(\d{3})(\d{3})/,
+                                "$1 $2 $3 $4"
+                              )}
+                            </small>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => deleteReference(reference.id)}
+                            className=" absolute -top-2.5 -right-2.5 bg-white"
+                          >
+                            <XCircle className="text-red-500" size={20} />
+                          </button>
+                        </label>
+                      ))}
+                    </>
+                  )}
+                </div>
               </div>
+              <Separator className="w-full mx-auto" />
             </div>
           </CardContent>
           <Separator className="w-[97%] mx-auto" />

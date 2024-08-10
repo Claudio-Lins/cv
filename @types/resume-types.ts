@@ -15,26 +15,24 @@ export interface ResumeTypes {
   contactId: string | null
   education: Education[]
   skills: SkillTypes[] | null
+  references: ReferenceTypes[] | null
   workExperiences: WorkExperience[]
-  contact: Contact
+  contact: ContactTypes[]
 }
 
-export interface Contact {
+export interface ContactTypes {
   id: string
-  email: string
-  phone: string
   createdAt: Date
-  addressId: string
-  address: Address
+  address: AddressTypes[]
   socialNetworks: SocialNetwork[]
 }
 
-export interface Address {
+export interface AddressTypes {
   id: string
+  title: string
   street: string
   city: string
   state: string
-  county: null
   country: string
   zip: string
   createdAt: Date
@@ -65,6 +63,14 @@ export interface SkillTypes {
 export enum Type {
   Hobbies = "HOBBIES",
   Technical = "TECHNICAL",
+}
+
+export interface ReferenceTypes {
+  id: string
+  name: string
+  role: string | null
+  email: string
+  phone: string
 }
 
 export interface WorkExperience {
