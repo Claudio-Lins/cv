@@ -25,29 +25,35 @@ model User {
 }
 
 model Resume {
-  id         String    @id @default(cuid())
+  id         String   @id @default(cuid())
   title      String
-  slug       String    @unique
+  slug       String   @unique
   active     Boolean
   firstName  String
   lastName   String
   email      String
   phone      String
-  birthday   DateTime?
+  birthday   String?
   pictureUrl String?
   about      String
-  createdAt  DateTime  @default(now())
+  street     String
+  city       String
+  state      String
+  country    String
+  zip        String
+  createdAt  DateTime @default(now())
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  contact   Contact @relation(fields: [contactId], references: [id])
-  contactId String  @unique
+  // contact   Contact @relation(fields: [contactId], references: [id])
+  // contactId String  @unique
 
-  skills          Skill[]
-  education       Education[]
-  references      Reference[]
-  workExperiences WorkExperience[]
+  // skills          Skill[]
+  // education       Education[]
+  // references      Reference[]
+  // workExperiences WorkExperience[]
+  contacts Contact[]
 }
 
 model Contact {
@@ -55,97 +61,97 @@ model Contact {
 
   createdAt DateTime @default(now())
 
-  socialNetworks SocialNetwork[]
-  resume         Resume?
-  addresses      Address[]
-}
-
-model Address {
-  id      String @id @default(cuid())
-  title   String
-  street  String
-  city    String
-  state   String
-  country String
-  zip     String
-
-  createdAt DateTime @default(now())
-  contactId String
-  contact   Contact  @relation(fields: [contactId], references: [id])
-}
-
-model SocialNetwork {
-  id   String @id @default(cuid())
-  name String
-  url  String
-
-  createdAt DateTime @default(now())
-
-  contact   Contact @relation(fields: [contactId], references: [id])
-  contactId String
-}
-
-model Education {
-  id        String    @id @default(cuid())
-  school    String
-  field     String
-  startDate DateTime
-  endDate   DateTime?
-
+  // socialNetworks SocialNetwork[]
   resumes Resume[]
+  // addresses      Address[]
 }
 
-model Skill {
-  id   String    @id @default(cuid())
-  name String
-  type SkillType
+// model Address {
+//   id      String @id @default(cuid())
+//   title   String
+//   street  String
+//   city    String
+//   state   String
+//   country String
+//   zip     String
 
-  resumes Resume[]
-}
+//   createdAt DateTime @default(now())
+//   contactId String?
+//   contact   Contact? @relation(fields: [contactId], references: [id])
+// }
 
-enum SkillType {
-  TECHNICAL
-  PERSONAL
-  SOFTSKILL
-  HOBBIES
-  HARDSKILL
-}
+// model SocialNetwork {
+//   id   String @id @default(cuid())
+//   name String
+//   url  String
 
-model WorkExperience {
-  id             String         @id @default(cuid())
-  title          String
-  description    String
-  company        String
-  location       String
-  startDate      DateTime       @default(now())
-  endDate        DateTime?
-  isCurrent      Boolean        @default(false)
-  link           String?
-  employmentType EmploymentType
-  workLocation   WorkLocation
+//   createdAt DateTime @default(now())
 
-  resume   Resume @relation(fields: [resumeId], references: [id])
-  resumeId String
-}
+//   contact   Contact? @relation(fields: [contactId], references: [id])
+//   contactId String?
+// }
 
-enum EmploymentType {
-  FREELANCER
-  VOLUNTEER
-  EMPLOYEE
-}
+// model Education {
+//   id        String    @id @default(cuid())
+//   school    String
+//   field     String
+//   startDate DateTime
+//   endDate   DateTime?
 
-enum WorkLocation {
-  REMOTE
-  ONSITE
-  HYBRID
-}
+//   resumes Resume[]
+// }
 
-model Reference {
-  id    String  @id @default(cuid())
-  name  String
-  email String
-  phone String
-  role  String?
+// model Skill {
+//   id   String    @id @default(cuid())
+//   name String
+//   type SkillType
 
-  resumes Resume[]
-}
+//   resumes Resume[]
+// }
+
+// enum SkillType {
+//   TECHNICAL
+//   PERSONAL
+//   SOFTSKILL
+//   HOBBIES
+//   HARDSKILL
+// }
+
+// model WorkExperience {
+//   id             String         @id @default(cuid())
+//   title          String
+//   description    String
+//   company        String
+//   location       String
+//   startDate      DateTime       @default(now())
+//   endDate        DateTime?
+//   isCurrent      Boolean        @default(false)
+//   link           String?
+//   employmentType EmploymentType
+//   workLocation   WorkLocation
+
+//   resume   Resume @relation(fields: [resumeId], references: [id])
+//   resumeId String
+// }
+
+// enum EmploymentType {
+//   FREELANCER
+//   VOLUNTEER
+//   EMPLOYEE
+// }
+
+// enum WorkLocation {
+//   REMOTE
+//   ONSITE
+//   HYBRID
+// }
+
+// model Reference {
+//   id    String  @id @default(cuid())
+//   name  String
+//   email String
+//   phone String
+//   role  String?
+
+//   resumes Resume[]
+// }

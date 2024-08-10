@@ -27,11 +27,9 @@ export async function createContact(values: z.infer<typeof ContactSchema>) {
 
   console.log(validateFields)
 
-  // await prisma.contact.create({
-  //   data: {
-  //     ...validateFields.data,
-  //   },
-  // })
+  await prisma.contact.create({
+    data: {},
+  })
 
   return revalidatePath("/admin")
 }

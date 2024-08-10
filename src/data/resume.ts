@@ -6,20 +6,20 @@ export async function getResumeBySlug(slug: string, userId: string) {
       userId,
       slug,
     },
-    include: {
-      education: true,
-      skills: true,
-      workExperiences: {
-        orderBy: { endDate: "desc" },
-      },
+    // include: {
+    //   education: true,
+    //   skills: true,
+    //   workExperiences: {
+    //     orderBy: { endDate: "desc" },
+    //   },
 
-      contact: {
-        include: {
-          addresses: true,
-          socialNetworks: true,
-        },
-      },
-    },
+    //   contact: {
+    //     include: {
+    //       addresses: true,
+    //       socialNetworks: true,
+    //     },
+    //   },
+    // },
   })
   return resume
 }
@@ -29,18 +29,18 @@ export async function getAllResume(userId: string) {
     where: {
       userId,
     },
-    include: {
-      education: true,
-      skills: true,
-      workExperiences: true,
-      references: true,
-      contact: {
-        include: {
-          addresses: true,
-          socialNetworks: true,
-        },
-      },
-    },
+    // include: {
+    //   education: true,
+    //   skills: true,
+    //   workExperiences: true,
+    //   references: true,
+    //   contact: {
+    //     include: {
+    //       addresses: true,
+    //       socialNetworks: true,
+    //     },
+    //   },
+    // },
   })
   return slugs
 }

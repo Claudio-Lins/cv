@@ -1,6 +1,6 @@
 "use client"
 import { cn } from "@/lib/utils"
-import { Plus, PlusCircle } from "lucide-react"
+import { Contact, Plus, PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray, Controller } from "react-hook-form"
-import { SkillSchema } from "@/zodSchema"
+import { SocialNetworkSchema } from "@/zodSchema"
 import * as z from "zod"
 // import { $Enums } from "@prisma/client"
 import {
@@ -28,14 +28,17 @@ import {
 } from "../ui/select"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { Separator } from "../ui/separator"
-import { createSkill } from "@/actions/skill-action"
+import { createSocialNetwork } from "@/actions/social-network-action"
 import { startTransition, useState } from "react"
+import { ContactTypes } from "../../../@types/resume-types"
 
-interface CreateSkillsFormProps {}
+interface CreateSkillsFormProps {
+  contacts: ContactTypes
+}
 
-type SkillsFormData = z.infer<typeof SkillSchema>
+type SocialNetworkFormData = z.infer<typeof SocialNetworkSchema>
 
-export function CreateSkillsForm({}: CreateSkillsFormProps) {
+export function CreateSocialNetworkForm({ contacts }: CreateSkillsFormProps) {
   const [isOpen, setIsOpen] = useState(false)
   const {
     control,
@@ -45,16 +48,22 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<z.infer<typeof SkillSchema>>({
-    resolver: zodResolver(SkillSchema),
+  } = useForm<z.infer<typeof SocialNetworkSchema>>({
+    resolver: zodResolver(SocialNetworkSchema),
+    defaultValues: {
+      name: "",
+      url: "",
+      contactId: contacts.id,
+    },
   })
 
-  async function onSubmit(values: SkillsFormData) {
+  async function onSubmit(values: SocialNetworkFormData) {
     console.log(errors ? errors : "No errors")
     startTransition(async () => {
       try {
-        await createSkill(values)
-        reset()
+        console.log("Submitting Social form...", values)
+        // await createSocialNetwork(values)
+        // reset()
         setIsOpen(false)
       } catch (error) {
         console.error("Error creating product:", error)
@@ -71,22 +80,20 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Create Skills</DialogTitle>
+          <DialogTitle>Create Social Network</DialogTitle>
           <DialogDescription>
             Make changes to your profile here.
           </DialogDescription>
         </DialogHeader>
-        {/* <form
-          // onSubmit={handleSubmit(onSubmit)}
-          className="grid gap-4 py-4 w-full"
-        >
-          <div className="flex w-full flex-col space-y-1.5">
+        <form className="grid gap-4 py-4 w-full">
+          <input type="hidden" {...register("contactId")} />
+          <div className="flex w-full max-w-xs flex-col space-y-1.5">
             <Label htmlFor="name">Name</Label>
             <Input
               {...register("name")}
-              id="name"
-              placeholder="Name of Skill"
-              className="bg-white w-full"
+              id="country"
+              placeholder="Github"
+              className="bg-white"
             />
             {errors.name && (
               <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
@@ -94,37 +101,27 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
               </span>
             )}
           </div>
-          <div className="flex flex-col space-y-1.5 w-full">
-            <Label>Type</Label>
-            <Controller
-              control={control}
-              name={"type"}
-              render={({ field }) => (
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Type of Skills" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.values($Enums.SkillType).map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {type}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+          <div className="flex w-full flex-col space-y-1.5">
+            <Label htmlFor="url">Url</Label>
+            <Input
+              {...register(`url`)}
+              id="url"
+              placeholder="Url of your social network"
+              className="bg-white"
             />
+            {errors?.url && (
+              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
+                {errors?.url.message}
+              </span>
+            )}
           </div>
-        </form> */}
+        </form>
         <Separator />
         <DialogFooter className="">
           <div className="w-full flex items-center justify-between">
             <DialogClose>Cancel</DialogClose>
             <Button onClick={handleSubmit(onSubmit)} type="button">
-              Create Skill
+              Create Social Network
             </Button>
           </div>
         </DialogFooter>

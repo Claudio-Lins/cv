@@ -19,7 +19,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { $Enums } from "@prisma/client"
+// import { $Enums } from "@prisma/client"
 import SelectReact from "react-select"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -33,6 +33,8 @@ import {
   SkillTypes,
   ReferenceTypes,
   AddressTypes,
+  SocialNetworkTypes,
+  ContactTypes,
 } from "../../../@types/resume-types"
 import { cn } from "@/lib/utils"
 import { startTransition, useEffect, useState } from "react"
@@ -44,20 +46,25 @@ import { CreateReferenceForm } from "./create-reference-form"
 import { deleteReference } from "@/actions/reference-action"
 import { CreateContactForm } from "./create-contact-form"
 import { CreateAddressForm } from "./create-address-form"
+import { CreateSocialNetworkForm } from "./create-social-form"
+import { createResume } from "@/actions/resume-action"
 
 interface CreateResumeFormProps {
-  skills: SkillTypes[]
-  references: ReferenceTypes[]
-  addresses: AddressTypes[]
+  // skills: SkillTypes[]
+  // references: ReferenceTypes[]
+  // addresses: AddressTypes[]
+  // socialNetworks: SocialNetworkTypes[]
+  // contacts: ContactTypes
 }
 
 type ResumeFormData = z.infer<typeof ResumeSchema>
 
-export function CreateResumeForm({
-  skills,
-  references,
-  addresses,
-}: CreateResumeFormProps) {
+export function CreateResumeForm({}: // skills,
+// references,
+// addresses,
+// socialNetworks,
+// contacts,
+CreateResumeFormProps) {
   const [output, setOutput] = useState("")
   const {
     control,
@@ -122,6 +129,7 @@ export function CreateResumeForm({
   async function createResumeForm(values: ResumeFormData) {
     startTransition(async () => {
       try {
+        await createResume(values)
         setOutput(JSON.stringify(values, null, 2))
         // reset()
       } catch (error) {
@@ -311,124 +319,139 @@ export function CreateResumeForm({
                   </span>
                 )}
               </div>
-
-              <div className="w-full flex flex-col gap-4">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-xl">Contact</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-lg">Address</h3>
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="street">Street</Label>
+                <Input
+                  {...register("street")}
+                  id="street"
+                  placeholder="Your street"
+                  className="bg-white"
+                />
+                {errors?.street && (
+                  <span
+                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
+                  >
+                    {errors?.street.message}
+                  </span>
+                )}
+              </div>
+              <div className="flex w-full items-center gap-4 flex-col md:flex-row">
+                <div className="flex w-full flex-col space-y-1.5">
+                  <Label htmlFor="city">City</Label>
+                  <Input
+                    {...register("city")}
+                    id="city"
+                    placeholder="City"
+                    className="bg-white"
+                  />
+                  {errors?.city && (
+                    <span
+                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
+                    >
+                      {errors?.city.message}
+                    </span>
+                  )}
                 </div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-lg">Address</h3>
-                  <CreateAddressForm />
+                <div className="flex w-full flex-col space-y-1.5">
+                  <Label htmlFor="state">State</Label>
+                  <Input
+                    {...register("state")}
+                    id="state"
+                    placeholder="state"
+                    className="bg-white"
+                  />
+                  {errors?.state && (
+                    <span
+                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
+                    >
+                      {errors?.state.message}
+                    </span>
+                  )}
                 </div>
-                <div className="flex flex-wrap gap-6">
-                  {addresses.length > 0 &&
-                    addresses.map((address) => (
-                      <label
-                        className="flex items-center gap-1 bg-white border rounded-md p-4 relative shadow-sm w-full max-w-xs cursor-pointer"
-                        key={address.id}
-                        htmlFor={address.id}
-                      >
-                        <Controller
-                          name="contact.address"
-                          control={control}
-                          render={({ field }) => (
-                            <input
-                              type="checkbox"
-                              {...field}
-                              value={address.id} // O valor do checkbox é o ID do endereço
-                              checked={field.value === address.id}
-                              onChange={() => field.onChange(address.id)}
-                            />
-                          )}
-                        />
-                        <div className="flex-1 flex-col flex border-l ml-2 pl-4">
-                          <strong className="text-lg">{address.title}</strong>
-                          <small className="text-zinc-600">
-                            {address.street}
-                          </small>
-                          <small className="text-zinc-600">
-                            {address.city}
-                          </small>
-                          <small className="text-zinc-600">
-                            {address.state}
-                          </small>
-                        </div>
-                      </label>
-                    ))}
+              </div>
+              <div className="flex w-full items-center gap-4 flex-col md:flex-row">
+                <div className="flex w-full flex-col space-y-1.5">
+                  <Label htmlFor="country">Country</Label>
+                  <Input
+                    {...register("country")}
+                    id="country"
+                    placeholder="Country"
+                    className="bg-white"
+                  />
+                  {errors?.country && (
+                    <span
+                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
+                    >
+                      {errors?.country.message}
+                    </span>
+                  )}
+                </div>
+                <div className="flex w-full flex-col space-y-1.5">
+                  <Label htmlFor="zip">Zip</Label>
+                  <Input
+                    {...register("zip")}
+                    id="zip"
+                    placeholder="zip"
+                    className="bg-white"
+                  />
+                  {errors?.zip && (
+                    <span
+                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
+                    >
+                      {errors?.zip.message}
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {/* <div className="flex items-center gap-4">
-                <h3 className="font-bold text-base">Social Network</h3>
-                <button
-                  type="button"
-                  onClick={addSocialNetwork}
-                  className=" items-end"
-                >
-                  <Plus size={24} />
-                </button>
-              </div> */}
-              {/* <div className="flex w-full items-center gap-4 flex-col ">
-                {socialNetworkFields.map((field, index) => {
-                  return (
-                    <div key={field.id} className="flex flex-col w-full">
-                      <div className="flex w-full items-center gap-4">
-                        <div className="flex w-full max-w-xs flex-col space-y-1.5">
-                          <Label htmlFor="name">Name</Label>
-                          <Input
-                            {...register(
-                              `contact.socialNetworks.${index}.name`
-                            )}
-                            id="country"
-                            placeholder="Github"
-                            className="bg-white"
-                          />
-                          {errors.contact?.socialNetworks?.[index]?.name && (
-                            <span
-                              className={cn(
-                                "text-xs font-semibold text-red-600 -mt-2"
-                              )}
-                            >
-                              {
-                                errors.contact?.socialNetworks?.[index]?.name
-                                  .message
-                              }
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex w-full flex-col space-y-1.5">
-                          <Label htmlFor="url">Url</Label>
-                          <Input
-                            {...register(`contact.socialNetworks.${index}.url`)}
-                            id="url"
-                            placeholder="Url of your social network"
-                            className="bg-white"
-                          />
-                          {errors.contact?.socialNetworks?.[index]?.url && (
-                            <span
-                              className={cn(
-                                "text-xs font-semibold text-red-600 -mt-2"
-                              )}
-                            >
-                              {
-                                errors.contact?.socialNetworks?.[index]?.url
-                                  .message
-                              }
-                            </span>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => deleteSocialNetwork(index)}
-                          className="flex justify-end items-end pt-4"
+              {/* <div className="flex items-center gap-2">
+                <h3 className="font-bold text-lg">Social Network</h3>
+                <CreateSocialNetworkForm contacts={contacts} />
+                <div className="flex flex-wrap gap-4">
+                  {contacts.socialNetworks?.length > 0 && (
+                    <>
+                      {contacts.socialNetworks.map((socialNetwork) => (
+                        <div
+                          className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
+                          key={socialNetwork.id}
                         >
-                          <MinusCircle className="text-red-500" size={24} />
-                        </button>
-                      </div>
-                    </div>
-                  )
-                })}
+                          <Controller
+                            name="contact.socialNetworks"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="checkbox"
+                                {...field}
+                                value={socialNetwork.id}
+                                checked={
+                                  Array.isArray(field.value)
+                                    ? field.value.some(
+                                        (s) => s.id === socialNetwork.id
+                                      )
+                                    : false
+                                }
+                                onChange={(e) => {
+                                  const newValue = e.target.checked
+                                    ? [...(field.value || []), socialNetwork]
+                                    : (field.value || []).filter(
+                                        (s) => s.id !== socialNetwork.id
+                                      )
+                                  field.onChange(newValue)
+                                }}
+                              />
+                            )}
+                          />
+                          <span className="text-sm">{socialNetwork.name}</span>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
               </div> */}
+
               <Separator className="w-full mx-auto" />
 
               {/* <div className="w-full flex flex-col gap-4">
@@ -665,7 +688,7 @@ export function CreateResumeForm({
                   <CreateSkillsForm />
                 </div>
 
-                <div className="flex flex-wrap gap-4">
+                {/* <div className="flex flex-wrap gap-4">
                   {skills.length > 0 && (
                     <>
                       {skills.map((skill) => (
@@ -710,7 +733,7 @@ export function CreateResumeForm({
                       ))}
                     </>
                   )}
-                </div>
+                </div> */}
               </div>
               <Separator className="w-full mx-auto" />
 
@@ -827,7 +850,7 @@ export function CreateResumeForm({
                   <CreateReferenceForm />
                 </div>
 
-                <div className="flex flex-wrap gap-6">
+                {/* <div className="flex flex-wrap gap-6">
                   {references.length > 0 && (
                     <>
                       {references.map((reference) => (
@@ -892,7 +915,7 @@ export function CreateResumeForm({
                       ))}
                     </>
                   )}
-                </div>
+                </div> */}
               </div>
               <Separator className="w-full mx-auto" />
             </div>

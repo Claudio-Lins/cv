@@ -4,7 +4,7 @@ export const SocialNetworkSchema = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
   url: z.string().url(),
-  contactId: z.string().cuid().optional(),
+  contactId: z.string(),
 })
 
 const phoneRegex = /^\+?[1-9]\d{1,14}$/
@@ -18,7 +18,6 @@ const phoneSchema = z
   })
 
 export const AddressSchema = z.object({
-  id: z.string().cuid().optional(),
   title: z.string().min(1, "Title is required"),
   street: z.string().min(1, "Street is required"),
   city: z.string().min(1, "City is required"),
@@ -28,9 +27,9 @@ export const AddressSchema = z.object({
 })
 
 export const ContactSchema = z.object({
-  id: z.string().cuid().optional(),
-  address: z.string(),
-  socialNetworks: z.array(SocialNetworkSchema).optional(),
+  id: z.string(),
+  // address: z.string().optional(),
+  // socialNetworks: z.array(SocialNetworkSchema).optional(),
 })
 
 export const EducationSchema = z.object({
@@ -80,6 +79,7 @@ export const ReferenceSchema = z.object({
 
 export const ResumeSchema = z.object({
   id: z.string().cuid().optional(),
+  userId: z.string().cuid().optional(),
   title: z.string().min(3, { message: "Title must be at least 3 characters" }),
   slug: z.string(),
   active: z.boolean().optional(),
@@ -91,15 +91,19 @@ export const ResumeSchema = z.object({
     .min(3, { message: "Last name must be at least 3 characters" }),
   email: z.string().email(),
   phone: phoneSchema,
-  birthday: z.string().optional(),
+  birthday: z.string().date(),
+
   pictureUrl: z.string().url().optional(),
   about: z
     .string()
     .min(10, { message: "About must be at least 10 characters" }),
-  userId: z.string().cuid().optional(),
-  contact: ContactSchema,
+  street: z.string().min(1, "Street is required"),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  country: z.string().min(1, "Country is required"),
+  zip: z.string().min(1, "Zip is required"),
   // education: z.array(EducationSchema),
   // workExperiences: z.array(WorkExperienceSchema),
-  skills: z.array(SkillSchema),
-  references: z.array(ReferenceSchema),
+  // skills: z.array(SkillSchema),
+  // references: z.array(ReferenceSchema),
 })

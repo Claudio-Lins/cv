@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import * as z from "zod"
 
-export async function updateResume(values: z.infer<typeof ResumeSchema>) {
+export async function createResume(values: z.infer<typeof ResumeSchema>) {
   const validateFields = ResumeSchema.safeParse(values)
   if (!validateFields.success) {
     throw new Error("Invalid category data")
@@ -27,19 +27,8 @@ export async function updateResume(values: z.infer<typeof ResumeSchema>) {
     data: {
       ...validateFields.data,
       userId: user.id,
-      contactId: values.contactId,
-      education: {
-        create: values.education,
-      },
-      workExperiences: {
-        create: values.workExperiences,
-      },
-      skills: {
-        create: values.skills,
-      },
-      references: {
-        create: values.references,
-      },
+      slug: validateFields.data.title.toLowerCase().replace(/\s+/g, "-"),
+      active: true,
     },
   })
 
