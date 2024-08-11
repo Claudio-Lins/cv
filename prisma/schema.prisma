@@ -46,14 +46,7 @@ model Resume {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  // contact   Contact @relation(fields: [contactId], references: [id])
-  // contactId String  @unique
-
-  // skills          Skill[]
-  // education       Education[]
-  // references      Reference[]
-  // workExperiences WorkExperience[]
-  contacts Contact[]
+  socialNetworks SocialNetwork[]
 }
 
 model Contact {
@@ -62,7 +55,7 @@ model Contact {
   createdAt DateTime @default(now())
 
   // socialNetworks SocialNetwork[]
-  resumes Resume[]
+
   // addresses      Address[]
 }
 
@@ -80,16 +73,15 @@ model Contact {
 //   contact   Contact? @relation(fields: [contactId], references: [id])
 // }
 
-// model SocialNetwork {
-//   id   String @id @default(cuid())
-//   name String
-//   url  String
+model SocialNetwork {
+  id   String @id @default(cuid())
+  name String
+  url  String
 
-//   createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
 
-//   contact   Contact? @relation(fields: [contactId], references: [id])
-//   contactId String?
-// }
+  resumes Resume[]
+}
 
 // model Education {
 //   id        String    @id @default(cuid())

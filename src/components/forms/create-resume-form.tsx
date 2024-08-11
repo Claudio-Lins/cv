@@ -53,18 +53,13 @@ interface CreateResumeFormProps {
   // skills: SkillTypes[]
   // references: ReferenceTypes[]
   // addresses: AddressTypes[]
-  // socialNetworks: SocialNetworkTypes[]
+  socialNetworks: SocialNetworkTypes[]
   // contacts: ContactTypes
 }
 
 type ResumeFormData = z.infer<typeof ResumeSchema>
 
-export function CreateResumeForm({}: // skills,
-// references,
-// addresses,
-// socialNetworks,
-// contacts,
-CreateResumeFormProps) {
+export function CreateResumeForm({ socialNetworks }: CreateResumeFormProps) {
   const [output, setOutput] = useState("")
   const {
     control,
@@ -129,6 +124,7 @@ CreateResumeFormProps) {
   async function createResumeForm(values: ResumeFormData) {
     startTransition(async () => {
       try {
+        console.log("Submitting Resume form...", values)
         await createResume(values)
         setOutput(JSON.stringify(values, null, 2))
         // reset()
@@ -407,19 +403,19 @@ CreateResumeFormProps) {
                 </div>
               </div>
 
-              {/* <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <h3 className="font-bold text-lg">Social Network</h3>
-                <CreateSocialNetworkForm contacts={contacts} />
+                {/* <CreateSocialNetworkForm contacts={contacts} /> */}
                 <div className="flex flex-wrap gap-4">
-                  {contacts.socialNetworks?.length > 0 && (
+                  {socialNetworks?.length > 0 && (
                     <>
-                      {contacts.socialNetworks.map((socialNetwork) => (
+                      {socialNetworks.map((socialNetwork) => (
                         <div
                           className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
                           key={socialNetwork.id}
                         >
                           <Controller
-                            name="contact.socialNetworks"
+                            name="socialNetworks"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -450,7 +446,7 @@ CreateResumeFormProps) {
                     </>
                   )}
                 </div>
-              </div> */}
+              </div>
 
               <Separator className="w-full mx-auto" />
 

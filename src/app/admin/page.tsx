@@ -44,10 +44,10 @@ async function getTitle(userId: string) {
 //   return addresses
 // }
 
-// async function getSocialNetworks() {
-//   const socialNetworks = await prisma.socialNetwork.findMany()
-//   return socialNetworks
-// }
+async function getSocialNetworks() {
+  const socialNetworks = await prisma.socialNetwork.findMany()
+  return socialNetworks
+}
 
 export default async function Admin({}: AdminProps) {
   const { getUser } = getKindeServerSession()
@@ -58,17 +58,7 @@ export default async function Admin({}: AdminProps) {
   // const references = await getReferences()
   // const contacts = await getContacts()
   // const addresses = await getAddresses()
-  // const socialNetworks = await getSocialNetworks()
-
-  async function handleCreateContact() {
-    startTransition(async () => {
-      try {
-        // reset()
-      } catch (error) {
-        console.error("Error creating product:", error)
-      }
-    })
-  }
+  const socialNetworks = await getSocialNetworks()
 
   return (
     <div className={cn("w-full max-w-7xl mx-auto bg-white")}>
@@ -84,7 +74,7 @@ export default async function Admin({}: AdminProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent key={"add"} value={"add"} className="p-4">
-          <CreateResumeForm />
+          <CreateResumeForm socialNetworks={socialNetworks} />
         </TabsContent>
         {allResumes.map((resume) => (
           <TabsContent key={resume.slug} value={resume.slug!} className="p-4">

@@ -4,7 +4,6 @@ export const SocialNetworkSchema = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
   url: z.string().url(),
-  contactId: z.string(),
 })
 
 const phoneRegex = /^\+?[1-9]\d{1,14}$/
@@ -102,6 +101,8 @@ export const ResumeSchema = z.object({
   state: z.string().min(1, "State is required"),
   country: z.string().min(1, "Country is required"),
   zip: z.string().min(1, "Zip is required"),
+  socialNetworks: z.array(SocialNetworkSchema),
+
   // education: z.array(EducationSchema),
   // workExperiences: z.array(WorkExperienceSchema),
   // skills: z.array(SkillSchema),
