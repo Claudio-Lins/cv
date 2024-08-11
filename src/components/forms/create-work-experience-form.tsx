@@ -130,7 +130,21 @@ export function CreateWorkExperienceForm() {
               <Controller
                 control={control}
                 name="startDate"
-                render={({ field }) => <DatePicker field={field} />}
+                render={({ field }) => (
+                  <Input
+                    type="date"
+                    {...field}
+                    id="startDate"
+                    placeholder="The start date"
+                    className="bg-white"
+                    value={
+                      field.value
+                        ? new Date(field.value).toISOString().substring(0, 10)
+                        : ""
+                    }
+                    onChange={(e) => field.onChange(new Date(e.target.value))}
+                  />
+                )}
               />
               {errors?.startDate && (
                 <span
@@ -145,8 +159,27 @@ export function CreateWorkExperienceForm() {
               <Controller
                 control={control}
                 name="endDate"
-                render={({ field }) => <DatePicker field={field} />}
+                render={({ field }) => (
+                  <Input
+                    type="date"
+                    {...field}
+                    id="endDate"
+                    placeholder="The end date"
+                    className="bg-white"
+                    value={
+                      field.value
+                        ? new Date(field.value).toISOString().substring(0, 10)
+                        : ""
+                    }
+                    onChange={(e) => field.onChange(new Date(e.target.value))}
+                  />
+                )}
               />
+              {/* <Controller
+                control={control}
+                name="endDate"
+                render={({ field }) => <DatePicker field={field} />}
+              /> */}
               {errors?.endDate && (
                 <span
                   className={cn("text-xs font-semibold text-red-600 -mt-2")}

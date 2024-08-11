@@ -185,10 +185,29 @@ export function CreateResumeForm({
               />
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="birthday">Birthday</Label>
-                <Controller
+                {/* <Controller
                   control={control}
                   name="birthday"
                   render={({ field }) => <DatePicker field={field} />}
+                /> */}
+                <Controller
+                  control={control}
+                  name="birthday"
+                  render={({ field }) => (
+                    <Input
+                      type="date"
+                      {...field}
+                      id="birthday"
+                      placeholder="The start date"
+                      className="bg-white"
+                      value={
+                        field.value
+                          ? new Date(field.value).toISOString().substring(0, 10)
+                          : ""
+                      }
+                      onChange={(e) => field.onChange(new Date(e.target.value))}
+                    />
+                  )}
                 />
                 {errors.birthday && (
                   <span
