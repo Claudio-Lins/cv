@@ -9,21 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-// import { $Enums } from "@prisma/client"
-import SelectReact from "react-select"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray, Controller } from "react-hook-form"
+import { useForm, useFieldArray, Controller, FieldError } from "react-hook-form"
 import { ResumeSchema } from "@/zodSchema"
 import * as z from "zod"
 import { Switch } from "../ui/switch"
@@ -52,6 +43,7 @@ import { createResume } from "@/actions/resume-action"
 import { deleteSocialNetwork } from "@/actions/social-network-action"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { DatePicker } from "./date-picker"
+import { MyInput } from "./my-input"
 
 interface CreateResumeFormProps {
   // skills: SkillTypes[]
@@ -124,15 +116,6 @@ export function CreateResumeForm({
     })
   }
 
-  // function addEducation() {
-  //   appendEducation({
-  //     school: "",
-  //     field: "",
-  //     startDate: "",
-  //     endDate: "",
-  //   })
-  // }
-
   // const endDate = workExperienceFields.map((_, index) =>
   //   watch(`workExperiences.${index}.endDate`)
   // )
@@ -145,14 +128,6 @@ export function CreateResumeForm({
   //   }
   // }, [endDate])
 
-  // function deleteWorkExperience(index: number) {
-  //   removeWorkExperience(index)
-  // }
-
-  // function deleteEducation(index: number) {
-  //   removeEducation(index)
-  // }
-
   return (
     <>
       <form onSubmit={handleSubmit(createResumeForm)} className={cn("")}>
@@ -162,96 +137,52 @@ export function CreateResumeForm({
             <CardDescription className="">
               <span className="">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                accusantium quidem harum odio id veritatis adipisci deleniti
-                vero aliquam dolore voluptatum ipsam.
+                accusantium quidem harum.
               </span>
             </CardDescription>
           </CardHeader>
           <Separator className="w-[97%] mx-auto" />
           <CardContent>
             <div className="grid w-full items-center gap-4 mt-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  {...register("title")}
-                  id="title"
-                  placeholder="Title of your resume"
-                  className="bg-white"
-                />
-                {errors.title && (
-                  <span
-                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                  >
-                    {errors.title.message}
-                  </span>
-                )}
-              </div>
+              <MyInput
+                register={register}
+                errors={errors as Record<string, FieldError>}
+                registerValue="title"
+                label="Title"
+                placeholder="Resume Title"
+              />
               <div className="flex w-full items-center gap-4 flex-col md:flex-row">
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="firstName">First name</Label>
-                  <Input
-                    {...register("firstName")}
-                    id="firstName"
-                    placeholder="First Name"
-                    className="bg-white"
-                  />
-                  {errors.firstName && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors.firstName.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="lastName">Last name</Label>
-                  <Input
-                    {...register("lastName")}
-                    id="lastName"
-                    placeholder="Last name"
-                    className="bg-white"
-                  />
-                  {errors.lastName && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors.lastName.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  {...register("email")}
-                  id="email"
-                  placeholder="Your email"
-                  className="bg-white"
+                <MyInput
+                  register={register}
+                  errors={errors as Record<string, FieldError>}
+                  registerValue="firstName"
+                  label="First Name"
+                  placeholder="First Name"
                 />
-                {errors?.email && (
-                  <span
-                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                  >
-                    {errors?.email.message}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  {...register("phone")}
-                  id="phone"
-                  placeholder="Your phone"
-                  className="bg-white"
+                <MyInput
+                  register={register}
+                  errors={errors as Record<string, FieldError>}
+                  registerValue="lastName"
+                  label="Last Name"
+                  placeholder="Last Name"
                 />
-                {errors?.phone && (
-                  <span
-                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                  >
-                    {errors?.phone.message}
-                  </span>
-                )}
               </div>
+              <MyInput
+                register={register}
+                errors={errors as Record<string, FieldError>}
+                registerValue="email"
+                label="Email"
+                placeholder="Your email"
+              />
+              <MyInput
+                register={register}
+                errors={errors as Record<string, FieldError>}
+                registerValue="phone"
+                label="Phone"
+                placeholder="Your phone"
+                inputMode="tel"
+                type="tel"
+              />
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="birthday">Birthday</Label>
                 <Controller
@@ -286,89 +217,44 @@ export function CreateResumeForm({
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-lg">Address</h3>
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="street">Street</Label>
-                <Input
-                  {...register("street")}
-                  id="street"
-                  placeholder="Your street"
-                  className="bg-white"
+              <MyInput
+                register={register}
+                errors={errors as Record<string, FieldError>}
+                registerValue="street"
+                label="Street"
+                placeholder="Street"
+              />
+              <div className="flex w-full items-center gap-4 flex-col md:flex-row">
+                <MyInput
+                  register={register}
+                  errors={errors as Record<string, FieldError>}
+                  registerValue="city"
+                  label="City"
+                  placeholder="City"
                 />
-                {errors?.street && (
-                  <span
-                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                  >
-                    {errors?.street.message}
-                  </span>
-                )}
+                <MyInput
+                  register={register}
+                  errors={errors as Record<string, FieldError>}
+                  registerValue="state"
+                  label="State"
+                  placeholder="State"
+                />
               </div>
               <div className="flex w-full items-center gap-4 flex-col md:flex-row">
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    {...register("city")}
-                    id="city"
-                    placeholder="City"
-                    className="bg-white"
-                  />
-                  {errors?.city && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.city.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="state">State</Label>
-                  <Input
-                    {...register("state")}
-                    id="state"
-                    placeholder="state"
-                    className="bg-white"
-                  />
-                  {errors?.state && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.state.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="flex w-full items-center gap-4 flex-col md:flex-row">
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="country">Country</Label>
-                  <Input
-                    {...register("country")}
-                    id="country"
-                    placeholder="Country"
-                    className="bg-white"
-                  />
-                  {errors?.country && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.country.message}
-                    </span>
-                  )}
-                </div>
-                <div className="flex w-full flex-col space-y-1.5">
-                  <Label htmlFor="zip">Zip</Label>
-                  <Input
-                    {...register("zip")}
-                    id="zip"
-                    placeholder="zip"
-                    className="bg-white"
-                  />
-                  {errors?.zip && (
-                    <span
-                      className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                    >
-                      {errors?.zip.message}
-                    </span>
-                  )}
-                </div>
+                <MyInput
+                  register={register}
+                  errors={errors as Record<string, FieldError>}
+                  registerValue="country"
+                  label="Country"
+                  placeholder="Country"
+                />
+                <MyInput
+                  register={register}
+                  errors={errors as Record<string, FieldError>}
+                  registerValue="zip"
+                  label="Zip"
+                  placeholder="Zip"
+                />
               </div>
 
               <div className="flex items-center gap-2">

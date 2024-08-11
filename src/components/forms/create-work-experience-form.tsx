@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray, Controller } from "react-hook-form"
+import { useForm, useFieldArray, Controller, FieldError } from "react-hook-form"
 import { WorkExperienceSchema } from "@/zodSchema"
 import * as z from "zod"
 import {
@@ -32,6 +32,7 @@ import { Textarea } from "../ui/textarea"
 import { $Enums } from "@prisma/client"
 import { createWorkExperience } from "@/actions/work-experience-action"
 import { DatePicker } from "./date-picker"
+import { MyInput } from "./my-input"
 
 type WorkExperienceFormData = z.infer<typeof WorkExperienceSchema>
 
@@ -77,28 +78,22 @@ export function CreateWorkExperienceForm() {
           <Plus size={24} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[625px]">
+      <DialogContent className="max-w-none sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle>Create Work Experience</DialogTitle>
           <DialogDescription>
             Make changes to your profile here.
           </DialogDescription>
         </DialogHeader>
-        <form className="grid gap-4 py-4 ">
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              {...register("title")}
-              id="title"
-              placeholder="Title of your position"
-              className="bg-white"
-            />
-            {errors?.title && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.title.message}
-              </span>
-            )}
-          </div>
+        <form className="flex flex-col gap-4 py-4">
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="title"
+            label="Title"
+            placeholder="Title"
+          />
+
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="description">Description</Label>
             <Textarea
@@ -113,34 +108,22 @@ export function CreateWorkExperienceForm() {
               </span>
             )}
           </div>
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="company">Company</Label>
-            <Input
-              {...register(`company`)}
-              id="company"
-              placeholder="Name of your company"
-              className="bg-white"
-            />
-            {errors?.company && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.company.message}
-              </span>
-            )}
-          </div>
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="location">Location</Label>
-            <Input
-              {...register(`location`)}
-              id="location"
-              placeholder="Ex.: London Area, United Kingdom"
-              className="bg-white"
-            />
-            {errors?.location && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.location.message}
-              </span>
-            )}
-          </div>
+
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="company"
+            label="Company"
+            placeholder="Company"
+          />
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="location"
+            label="Location"
+            placeholder="Location"
+          />
+
           <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex flex-col space-y-1.5 w-full">
               <Label htmlFor="startDate">Start Date</Label>
@@ -221,20 +204,13 @@ export function CreateWorkExperienceForm() {
               />
             </div>
           </div>
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="link">Site</Label>
-            <Input
-              {...register(`link`)}
-              id="link"
-              placeholder="Ex.: www.companyName.com"
-              className="bg-white"
-            />
-            {errors?.link && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.link.message}
-              </span>
-            )}
-          </div>
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="link"
+            label="Website"
+            placeholder="Website"
+          />
           {/* <Button
             variant="destructive"
             size="sm"
