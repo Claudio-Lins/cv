@@ -20,10 +20,10 @@ async function getTitle(userId: string) {
   return slugs
 }
 
-// async function getSkills() {
-//   const skills = await prisma.skill.findMany()
-//   return skills
-// }
+async function getSkills() {
+  const skills = await prisma.skill.findMany()
+  return skills
+}
 // async function getReferences() {
 //   const references = await prisma.reference.findMany()
 //   return references
@@ -63,7 +63,7 @@ export default async function Admin({}: AdminProps) {
   const user = await getUser()
   const slugs = await getTitle(user?.id!)
   const allResumes = await getAllResume(user?.id!)
-  // const skills = await getSkills()
+  const skills = await getSkills()
   // const references = await getReferences()
   // const contacts = await getContacts()
   // const addresses = await getAddresses()
@@ -87,6 +87,7 @@ export default async function Admin({}: AdminProps) {
           <CreateResumeForm
             socialNetworks={socialNetworks}
             workExperiences={workExperiences}
+            skills={skills}
           />
         </TabsContent>
         {allResumes.map((resume) => (

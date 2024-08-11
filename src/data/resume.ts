@@ -9,7 +9,11 @@ export async function getResumeBySlug(slug: string, userId: string) {
 
     include: {
       socialNetworks: true,
-      workExperiences: true,
+      workExperiences: {
+        orderBy: {
+          startDate: "desc",
+        },
+      },
     },
   })
   return resume

@@ -18,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray, Controller } from "react-hook-form"
 import { SkillSchema } from "@/zodSchema"
 import * as z from "zod"
-// import { $Enums } from "@prisma/client"
+import { $Enums } from "@prisma/client"
 import {
   Select,
   SelectContent,
@@ -76,7 +76,7 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
             Make changes to your profile here.
           </DialogDescription>
         </DialogHeader>
-        {/* <form
+        <form
           // onSubmit={handleSubmit(onSubmit)}
           className="grid gap-4 py-4 w-full"
         >
@@ -118,7 +118,7 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
               )}
             />
           </div>
-        </form> */}
+        </form>
         <Separator />
         <DialogFooter className="">
           <div className="w-full flex items-center justify-between">

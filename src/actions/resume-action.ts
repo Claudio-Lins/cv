@@ -43,6 +43,11 @@ export async function createResume(values: z.infer<typeof ResumeSchema>) {
           id: workExperience.id,
         })),
       },
+      skills: {
+        connect: values.skills.map((skill) => ({
+          id: skill.id,
+        })),
+      },
     },
   })
 

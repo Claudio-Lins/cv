@@ -33,6 +33,7 @@ import { $Enums } from "@prisma/client"
 import { createWorkExperience } from "@/actions/work-experience-action"
 import { DatePicker } from "./date-picker"
 import { MyInput } from "./my-input"
+import { MyTextArea } from "./my-textArea"
 
 type WorkExperienceFormData = z.infer<typeof WorkExperienceSchema>
 
@@ -94,20 +95,13 @@ export function CreateWorkExperienceForm() {
             placeholder="Title"
           />
 
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              {...register(`description`)}
-              id="description"
-              placeholder="Description of your position"
-              className="bg-white"
-            />
-            {errors?.description && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.description.message}
-              </span>
-            )}
-          </div>
+          <MyTextArea
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="description"
+            label="Description"
+            placeholder="Description of the work experience"
+          />
 
           <MyInput
             register={register}

@@ -44,9 +44,11 @@ import { deleteSocialNetwork } from "@/actions/social-network-action"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { DatePicker } from "./date-picker"
 import { MyInput } from "./my-input"
+import { MyTextArea } from "./my-textArea"
+import { calculateDuration } from "@/utils/caculate-duration-data"
 
 interface CreateResumeFormProps {
-  // skills: SkillTypes[]
+  skills: SkillTypes[]
   // references: ReferenceTypes[]
   // addresses: AddressTypes[]
   socialNetworks: SocialNetworkTypes[]
@@ -59,6 +61,7 @@ type ResumeFormData = z.infer<typeof ResumeSchema>
 export function CreateResumeForm({
   socialNetworks,
   workExperiences,
+  skills,
 }: CreateResumeFormProps) {
   const [output, setOutput] = useState("")
   const {
@@ -71,21 +74,21 @@ export function CreateResumeForm({
     formState: { errors },
   } = useForm<z.infer<typeof ResumeSchema>>({
     resolver: zodResolver(ResumeSchema),
-    defaultValues: {
-      title: "Resume Title",
-      slug: "resume_title",
-      active: false,
-      firstName: "Claudio",
-      lastName: "Lins",
-      email: "Lins@me.com",
-      phone: "12312312312",
-      about: "fasdfasfgasdgfsda fsdf sdf saf sd f sdf as",
-      street: "123 Main St",
-      city: "Anytown",
-      state: "Anytown",
-      country: "USA",
-      zip: "12345",
-    },
+    // defaultValues: {
+    //   title: "Resume Title",
+    //   slug: "resume_title",
+    //   active: false,
+    //   firstName: "Claudio",
+    //   lastName: "Lins",
+    //   email: "Lins@me.com",
+    //   phone: "12312312312",
+    //   about: "fasdfasfgasdgfsda fsdf sdf saf sd f sdf as",
+    //   street: "123 Main St",
+    //   city: "Anytown",
+    //   state: "Anytown",
+    //   country: "USA",
+    //   zip: "12345",
+    // },
   })
 
   const title = watch("title")
@@ -217,22 +220,13 @@ export function CreateResumeForm({
                   </span>
                 )}
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="about">About</Label>
-                <Textarea
-                  {...register("about")}
-                  id="about"
-                  placeholder="About"
-                  className="bg-white"
-                />
-                {errors.about && (
-                  <span
-                    className={cn("text-xs font-semibold text-red-600 -mt-2")}
-                  >
-                    {errors.about.message}
-                  </span>
-                )}
-              </div>
+              <MyTextArea
+                register={register}
+                errors={errors as Record<string, FieldError>}
+                registerValue="about"
+                label="About"
+                placeholder="About"
+              />
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-lg">Address</h3>
               </div>
@@ -342,9 +336,9 @@ export function CreateResumeForm({
                     <>
                       {workExperiences.map((workExperience) => {
                         return (
-                          <div
+                          <label
                             key={workExperience.id}
-                            className="w-full flex flex-col md:flex-row items-center justify-between gap-4"
+                            className="p-4 border rounded-md border-dashed shadow-sm flex items-center gap-3 cursor-pointer"
                           >
                             <Controller
                               name="workExperiences"
@@ -372,10 +366,38 @@ export function CreateResumeForm({
                                 />
                               )}
                             />
-                            <span className="text-sm">
-                              {workExperience?.title}
-                            </span>
-                          </div>
+                            <div className="flex flex-col">
+                              <strong className="text-base">
+                                {workExperience?.title}
+                              </strong>
+                              <span className="text-sm">
+                                {workExperience?.company}
+                              </span>
+                              <span className="text-sm capitalize">
+                                {workExperience?.employmentType.toLowerCase()}
+                              </span>
+                              <span className="text-sm">
+                                {new Intl.DateTimeFormat("en-US", {
+                                  year: "numeric",
+                                  month: "short",
+                                } as any).format(
+                                  workExperience?.startDate
+                                )}{" "}
+                                -{" "}
+                                {workExperience?.endDate &&
+                                  new Intl.DateTimeFormat("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                  } as any).format(workExperience?.endDate)}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {calculateDuration(
+                                  workExperience?.startDate?.toISOString(),
+                                  workExperience?.endDate?.toISOString()
+                                )}
+                              </span>
+                            </div>
+                          </label>
                         )
                       })}
                     </>
@@ -390,7 +412,7 @@ export function CreateResumeForm({
                   <CreateSkillsForm />
                 </div>
 
-                {/* <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-4">
                   {skills.length > 0 && (
                     <>
                       {skills.map((skill) => (
@@ -435,7 +457,7 @@ export function CreateResumeForm({
                       ))}
                     </>
                   )}
-                </div> */}
+                </div>
               </div>
               <Separator className="w-full mx-auto" />
 

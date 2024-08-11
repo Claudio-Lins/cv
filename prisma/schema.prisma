@@ -48,6 +48,7 @@ model Resume {
 
   socialNetworks  SocialNetwork[]
   workExperiences WorkExperience[]
+  skills          Skill[]
 }
 
 model SocialNetwork {
@@ -70,21 +71,21 @@ model SocialNetwork {
 //   resumes Resume[]
 // }
 
-// model Skill {
-//   id   String    @id @default(cuid())
-//   name String
-//   type SkillType
+model Skill {
+  id   String    @id @default(cuid())
+  name String
+  type SkillType
 
-//   resumes Resume[]
-// }
+  resumes Resume[]
+}
 
-// enum SkillType {
-//   TECHNICAL
-//   PERSONAL
-//   SOFTSKILL
-//   HOBBIES
-//   HARDSKILL
-// }
+enum SkillType {
+  TECHNICAL
+  PERSONAL
+  SOFTSKILL
+  HOBBIES
+  HARDSKILL
+}
 
 model WorkExperience {
   id             String         @id @default(cuid())
