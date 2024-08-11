@@ -25,15 +25,15 @@ model User {
 }
 
 model Resume {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   title      String
-  slug       String   @unique
+  slug       String    @unique
   active     Boolean
   firstName  String
   lastName   String
   email      String
   phone      String
-  birthday   String?
+  birthday   DateTime?
   pictureUrl String?
   about      String
   street     String
@@ -41,37 +41,14 @@ model Resume {
   state      String
   country    String
   zip        String
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  socialNetworks SocialNetwork[]
+  socialNetworks  SocialNetwork[]
+  workExperiences WorkExperience[]
 }
-
-model Contact {
-  id String @id @default(cuid())
-
-  createdAt DateTime @default(now())
-
-  // socialNetworks SocialNetwork[]
-
-  // addresses      Address[]
-}
-
-// model Address {
-//   id      String @id @default(cuid())
-//   title   String
-//   street  String
-//   city    String
-//   state   String
-//   country String
-//   zip     String
-
-//   createdAt DateTime @default(now())
-//   contactId String?
-//   contact   Contact? @relation(fields: [contactId], references: [id])
-// }
 
 model SocialNetwork {
   id   String @id @default(cuid())
@@ -109,34 +86,33 @@ model SocialNetwork {
 //   HARDSKILL
 // }
 
-// model WorkExperience {
-//   id             String         @id @default(cuid())
-//   title          String
-//   description    String
-//   company        String
-//   location       String
-//   startDate      DateTime       @default(now())
-//   endDate        DateTime?
-//   isCurrent      Boolean        @default(false)
-//   link           String?
-//   employmentType EmploymentType
-//   workLocation   WorkLocation
+model WorkExperience {
+  id             String         @id @default(cuid())
+  title          String
+  description    String
+  company        String
+  location       String
+  startDate      DateTime
+  endDate        DateTime?
+  isCurrent      Boolean        @default(false)
+  link           String?
+  employmentType EmploymentType
+  workLocation   WorkLocation
 
-//   resume   Resume @relation(fields: [resumeId], references: [id])
-//   resumeId String
-// }
+  resumes Resume[]
+}
 
-// enum EmploymentType {
-//   FREELANCER
-//   VOLUNTEER
-//   EMPLOYEE
-// }
+enum EmploymentType {
+  FREELANCER
+  VOLUNTEER
+  EMPLOYEE
+}
 
-// enum WorkLocation {
-//   REMOTE
-//   ONSITE
-//   HYBRID
-// }
+enum WorkLocation {
+  REMOTE
+  ONSITE
+  HYBRID
+}
 
 // model Reference {
 //   id    String  @id @default(cuid())

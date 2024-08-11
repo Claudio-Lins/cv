@@ -29,10 +29,18 @@ export async function createResume(values: z.infer<typeof ResumeSchema>) {
       userId: user.id,
       slug: validateFields.data.title.toLowerCase().replace(/\s+/g, "-"),
       active: true,
+      birthday: validateFields.data.birthday
+        ? validateFields.data.birthday.toISOString()
+        : null,
       pictureUrl: "/default-picture.jpg",
       socialNetworks: {
         connect: values.socialNetworks.map((socialNetwork) => ({
           id: socialNetwork.id,
+        })),
+      },
+      workExperiences: {
+        connect: values.workExperiences.map((workExperience) => ({
+          id: workExperience.id,
         })),
       },
     },

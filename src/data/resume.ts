@@ -9,6 +9,7 @@ export async function getResumeBySlug(slug: string, userId: string) {
 
     include: {
       socialNetworks: true,
+      workExperiences: true,
     },
   })
   return resume
@@ -22,6 +23,7 @@ export async function getAllResume(userId: string) {
 
     include: {
       socialNetworks: true,
+      workExperiences: true,
     },
   })
   return slugs

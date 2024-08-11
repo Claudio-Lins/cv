@@ -82,8 +82,8 @@ export interface WorkExperienceTypes {
   startDate: Date
   endDate: Date | null
   isCurrent: boolean
-  link: null | string
+  link: string | null
   employmentType: string
   workLocation: string
-  resumeId: string
+  // resumeId: string
 }

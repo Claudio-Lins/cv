@@ -49,6 +49,15 @@ async function getSocialNetworks() {
   return socialNetworks
 }
 
+async function getWorkExperiences() {
+  const workExperiences = await prisma.workExperience.findMany()
+  return workExperiences.map((experience) => ({
+    ...experience,
+    startDate: new Date(experience.startDate),
+    endDate: experience.endDate ? new Date(experience.endDate) : null,
+  }))
+}
+
 export default async function Admin({}: AdminProps) {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
@@ -59,6 +68,7 @@ export default async function Admin({}: AdminProps) {
   // const contacts = await getContacts()
   // const addresses = await getAddresses()
   const socialNetworks = await getSocialNetworks()
+  const workExperiences = await getWorkExperiences()
 
   return (
     <div className={cn("w-full max-w-7xl mx-auto bg-white")}>
@@ -74,7 +84,10 @@ export default async function Admin({}: AdminProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent key={"add"} value={"add"} className="p-4">
-          <CreateResumeForm socialNetworks={socialNetworks} />
+          <CreateResumeForm
+            socialNetworks={socialNetworks}
+            workExperiences={workExperiences}
+          />
         </TabsContent>
         {allResumes.map((resume) => (
           <TabsContent key={resume.slug} value={resume.slug!} className="p-4">
