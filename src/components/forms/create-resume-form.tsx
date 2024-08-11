@@ -48,6 +48,7 @@ import { CreateContactForm } from "./create-contact-form"
 import { CreateAddressForm } from "./create-address-form"
 import { CreateSocialNetworkForm } from "./create-social-form"
 import { createResume } from "@/actions/resume-action"
+import { deleteSocialNetwork } from "@/actions/social-network-action"
 
 interface CreateResumeFormProps {
   // skills: SkillTypes[]
@@ -133,26 +134,6 @@ export function CreateResumeForm({ socialNetworks }: CreateResumeFormProps) {
       }
     })
   }
-
-  // function addSocialNetwork() {
-  //   appendSocialNetwork({ name: "", url: "" })
-  // }
-  // function deleteSocialNetwork(index: number) {
-  //   removeSocialNetwork(index)
-  // }
-  // function addWorkExperience() {
-  //   appendWorkExperience({
-  //     title: "",
-  //     description: "",
-  //     company: "",
-  //     location: "",
-  //     startDate: "",
-  //     endDate: "",
-  //     link: "",
-  //     employmentType: $Enums.EmploymentType.EMPLOYEE,
-  //     workLocation: $Enums.WorkLocation.REMOTE,
-  //   })
-  // }
 
   // function addEducation() {
   //   appendEducation({
@@ -404,8 +385,8 @@ export function CreateResumeForm({ socialNetworks }: CreateResumeFormProps) {
               </div>
 
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-lg">Social Network</h3>
-                {/* <CreateSocialNetworkForm contacts={contacts} /> */}
+                <h3 className="font-bold">Social Network</h3>
+                <CreateSocialNetworkForm />
                 <div className="flex flex-wrap gap-4">
                   {socialNetworks?.length > 0 && (
                     <>
@@ -441,6 +422,15 @@ export function CreateResumeForm({ socialNetworks }: CreateResumeFormProps) {
                             )}
                           />
                           <span className="text-sm">{socialNetwork.name}</span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              deleteSocialNetwork(socialNetwork.id)
+                            }
+                            className=""
+                          >
+                            <XCircle className="text-red-500" size={18} />
+                          </button>
                         </div>
                       ))}
                     </>

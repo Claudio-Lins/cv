@@ -29,28 +29,21 @@ export async function createSocialNetwork(
 
   console.log(validateFields)
 
-  // await prisma.socialNetwork.create({
-  //   data: {
-  //     name: validateFields.data.name,
-  //     url: validateFields.data.url,
-  //     contactId: validateFields.data.contactId,
-  //     contact: {
-  //       connect: {
-  //         id: validateFields.data.contactId,
-  //       },
-  //     },
-  //   },
-  // })
+  await prisma.socialNetwork.create({
+    data: {
+      ...validateFields.data,
+    },
+  })
 
   return revalidatePath("/admin")
 }
 
-// export async function deleteSocialNetwork(id: string) {
-//   await prisma.socialNetwork.delete({
-//     where: {
-//       id,
-//     },
-//   })
+export async function deleteSocialNetwork(id: string) {
+  await prisma.socialNetwork.delete({
+    where: {
+      id,
+    },
+  })
 
-//   return revalidatePath("/admin")
-// }
+  return revalidatePath("/admin")
+}

@@ -32,13 +32,11 @@ import { createSocialNetwork } from "@/actions/social-network-action"
 import { startTransition, useState } from "react"
 import { ContactTypes } from "../../../@types/resume-types"
 
-interface CreateSkillsFormProps {
-  contacts: ContactTypes
-}
+interface CreateSkillsFormProps {}
 
 type SocialNetworkFormData = z.infer<typeof SocialNetworkSchema>
 
-export function CreateSocialNetworkForm({ contacts }: CreateSkillsFormProps) {
+export function CreateSocialNetworkForm({}: CreateSkillsFormProps) {
   const [isOpen, setIsOpen] = useState(false)
   const {
     control,
@@ -50,11 +48,6 @@ export function CreateSocialNetworkForm({ contacts }: CreateSkillsFormProps) {
     formState: { errors },
   } = useForm<z.infer<typeof SocialNetworkSchema>>({
     resolver: zodResolver(SocialNetworkSchema),
-    defaultValues: {
-      name: "",
-      url: "",
-      contactId: contacts.id,
-    },
   })
 
   async function onSubmit(values: SocialNetworkFormData) {
@@ -62,7 +55,7 @@ export function CreateSocialNetworkForm({ contacts }: CreateSkillsFormProps) {
     startTransition(async () => {
       try {
         console.log("Submitting Social form...", values)
-        // await createSocialNetwork(values)
+        await createSocialNetwork(values)
         // reset()
         setIsOpen(false)
       } catch (error) {
@@ -86,7 +79,6 @@ export function CreateSocialNetworkForm({ contacts }: CreateSkillsFormProps) {
           </DialogDescription>
         </DialogHeader>
         <form className="grid gap-4 py-4 w-full">
-          <input type="hidden" {...register("contactId")} />
           <div className="flex w-full max-w-xs flex-col space-y-1.5">
             <Label htmlFor="name">Name</Label>
             <Input
