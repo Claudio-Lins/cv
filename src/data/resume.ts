@@ -11,6 +11,7 @@ export async function getResumeBySlug(slug: string, userId: string) {
       socialNetworks: true,
       educations: true,
       skills: true,
+      references: true,
       workExperiences: {
         orderBy: {
           startDate: "desc",

@@ -17,10 +17,14 @@ export function About({ content }: AboutProps) {
   }, [content])
 
   return (
-    <div className={cn("pl-10 font-light text-zinc-600 tracking-widest")}>
-      <h3 className="uppercase">About</h3>
-      <ScrollArea className="mt-6 pb-2 h-48 text-zinc-600 text-sm leading-relaxed text-balance whitespace-nowrap print:leading-snug print:h-full">
-        <div className="flex flex-col gap-2">
+    <div
+      className={cn(
+        " font-light text-zinc-600 tracking-widest print:border-b print:pb-4"
+      )}
+    >
+      <h3 className="uppercase print:text-sm">About</h3>
+      <ScrollArea className="mt-6 pb-2 h-48 text-zinc-600 text-sm leading-relaxed text-balance whitespace-nowrap print:leading-relaxed print:h-full">
+        <div className="flex flex-col gap-2 print:text-xs">
           <p
             className=""
             dangerouslySetInnerHTML={{ __html: sanitizedContent }}

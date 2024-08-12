@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils"
 import { ProfileAvatar } from "@/components/profile-avatar"
 
 import { getAllResume } from "@/data/resume"
-import { UserTypes } from "../../@types/user-types"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -37,7 +36,7 @@ export default async function RootLayout({
       <body
         className={cn(
           inter.className,
-          "bg-purple-100 w-full flex items-center flex-col min-h-dvh mt-20"
+          "bg-purple-100 w-full flex items-center flex-col min-h-dvh mt-20 print:mt-0"
         )}
       >
         <ProfileAvatar slug={slug} />

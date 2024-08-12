@@ -23,12 +23,17 @@ export function Skills({ skills }: SkillsProps) {
 
   return (
     <div className={cn("font-light text-zinc-600 tracking-widest")}>
-      <h3 className="uppercase font-light">Skills</h3>
-      <div className="flex flex-col mt-6">
+      <h3 className="uppercase font-light print:text-xs">Skills</h3>
+      <div className="flex flex-col mt-4">
         {Object.entries(groupedSkills).map(([type, skills]) => (
-          <div key={type} className="flex flex-col text-zinc-600 text-sm mt-4">
-            <h4 className="uppercase font-semibold">{type}</h4>
-            <div className="flex flex-col gap-y-2 mt-2">
+          <div
+            key={type}
+            className="flex flex-col text-zinc-600 text-sm mt-4 print:text-xs"
+          >
+            <h4 className="uppercase font-semibold mb-2 print:text-xs">
+              {type}
+            </h4>
+            <div className="flex flex-col gap-y-2">
               {skills.map((skill) => (
                 <span key={skill.id}>{skill.name}</span>
               ))}

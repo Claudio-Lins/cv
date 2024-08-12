@@ -24,72 +24,64 @@ interface WorkExperienceProps {
 }
 
 export function WorkExperience({ workExperiences }: WorkExperienceProps) {
-  // function calculateDuration(startDate: string, endDate?: string): string {
-  //   const start = dayjs(startDate)
-  //   const end = endDate ? dayjs(endDate) : dayjs()
-
-  //   const diffYears = end.diff(start, "year")
-  //   start.add(diffYears, "year")
-
-  //   const diffMonths = end.diff(start, "month")
-
-  //   return `${diffYears} years, ${diffMonths} months`
-  // }
-
   return (
-    <div className={cn(" pl-10 font-light text-zinc-600 tracking-widest ")}>
-      <h3 className=" uppercase">Work Experience</h3>
+    <div
+      className={cn(
+        "font-light text-zinc-600 tracking-widest  print:border-b print:pb-4"
+      )}
+    >
+      <h3 className=" uppercase print:text-sm">Work Experience</h3>
       {workExperiences?.map((workExperience) => (
         <div
-          className="flex flex-col mt-6 space-y-4 w-full relative"
+          className="flex flex-col mt-6 space-y-4 w-full relative print:mt-0"
           key={workExperience.id}
         >
-          <div className=" absolute size-3 bg-zinc-400 rounded-full top-5 -left-[101px]" />
-          <div className="flex flex-col text-zinc-600 text-sm">
-            <h4 className=" uppercase font-semibold">
+          <div className="absolute size-3 bg-zinc-400 rounded-full top-5 -left-[60px]" />
+          <div className="flex flex-col text-zinc-600 text-sm print:text-xs">
+            <h4 className=" uppercase font-semibold print:text-xs">
               {workExperience?.title}
             </h4>
-            <small>
+            <small className="print:text-xs">
               {workExperience?.company} · {workExperience?.employmentType}
             </small>
             <div className="flex items-center justify-start gap-2">
               {workExperience?.isCurrent ? (
                 <>
-                  <small>
+                  <small className="print:text-xs">
                     {new Intl.DateTimeFormat("pt-PT", {
                       year: "numeric",
                       month: "short",
                     }).format(new Date(workExperience.startDate))}
                   </small>
-                  <small className="text-gray-400">|</small>
-                  <small className="text-gray-400 text-xs">
+                  <small className="text-gray-400 print:text-xs">|</small>
+                  <small className="text-gray-400 text-xs print:text-xs">
                     {calculateDuration(
                       workExperience.startDate?.toISOString(),
                       workExperience.endDate?.toISOString()
                     )}
                   </small>
-                  <small className="text-gray-400">|</small>
-                  <small className="text-gray-400">Current</small>
+                  <small className="text-gray-400 print:text-xs">|</small>
+                  <small className="text-gray-400 print:text-xs">Current</small>
                 </>
               ) : (
                 <>
-                  <small>
+                  <small className="print:text-xs">
                     {new Intl.DateTimeFormat("pt-PT", {
                       year: "numeric",
                       month: "short",
                     }).format(new Date(workExperience.startDate))}
                   </small>
-                  <small className="text-gray-400">|</small>
-                  <small>
+                  <small className="text-gray-400 print:text-xs">|</small>
+                  <small className="print:text-xs">
                     {workExperience.endDate &&
                       new Intl.DateTimeFormat("pt-PT", {
                         year: "numeric",
                         month: "short",
                       }).format(new Date(workExperience.endDate))}
                   </small>
-                  <small className="text-gray-400">|</small>
-                  <small className="text-gray-400">
-                    <small className="text-gray-400 text-xs">
+                  <small className="text-gray-400 print:text-xs">|</small>
+                  <small className="text-gray-400 print:text-xs">
+                    <small className="text-gray-400 text-xs print:text-xs">
                       {calculateDuration(
                         workExperience.startDate?.toISOString(),
                         workExperience.endDate?.toISOString()
@@ -104,7 +96,7 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
             </small>
           </div>
 
-          <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:leading-snug">
+          <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:leading-snug print:text-xs">
             {workExperience?.description}
           </p>
           {workExperience?.link && (
@@ -115,7 +107,7 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <small className="">Visit Website</small>
+                <small className="print:text-xs">Visit Website</small>
               </a>
             </div>
           )}

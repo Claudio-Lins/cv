@@ -14,6 +14,7 @@ import { redirect } from "next/navigation"
 
 import { getAllResume, getResumeBySlug } from "@/data/resume"
 import { Footer } from "@/components/footer"
+import { References } from "@/components/references"
 
 interface ResumeProps {
   params: {
@@ -31,9 +32,9 @@ export default async function Resume({ params }: ResumeProps) {
     return redirect("/admin")
   }
   return (
-    <div className={cn("w-full max-w-7xl pb-20")}>
+    <div className={cn("w-full max-w-7xl bg-white pb-20 print:mt-0")}>
       <NavResume slugs={slugs} />
-      <div className="flex  w-full max-w-7xl flex-col bg-white rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0">
+      <div className="flex w-full max-w-7xl flex-col rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0">
         <Name
           picture={false}
           pictureUrl={resume?.pictureUrl || ""}
@@ -43,8 +44,8 @@ export default async function Resume({ params }: ResumeProps) {
         <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
         <Role role={resume?.title || ""} />
         <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
-        <div className="grid sm:grid-cols-12 w-full my-14">
-          <div className="sm:col-span-3 w-full flex flex-col space-y-10">
+        <div className="grid sm:grid-cols-12 w-full my-8">
+          <div className="sm:col-span-3 w-full flex flex-col space-y-10 print:border-r print:border-0.5">
             {resume?.street && (
               <>
                 <Contacts
@@ -57,7 +58,7 @@ export default async function Resume({ params }: ResumeProps) {
                   zip={resume?.zip || ""}
                   socialNetworks={resume?.socialNetworks || []}
                 />
-                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
+                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10 print:hidden" />
               </>
             )}
             {resume?.educations.length > 0 && (
@@ -82,15 +83,30 @@ export default async function Resume({ params }: ResumeProps) {
             )}
           </div>
           <div className="w-px sm:col-span-1 min-h-full bg-gradient-to-b from-zinc-300/10 via-zinc-500 to-zinc-400/10 mx-10" />
-          <div className="sm:col-span-8 w-full flex flex-col space-y-10">
-            <About content={resume?.about || ""} />
-            <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
-            <WorkExperience workExperiences={resume?.workExperiences} />
+          <div className="sm:col-span-8 w-full flex flex-col space-y-10 print:space-y-4 print:-ml-10">
+            {resume?.about && (
+              <>
+                <About content={resume?.about || ""} />
+                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
+              </>
+            )}
+            {resume?.workExperiences.length > 0 && (
+              <>
+                <WorkExperience workExperiences={resume?.workExperiences} />
+                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
+              </>
+            )}
+            {resume?.references.length > 0 && (
+              <>
+                <References references={resume?.references} />
+                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
+              </>
+            )}
           </div>
         </div>
         <Footer />
       </div>
-      <pre>{JSON.stringify(resume, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(resume, null, 2)}</pre> */}
     </div>
   )
 }

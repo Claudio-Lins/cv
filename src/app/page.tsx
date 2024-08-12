@@ -34,11 +34,13 @@ export default async function Home() {
 
   if (!slugs.length) {
     return redirect("/admin")
+  } else {
+    return redirect(`/${slugs[0].slug}`)
   }
 
-  return (
-    <div className="w-full flex items-center">
-      <h1>{activeResume?.title}</h1>
-    </div>
-  )
+  // return (
+  //   <div className="w-full flex items-center">
+  //     <h1>{activeResume?.title}</h1>
+  //   </div>
+  // )
 }
