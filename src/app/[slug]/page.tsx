@@ -45,24 +45,41 @@ export default async function Resume({ params }: ResumeProps) {
         <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
         <div className="grid sm:grid-cols-12 w-full my-14">
           <div className="sm:col-span-3 w-full flex flex-col space-y-10">
-            <Contacts
-              phone={resume?.contact?.phone || ""}
-              email={resume?.contact?.email || ""}
-              address={resume?.contact?.address || {}}
-              socialNetworks={resume?.contact?.socialNetworks || []}
-            />
-            <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
-            <Education education={resume?.education || []} />
-            <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
-            <Skills
-              skills={
-                resume?.skills?.map((skill) => ({
-                  id: skill.id,
-                  name: skill.name,
-                  type: skill.type,
-                })) || []
-              }
-            />
+            {resume?.street && (
+              <>
+                <Contacts
+                  phone={resume?.phone || ""}
+                  email={resume?.email || ""}
+                  street={resume?.street || ""}
+                  city={resume?.city || ""}
+                  state={resume?.state || ""}
+                  country={resume?.country || ""}
+                  zip={resume?.zip || ""}
+                  socialNetworks={resume?.socialNetworks || []}
+                />
+                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
+              </>
+            )}
+            {resume?.educations.length > 0 && (
+              <>
+                <Education educations={resume?.educations || []} />
+                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
+              </>
+            )}
+            {resume?.skills.length > 0 && (
+              <>
+                <Skills
+                  skills={
+                    resume?.skills?.map((skill) => ({
+                      id: skill.id,
+                      name: skill.name,
+                      type: skill.type,
+                    })) || []
+                  }
+                />
+                <div className="w-full h-px bg-gradient-to-r from-zinc-300/10 via-zinc-500 to-zinc-400/10" />
+              </>
+            )}
           </div>
           <div className="w-px sm:col-span-1 min-h-full bg-gradient-to-b from-zinc-300/10 via-zinc-500 to-zinc-400/10 mx-10" />
           <div className="sm:col-span-8 w-full flex flex-col space-y-10">
@@ -73,7 +90,7 @@ export default async function Resume({ params }: ResumeProps) {
         </div>
         <Footer />
       </div>
-      {/* <pre>{JSON.stringify(resume, null, 2)}</pre> */}
+      <pre>{JSON.stringify(resume, null, 2)}</pre>
     </div>
   )
 }

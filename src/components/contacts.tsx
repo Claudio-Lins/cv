@@ -12,14 +12,13 @@ import {
 interface ContactsProps {
   phone?: string
   email?: string
-  address?: {
-    street?: string
-    city?: string
-    state?: string
-    county?: string | null
-    country?: string
-    zip?: string
-  }
+  street?: string
+  city?: string
+  state?: string
+  county?: string | null
+  country?: string
+  zip?: string
+
   socialNetworks?: {
     id: string
     name: string
@@ -30,7 +29,11 @@ interface ContactsProps {
 export function Contacts({
   phone,
   email,
-  address,
+  street,
+  city,
+  state,
+  country,
+  zip,
   socialNetworks,
 }: ContactsProps) {
   return (
@@ -49,16 +52,17 @@ export function Contacts({
             <span>{email}</span>
           </div>
         )}
-        {address && (
-          <div className="flex space-x-2 text-zinc-600 text-sm">
-            <Home size={14} />
-            <div className="flex flex-col -mt-0.5">
-              {address?.street && <span>{address?.street}</span>}
-              {address?.county && <span>{address?.county}</span>}
-              {address?.city && <span>{address?.city}</span>}
-              {address?.state && <span>{address?.state}</span>}
-              {address?.zip && <span>{address?.zip}</span>}
-              {address?.country && <span>{address?.country}</span>}
+        {street && (
+          <div className="flex space-x-2 text-zinc-600 w-full">
+            <Home size={20} />
+            <div className="flex gap-x-2 gap-y-1 flex-wrap -mt-0.5 text-sm">
+              {street && <p className="w-full">{street}</p>}
+              {city && <p>{city}</p>}
+              {city && <p>|</p>}
+              {state && <p>{state}</p>}
+              {city && <p>|</p>}
+              {zip && <p>{zip}</p>}
+              {country && <p className="w-full">{country}</p>}
             </div>
           </div>
         )}

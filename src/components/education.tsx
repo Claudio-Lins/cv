@@ -7,21 +7,21 @@ import { calculateDuration } from "@/utils/caculate-duration-data"
 dayjs.extend(duration)
 
 interface EducationProps {
-  education: {
+  educations: {
     id: string
     school: string
     field: string
     startDate: Date
-    endDate: Date
+    endDate: Date | null
   }[]
 }
 
-export function Education({ education }: EducationProps) {
+export function Education({ educations }: EducationProps) {
   return (
     <div className={cn("font-light text-zinc-600 tracking-widest ")}>
       <h3 className=" uppercase font-light">Education</h3>
       <div className="flex flex-col mt-6 space-y-4">
-        {education?.map((edu) => (
+        {educations?.map((edu) => (
           <div className="flex flex-col text-zinc-600 text-sm" key={edu.id}>
             <h4 className=" uppercase font-semibold">{edu?.field}</h4>
             <small>{edu?.school}</small>
@@ -34,15 +34,17 @@ export function Education({ education }: EducationProps) {
               </small>
               <span>|</span>
               <small>
-                {new Intl.DateTimeFormat("pt-PT", {
-                  year: "numeric",
-                  month: "short",
-                }).format(edu.endDate)}
+                {edu.endDate
+                  ? new Intl.DateTimeFormat("pt-PT", {
+                      year: "numeric",
+                      month: "short",
+                    }).format(edu.endDate)
+                  : "N/A"}
               </small>
               <small className="text-gray-400">
                 {calculateDuration(
                   edu.startDate.toString(),
-                  edu.endDate.toString()
+                  edu?.endDate?.toString()
                 )}
               </small>
             </div>
