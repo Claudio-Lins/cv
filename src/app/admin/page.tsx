@@ -24,25 +24,15 @@ async function getSkills() {
   const skills = await prisma.skill.findMany()
   return skills
 }
-// async function getReferences() {
-//   const references = await prisma.reference.findMany()
-//   return references
-// }
+async function getReferences() {
+  const references = await prisma.reference.findMany()
+  return references
+}
 
-// async function getContacts() {
-//   const contacts = await prisma.contact.findMany({
-//     include: {
-//       addresses: true,
-//       socialNetworks: true,
-//     },
-//   })
-//   return contacts
-// }
-
-// async function getAddresses() {
-//   const addresses = await prisma.address.findMany()
-//   return addresses
-// }
+async function getEducation() {
+  const educations = await prisma.education.findMany()
+  return educations
+}
 
 async function getSocialNetworks() {
   const socialNetworks = await prisma.socialNetwork.findMany()
@@ -64,11 +54,10 @@ export default async function Admin({}: AdminProps) {
   const slugs = await getTitle(user?.id!)
   const allResumes = await getAllResume(user?.id!)
   const skills = await getSkills()
-  // const references = await getReferences()
-  // const contacts = await getContacts()
-  // const addresses = await getAddresses()
   const socialNetworks = await getSocialNetworks()
   const workExperiences = await getWorkExperiences()
+  const educations = await getEducation()
+  const references = await getReferences()
 
   return (
     <div className={cn("w-full max-w-7xl mx-auto bg-white")}>
@@ -88,6 +77,8 @@ export default async function Admin({}: AdminProps) {
             socialNetworks={socialNetworks}
             workExperiences={workExperiences}
             skills={skills}
+            educations={educations}
+            references={references}
           />
         </TabsContent>
         {allResumes.map((resume) => (

@@ -13,7 +13,7 @@ export interface ResumeTypes {
   createdAt: Date
   userId: string
   contactId: string | null
-  education: Education[]
+  education: EducationTypes[]
   skills: SkillTypes[] | null
   references: ReferenceTypes[] | null
   workExperiences: WorkExperienceTypes[]
@@ -46,12 +46,12 @@ export interface SocialNetworkTypes {
   // contactId: string | null
 }
 
-export interface Education {
+export interface EducationTypes {
   id: string
   school: string
   field: string
-  startYear: Date
-  endYear: Date
+  startDate: Date
+  endDate: Date | null
 }
 
 export interface SkillTypes {

@@ -27,6 +27,7 @@ import {
   SocialNetworkTypes,
   ContactTypes,
   WorkExperienceTypes,
+  EducationTypes,
 } from "../../../@types/resume-types"
 import { cn } from "@/lib/utils"
 import { startTransition, useEffect, useState } from "react"
@@ -46,14 +47,14 @@ import { DatePicker } from "./date-picker"
 import { MyInput } from "./my-input"
 import { MyTextArea } from "./my-textArea"
 import { calculateDuration } from "@/utils/caculate-duration-data"
+import { CreateEducationForm } from "./create-eudcation-form"
 
 interface CreateResumeFormProps {
   skills: SkillTypes[]
-  // references: ReferenceTypes[]
-  // addresses: AddressTypes[]
   socialNetworks: SocialNetworkTypes[]
   workExperiences: WorkExperienceTypes[]
-  // contacts: ContactTypes
+  educations: EducationTypes[]
+  references: ReferenceTypes[]
 }
 
 type ResumeFormData = z.infer<typeof ResumeSchema>
@@ -62,6 +63,8 @@ export function CreateResumeForm({
   socialNetworks,
   workExperiences,
   skills,
+  educations,
+  references,
 }: CreateResumeFormProps) {
   const [output, setOutput] = useState("")
   const {
@@ -461,111 +464,79 @@ export function CreateResumeForm({
               </div>
               <Separator className="w-full mx-auto" />
 
-              {/* <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-4">
                 <div className="flex items-center gap-1">
                   <h3 className="font-bold text-xl">Education</h3>
-                  <button
-                    type="button"
-                    onClick={addEducation}
-                    className=" items-end"
-                  >
-                    <Plus size={24} />
-                  </button>
+                  <CreateEducationForm />
                 </div>
-                {educationFields.map((field, index) => {
-                  return (
-                    <div
-                      key={field.id}
-                      className="flex flex-col w-full space-y-4"
-                    >
-                      <div className="flex flex-col space-y-1.5">
-                        <Label htmlFor="field">Field of Study</Label>
-                        <Input
-                          {...register(`education.${index}.field`)}
-                          id="field"
-                          placeholder="Title of your field of study"
-                          className="bg-white"
-                        />
-                        {errors?.education?.[index]?.field && (
-                          <span
-                            className={cn(
-                              "text-xs font-semibold text-red-600 -mt-2"
-                            )}
+                <div className="flex flex-wrap gap-4">
+                  {educations.length > 0 && (
+                    <>
+                      {educations.map((education) => {
+                        return (
+                          <label
+                            key={education.id}
+                            className="p-4 border rounded-md border-dashed shadow-sm flex items-center gap-3 cursor-pointer"
                           >
-                            {errors?.education?.[index]?.field.message}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex flex-col space-y-1.5">
-                        <Label htmlFor="school">School</Label>
-                        <Input
-                          {...register(`education.${index}.school`)}
-                          id="school"
-                          placeholder="Name of your school"
-                          className="bg-white"
-                        />
-                        {errors?.education?.[index]?.school && (
-                          <span
-                            className={cn(
-                              "text-xs font-semibold text-red-600 -mt-2"
-                            )}
-                          >
-                            {errors?.education?.[index]?.school.message}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 md:flex-row flex-col">
-                        <div className="flex flex-col space-y-1.5 w-full">
-                          <Label htmlFor="startDate">Start Date</Label>
-                          <Input
-                            type="date"
-                            {...register(`education.${index}.startDate`)}
-                            id="startDate"
-                            placeholder="The start date"
-                            className="bg-white"
-                          />
-                          {errors?.education?.[index]?.startDate && (
-                            <span
-                              className={cn(
-                                "text-xs font-semibold text-red-600 -mt-2"
+                            <Controller
+                              name="educations"
+                              control={control}
+                              render={({ field }) => (
+                                <input
+                                  type="checkbox"
+                                  {...field}
+                                  value={education.id}
+                                  checked={
+                                    Array.isArray(field.value)
+                                      ? field.value.some(
+                                          (s) => s.id === education.id
+                                        )
+                                      : false
+                                  }
+                                  onChange={(e) => {
+                                    const newValue = e.target.checked
+                                      ? [...(field.value || []), education]
+                                      : (field.value || []).filter(
+                                          (s) => s.id !== education.id
+                                        )
+                                    field.onChange(newValue)
+                                  }}
+                                />
                               )}
-                            >
-                              {errors?.education?.[index]?.startDate.message}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex flex-col space-y-1.5 w-full">
-                          <Label htmlFor="startDate">End Date</Label>
-                          <Input
-                            type="date"
-                            {...register(`education.${index}.endDate`)}
-                            id="startDate"
-                            placeholder="The start date"
-                            className="bg-white"
-                          />
-                          {errors?.education?.[index]?.endDate && (
-                            <span
-                              className={cn(
-                                "text-xs font-semibold text-red-600 -mt-2"
-                              )}
-                            >
-                              {errors?.education?.[index]?.endDate.message}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="ml-auto"
-                        onClick={() => deleteEducation(index)}
-                      >
-                        Delete Education
-                      </Button>
-                    </div>
-                  )
-                })}
-              </div> */}
+                            />
+                            <div className="flex flex-col">
+                              <strong className="text-base">
+                                {education?.field}
+                              </strong>
+                              <span className="text-sm">
+                                {education?.school}
+                              </span>
+                              <span className="text-sm">
+                                {new Intl.DateTimeFormat("en-US", {
+                                  year: "numeric",
+                                  month: "short",
+                                } as any).format(education?.startDate)}{" "}
+                                -{" "}
+                                {education?.endDate &&
+                                  new Intl.DateTimeFormat("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                  } as any).format(education?.endDate)}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {calculateDuration(
+                                  education?.startDate?.toISOString(),
+                                  education?.endDate?.toISOString()
+                                )}
+                              </span>
+                            </div>
+                          </label>
+                        )
+                      })}
+                    </>
+                  )}
+                </div>
+              </div>
               <Separator className="w-full mx-auto" />
 
               <div className="w-full flex flex-col gap-4">
@@ -574,7 +545,7 @@ export function CreateResumeForm({
                   <CreateReferenceForm />
                 </div>
 
-                {/* <div className="flex flex-wrap gap-6">
+                <div className="flex flex-wrap gap-6">
                   {references.length > 0 && (
                     <>
                       {references.map((reference) => (
@@ -639,7 +610,7 @@ export function CreateResumeForm({
                       ))}
                     </>
                   )}
-                </div> */}
+                </div>
               </div>
               <Separator className="w-full mx-auto" />
             </div>

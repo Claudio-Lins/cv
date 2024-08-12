@@ -49,6 +49,8 @@ model Resume {
   socialNetworks  SocialNetwork[]
   workExperiences WorkExperience[]
   skills          Skill[]
+  educations      Education[]
+  references      Reference[]
 }
 
 model SocialNetwork {
@@ -61,15 +63,15 @@ model SocialNetwork {
   resumes Resume[]
 }
 
-// model Education {
-//   id        String    @id @default(cuid())
-//   school    String
-//   field     String
-//   startDate DateTime
-//   endDate   DateTime?
+model Education {
+  id        String    @id @default(cuid())
+  school    String
+  field     String
+  startDate DateTime
+  endDate   DateTime?
 
-//   resumes Resume[]
-// }
+  resumes Resume[]
+}
 
 model Skill {
   id   String    @id @default(cuid())
@@ -115,12 +117,12 @@ enum WorkLocation {
   HYBRID
 }
 
-// model Reference {
-//   id    String  @id @default(cuid())
-//   name  String
-//   email String
-//   phone String
-//   role  String?
+model Reference {
+  id    String  @id @default(cuid())
+  name  String
+  email String
+  phone String
+  role  String?
 
-//   resumes Resume[]
-// }
+  resumes Resume[]
+}

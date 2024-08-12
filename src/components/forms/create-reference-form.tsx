@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray, Controller } from "react-hook-form"
+import { useForm, useFieldArray, Controller, FieldError } from "react-hook-form"
 import { ReferenceSchema } from "@/zodSchema"
 import * as z from "zod"
 import { $Enums } from "@prisma/client"
@@ -31,6 +31,7 @@ import { Separator } from "../ui/separator"
 import { createSkill } from "@/actions/skill-action"
 import { startTransition, useState } from "react"
 import { createReference } from "@/actions/reference-action"
+import { MyInput } from "./my-input"
 
 interface CreateReferenceFormProps {}
 
@@ -78,70 +79,40 @@ export function CreateReferenceForm({}: CreateReferenceFormProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Create Skills</DialogTitle>
+          <DialogTitle>Create Reference</DialogTitle>
           <DialogDescription>
             Make changes to your profile here.
           </DialogDescription>
         </DialogHeader>
         <form className="grid gap-4 py-4 w-full">
-          <div className="flex w-full flex-col space-y-1.5">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              {...register("name")}
-              id="name"
-              placeholder="Name of Skill"
-              className="bg-white w-full"
-            />
-            {errors.name && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.name.message}
-              </span>
-            )}
-          </div>
-          <div className="flex w-full flex-col space-y-1.5">
-            <Label htmlFor="role">Role</Label>
-            <Input
-              {...register("role")}
-              id="role"
-              placeholder="Type your role"
-              className="bg-white w-full"
-            />
-            {errors.role && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.role.message}
-              </span>
-            )}
-          </div>
-          <div className="flex w-full flex-col space-y-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              {...register("email")}
-              id="email"
-              placeholder="Type your email"
-              className="bg-white w-full"
-              inputMode="email"
-            />
-            {errors.email && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.email.message}
-              </span>
-            )}
-          </div>
-          <div className="flex w-full flex-col space-y-1.5">
-            <Label htmlFor="phone">Phone</Label>
-            <Input
-              {...register("phone")}
-              id="phone"
-              placeholder="Type your phone"
-              className="bg-white w-full"
-              inputMode="tel"
-            />
-            {errors.phone && (
-              <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
-                {errors?.phone.message}
-              </span>
-            )}
-          </div>
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="name"
+            label="Name"
+            placeholder="Name"
+          />
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="role"
+            label="Role"
+            placeholder="Role"
+          />
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="email"
+            label="Email"
+            placeholder="Email"
+          />
+          <MyInput
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="phone"
+            label="Phone"
+            placeholder="Phone"
+          />
         </form>
         <Separator />
         <DialogFooter className="">

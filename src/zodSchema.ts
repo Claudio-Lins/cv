@@ -25,15 +25,15 @@ export const AddressSchema = z.object({
   zip: z.string().min(1, "Zip is required"),
 })
 
-// export const EducationSchema = z.object({
-//   id: z.string().cuid().optional(),
-//   school: z
-//     .string()
-//     .min(3, { message: "School must be at least 3 characters" }),
-//   field: z.string().min(3, { message: "Field must be at least 3 characters" }),
-//   startDate: z.string().date(),
-//   endDate: z.string(),
-// })
+export const EducationSchema = z.object({
+  id: z.string().cuid().optional(),
+  school: z
+    .string()
+    .min(3, { message: "School must be at least 3 characters" }),
+  field: z.string().min(3, { message: "Field must be at least 3 characters" }),
+  startDate: z.date(),
+  endDate: z.date().optional().nullable(),
+})
 
 export const SkillSchema = z.object({
   id: z.string().cuid().optional(),
@@ -62,13 +62,13 @@ export const WorkExperienceSchema = z.object({
   resumeId: z.string().cuid().optional(),
 })
 
-// export const ReferenceSchema = z.object({
-//   id: z.string().cuid().optional(),
-//   name: z.string().min(3, { message: "Name must be at least 3 characters" }),
-//   email: z.string().email(),
-//   role: z.string().optional(),
-//   phone: phoneSchema,
-// })
+export const ReferenceSchema = z.object({
+  id: z.string().cuid().optional(),
+  name: z.string().min(3, { message: "Name must be at least 3 characters" }),
+  email: z.string().email(),
+  role: z.string().optional(),
+  phone: phoneSchema,
+})
 
 export const ResumeSchema = z.object({
   id: z.string().cuid().optional(),
@@ -97,7 +97,6 @@ export const ResumeSchema = z.object({
   socialNetworks: z.array(SocialNetworkSchema),
   workExperiences: z.array(WorkExperienceSchema),
   skills: z.array(SkillSchema),
-
-  // education: z.array(EducationSchema),
-  // references: z.array(ReferenceSchema),
+  educations: z.array(EducationSchema),
+  references: z.array(ReferenceSchema),
 })
