@@ -136,7 +136,7 @@ export function Contacts({
                 </span>
               </div>
             )}
-            {social?.name.includes("Instagram") && (
+            {social?.name.includes("Insta") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaInstagram size={14} />
                 <a
