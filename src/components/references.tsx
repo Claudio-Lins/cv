@@ -21,7 +21,7 @@ export function References({ references }: ReferencesProps) {
           return (
             <div
               key={reference.id}
-              className="flex flex-col space-y-1 w-full max-w-[200px] mt-6 relative p-4 border border-dashed border-zinc-300"
+              className="flex flex-col space-y-1 w-full max-w-[300px] mt-6 relative p-4 border border-dashed border-zinc-300"
             >
               <h3 className="font-bold uppercase print:text-xs">
                 {reference?.name}

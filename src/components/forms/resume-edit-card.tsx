@@ -19,7 +19,7 @@ import * as z from "zod"
 import { Switch } from "../ui/switch"
 import { Separator } from "../ui/separator"
 import { ResumeTypes } from "../../../@types/resume-types"
-import { updateResume } from "@/actions/resume-action"
+// import { updateResume } from "@/actions/resume-action"
 import { revalidatePath } from "next/cache"
 import { startTransition, useEffect, useState } from "react"
 
@@ -40,7 +40,7 @@ export function ResumeEditCard({ resume }: ResumeEditCardProps) {
       id: resume.id,
       title: resume.title,
       slug: resume?.title.toLowerCase().replace(/ /g, "-"),
-      active: resume.active,
+      // active: resume.active,
       firstName: resume.firstName,
       lastName: resume.lastName,
       // birthday: resume.birthday?.toISOString().slice(0, 10),
@@ -54,7 +54,7 @@ export function ResumeEditCard({ resume }: ResumeEditCardProps) {
     startTransition(async () => {
       try {
         console.log("Submitting Product form...", values)
-        await updateResume(values)
+        // await updateResume(values)
         setOutPut(JSON.stringify(values, null, 2))
         reset()
       } catch (error) {
@@ -69,10 +69,10 @@ export function ResumeEditCard({ resume }: ResumeEditCardProps) {
         <CardHeader>
           <CardTitle>{resume.title}!!!!</CardTitle>
           <CardDescription className="flex items-center space-x-2">
-            <span className="font-bold text-lg">
+            {/* <span className="font-bold text-lg">
               {resume?.active ? "Active" : "Inactive"}
             </span>
-            <Switch {...register("active")} defaultChecked={resume.active} />
+            <Switch {...register("active")} defaultChecked={resume.active} /> */}
           </CardDescription>
         </CardHeader>
         <Separator />

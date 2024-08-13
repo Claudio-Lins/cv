@@ -25,7 +25,6 @@ import {
   ReferenceTypes,
   AddressTypes,
   SocialNetworkTypes,
-  ContactTypes,
   WorkExperienceTypes,
   EducationTypes,
 } from "../../../@types/resume-types"
@@ -37,8 +36,6 @@ import { CreateSkillsForm } from "./create-skills-form"
 import { deleteSkill } from "@/actions/skill-action"
 import { CreateReferenceForm } from "./create-reference-form"
 import { deleteReference } from "@/actions/reference-action"
-import { CreateContactForm } from "./create-contact-form"
-import { CreateAddressForm } from "./create-address-form"
 import { CreateSocialNetworkForm } from "./create-social-form"
 import { createResume } from "@/actions/resume-action"
 import { deleteSocialNetwork } from "@/actions/social-network-action"
@@ -50,8 +47,8 @@ import { calculateDuration } from "@/utils/caculate-duration-data"
 import { CreateEducationForm } from "./create-eudcation-form"
 
 interface CreateResumeFormProps {
-  skills: SkillTypes[]
   socialNetworks: SocialNetworkTypes[]
+  skills: SkillTypes[]
   workExperiences: WorkExperienceTypes[]
   educations: EducationTypes[]
   references: ReferenceTypes[]
@@ -77,21 +74,6 @@ export function CreateResumeForm({
     formState: { errors },
   } = useForm<z.infer<typeof ResumeSchema>>({
     resolver: zodResolver(ResumeSchema),
-    // defaultValues: {
-    //   title: "Resume Title",
-    //   slug: "resume_title",
-    //   active: false,
-    //   firstName: "Claudio",
-    //   lastName: "Lins",
-    //   email: "Lins@me.com",
-    //   phone: "12312312312",
-    //   about: "fasdfasfgasdgfsda fsdf sdf saf sd f sdf as",
-    //   street: "123 Main St",
-    //   city: "Anytown",
-    //   state: "Anytown",
-    //   country: "USA",
-    //   zip: "12345",
-    // },
   })
 
   const title = watch("title")
@@ -191,11 +173,6 @@ export function CreateResumeForm({
               />
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="birthday">Birthday</Label>
-                {/* <Controller
-                  control={control}
-                  name="birthday"
-                  render={({ field }) => <DatePicker field={field} />}
-                /> */}
                 <Controller
                   control={control}
                   name="birthday"

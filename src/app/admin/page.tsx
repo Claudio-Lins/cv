@@ -8,6 +8,7 @@ import { getAllResume } from "@/data/resume"
 import { CreateResumeForm } from "@/components/forms/create-resume-form"
 import { createContact } from "@/actions/contact-action"
 import { startTransition } from "react"
+import { UpdateResumeForm } from "@/components/forms/update-resume-form"
 
 interface AdminProps {}
 
@@ -83,7 +84,18 @@ export default async function Admin({}: AdminProps) {
         </TabsContent>
         {allResumes.map((resume) => (
           <TabsContent key={resume.slug} value={resume.slug!} className="p-4">
-            <pre>{JSON.stringify(resume, null, 2)}</pre>
+            {resume ? (
+              <UpdateResumeForm
+                resume={resume}
+                socialNetworks={socialNetworks}
+                workExperiences={workExperiences}
+                skills={skills}
+                educations={educations}
+                references={references}
+              />
+            ) : (
+              <p>Loading...</p>
+            )}
           </TabsContent>
         ))}
       </Tabs>

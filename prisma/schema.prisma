@@ -28,7 +28,7 @@ model Resume {
   id         String    @id @default(cuid())
   title      String
   slug       String    @unique
-  active     Boolean
+  active     Boolean   @default(false)
   firstName  String
   lastName   String
   email      String

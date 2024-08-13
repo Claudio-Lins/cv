@@ -30,7 +30,6 @@ import { DialogClose } from "@radix-ui/react-dialog"
 import { Separator } from "../ui/separator"
 import { createSocialNetwork } from "@/actions/social-network-action"
 import { startTransition, useState } from "react"
-import { ContactTypes } from "../../../@types/resume-types"
 
 interface CreateSkillsFormProps {}
 
@@ -56,7 +55,7 @@ export function CreateSocialNetworkForm({}: CreateSkillsFormProps) {
       try {
         console.log("Submitting Social form...", values)
         await createSocialNetwork(values)
-        // reset()
+        reset()
         setIsOpen(false)
       } catch (error) {
         console.error("Error creating product:", error)

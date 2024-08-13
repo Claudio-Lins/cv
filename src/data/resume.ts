@@ -31,8 +31,9 @@ export async function getAllResume(userId: string) {
     include: {
       socialNetworks: true,
       educations: true,
-
+      skills: true,
       workExperiences: true,
+      references: true,
     },
   })
   return slugs

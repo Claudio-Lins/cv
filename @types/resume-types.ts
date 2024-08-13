@@ -1,29 +1,29 @@
 // import { $Enums } from "@prisma/client"
 
+import { $Enums } from "@prisma/client"
+
 export interface ResumeTypes {
   id: string
+  userId: string
   title: string
   slug: string
   active: boolean
   firstName: string
   lastName: string
-  birthday: Date
+  email: string
+  phone: string
+  street: string
+  city: string
+  state: string
+  zip: string
+  country: string
+  birthday: Date | null
   pictureUrl: string | null
   about: string
-  createdAt: Date
-  userId: string
-  contactId: string | null
-  education: EducationTypes[]
+  educations: EducationTypes[]
   skills: SkillTypes[] | null
-  references: ReferenceTypes[] | null
+  references: ReferenceTypes[]
   workExperiences: WorkExperienceTypes[]
-  contact: ContactTypes[]
-}
-
-export interface ContactTypes {
-  id: string
-  createdAt: Date
-  address: AddressTypes[]
   socialNetworks: SocialNetworkTypes[]
 }
 
@@ -43,7 +43,6 @@ export interface SocialNetworkTypes {
   name: string
   url: string
   createdAt: Date
-  // contactId: string | null
 }
 
 export interface EducationTypes {
@@ -58,11 +57,6 @@ export interface SkillTypes {
   id: string
   name: string
   type: string
-}
-
-export enum Type {
-  Hobbies = "HOBBIES",
-  Technical = "TECHNICAL",
 }
 
 export interface ReferenceTypes {
@@ -83,7 +77,6 @@ export interface WorkExperienceTypes {
   endDate: Date | null
   isCurrent: boolean
   link: string | null
-  employmentType: string
-  workLocation: string
-  // resumeId: string
+  employmentType: "FREELANCER" | "VOLUNTEER" | "EMPLOYEE"
+  workLocation: "REMOTE" | "ONSITE" | "HYBRID"
 }

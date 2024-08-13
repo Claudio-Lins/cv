@@ -75,49 +75,97 @@ export function Contacts({
             {social?.name.includes("Github") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaGithub size={14} />
-                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={social?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="print:hidden"
+                >
                   {social?.name}
                 </a>
+                <span className="hidden print:block text-[10px]">
+                  {social.url.slice(8)}
+                </span>
               </div>
             )}
             {social?.name.includes("LinkedIn") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaLinkedinIn size={14} />
-                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={social?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="print:hidden"
+                >
                   {social?.name}
                 </a>
+                <span className="hidden print:block text-[10px]">
+                  {social.url.slice(8)}
+                </span>
               </div>
             )}
             {social?.name.includes("Facebook") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaFacebook size={14} />
-                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={social?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="print:hidden"
+                >
                   {social?.name}
                 </a>
+                <span className="hidden print:block text-[10px]">
+                  {social.url.slice(8)}
+                </span>
               </div>
             )}
             {social?.name.includes("Twitter") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaXTwitter size={14} />
-                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={social?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="print:hidden"
+                >
                   {social?.name}
                 </a>
+                <span className="hidden print:block text-[10px]">
+                  {social.url.slice(8)}
+                </span>
               </div>
             )}
             {social?.name.includes("Instagram") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaInstagram size={14} />
-                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={social?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="print:hidden"
+                >
                   {social?.name}
                 </a>
+                <span className="hidden print:block text-[10px]">
+                  {social.url.slice(8)}
+                </span>
               </div>
             )}
             {social?.name.includes("YouTube") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaYoutube size={14} />
-                <a href={social?.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={social?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="print:hidden"
+                >
                   {social?.name}
                 </a>
+                <span className="hidden print:block text-[10px]">
+                  {social.url.slice(8)}
+                </span>
               </div>
             )}
           </div>
