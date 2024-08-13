@@ -1,9 +1,46 @@
-import Image from "next/image"
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
+import { redirect } from "next/navigation"
+import { prisma } from "@/lib/prisma"
 
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Curriculo</h1>
-    </main>
-  )
+async function getTitle(userId: string) {
+  const slugs = await prisma.resume.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      slug: true,
+      title: true,
+    },
+  })
+  return slugs
+}
+
+async function getActiveResume(userId: string) {
+  const resume = await prisma.resume.findFirst({
+    where: {
+      userId,
+      active: true,
+    },
+  })
+  return resume
+}
+
+export default async function Home() {
+  const { getUser } = getKindeServerSession()
+  const user = await getUser()
+
+  const slugs = await getTitle(user?.id!)
+  const activeResume = await getActiveResume(user?.id!)
+
+  if (!slugs.length) {
+    return redirect("/admin")
+  } else {
+    return redirect(`/${slugs[0].slug}`)
+  }
+
+  // return (
+  //   <div className="w-full flex items-center">
+  //     <h1>{activeResume?.title}</h1>
+  //   </div>
+  // )
 }

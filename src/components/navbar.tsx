@@ -1,4 +1,9 @@
+"use client"
+
 import { cn } from "@/lib/utils"
+import Link from "next/link"
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,27 +14,72 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-import { Button } from "./ui/button"
-import { CircleUserIcon, Home, LogOut, Settings, Settings2 } from "lucide-react"
-
 import {
-  getKindeServerSession,
-  LogoutLink,
-} from "@kinde-oss/kinde-auth-nextjs/server"
-import Link from "next/link"
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu"
+import { usePathname } from "next/navigation"
+import { UserTypes } from "../../@types/user-types"
+import { ProfileAvatar } from "./profile-avatar"
+import { Button } from "./ui/button"
+import { CircleUserIcon, Home, LogOut, Settings } from "lucide-react"
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs"
 
-interface HeaderProps {}
+export const navigationItems = [
+  {
+    name: "Home",
+    href: "/",
+  },
+  {
+    name: "About",
+    href: "/about",
+  },
+  {
+    name: "Contact",
+    href: "/contact",
+  },
+]
 
-export async function Header({}: HeaderProps) {
-  const { getUser } = getKindeServerSession()
-  const user = await getUser()
+export function Navbar({ user }: UserTypes) {
+  const pathname = usePathname()
   return (
     <div
       className={cn(
-        "w-full justify-center py-4 flex items-center bg-white/5 shadow-lg shadow-white/5 backdrop-blur-sm"
+        "max-w-7xl mx-auto justify-center px-4 py-5 md:px-8 grid grid-cols-12 w-full z-10 print:hidden"
       )}
     >
-      <nav className="w-full max-w-7xl flex justify-end">
+      {/* <div className="col-span-6 flex sm:col-span-3">
+        <Link href="/">
+          <h1 className="text-3xl font-bold">
+            My<span className="text-blue-600 font-light">Curriculum</span>
+          </h1>
+        </Link>
+      </div> */}
+      <div className="hidden sm:flex justify-center items-center col-span-6">
+        <NavigationMenu>
+          <NavigationMenuList>
+            {navigationItems.map((navigationItem, index) => (
+              <NavigationMenuItem key={index}>
+                <Link href={navigationItem.href} legacyBehavior passHref>
+                  <NavigationMenuLink
+                    active={pathname === navigationItem.href}
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    {navigationItem.name}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
+      {/* <div className="flex items-center justify-end md:col-span-3 col-span-6">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             {!user ? (
@@ -85,7 +135,7 @@ export async function Header({}: HeaderProps) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </nav>
+      </div> */}
     </div>
   )
 }

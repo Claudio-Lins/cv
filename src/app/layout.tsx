@@ -4,8 +4,10 @@ import "./globals.css"
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
-import { Header } from "@/components/header"
 import { cn } from "@/lib/utils"
+import { ProfileAvatar } from "@/components/profile-avatar"
+
+import { getAllResume } from "@/data/resume"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -22,6 +24,8 @@ export default async function RootLayout({
   const { getUser } = getKindeServerSession()
   const user = await getUser()
 
+  const slug = await getAllResume(user?.id!)
+
   if (!user) {
     return redirect(
       "/api/auth/login?post_login_redirect_url=/api/auth/creation"
@@ -29,8 +33,13 @@ export default async function RootLayout({
   }
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-white")}>
-        <Header />
+      <body
+        className={cn(
+          inter.className,
+          "bg-purple-100 w-full flex items-center flex-col min-h-dvh mt-20 print:mt-0"
+        )}
+      >
+        <ProfileAvatar slug={slug} />
         {children}
       </body>
     </html>
