@@ -6,8 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { getAllResume } from "@/data/resume"
 import { CreateResumeForm } from "@/components/forms/create-resume-form"
-import { createContact } from "@/actions/contact-action"
-import { startTransition } from "react"
 import { UpdateResumeForm } from "@/components/forms/update-resume-form"
 
 interface AdminProps {}
