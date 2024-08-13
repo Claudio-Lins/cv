@@ -7,7 +7,6 @@ import { Role } from "@/components/role"
 import { Skills } from "@/components/skills"
 
 import { WorkExperience } from "@/components/work-experiense"
-import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
