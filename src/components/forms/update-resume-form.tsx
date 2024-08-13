@@ -23,14 +23,14 @@ import { ResumeSchema } from "@/zodSchema"
 import * as z from "zod"
 import { Separator } from "../ui/separator"
 import { MyInput } from "./my-input"
-import { startTransition } from "react"
+import { startTransition, useTransition } from "react"
 import { updateResume } from "@/actions/resume-action"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { MyTextArea } from "./my-textArea"
 import { CreateSocialNetworkForm } from "./create-social-form"
-import { MinusCircle, XCircle } from "lucide-react"
+import { Loader, MinusCircle, XCircle } from "lucide-react"
 import { calculateDuration } from "@/utils/caculate-duration-data"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { deleteSkill } from "@/actions/skill-action"
@@ -57,6 +57,7 @@ export function UpdateResumeForm({
   educations,
   references,
 }: UpdateResumeFormProps) {
+  const [isPending, startTransition] = useTransition()
   const {
     control,
     handleSubmit,
@@ -591,8 +592,11 @@ export function UpdateResumeForm({
         </CardContent>
         <Separator className="w-[97%] mx-auto" />
         <CardFooter className="flex mt-6 justify-between">
-          <Button type="submit" className="">
-            Update Resume
+          <Button type="submit" className="flex items-center gap-1">
+            <Loader
+              className={cn("hidden", isPending && "block animate-spin")}
+            />
+            <span>Update Resume</span>
           </Button>
         </CardFooter>
       </Card>

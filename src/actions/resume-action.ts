@@ -111,5 +111,5 @@ export async function updateResume(
     },
   })
 
-  return revalidatePath("/admin")
+  return redirect(`/${values.slug}`)
 }
