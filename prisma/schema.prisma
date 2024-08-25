@@ -121,7 +121,7 @@ model Reference {
   id    String  @id @default(cuid())
   name  String
   email String
-  phone String
+  phone String?
   role  String?
 
   resumes Resume[]
