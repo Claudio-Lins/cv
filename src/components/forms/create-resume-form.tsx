@@ -570,10 +570,11 @@ export function CreateResumeForm({
                               {reference.email}
                             </small>
                             <small className="text-zinc-600">
-                              {reference.phone.replace(
-                                /(\d{3})(\d{3})(\d{3})(\d{3})/,
-                                "$1 $2 $3 $4"
-                              )}
+                              {reference?.phone &&
+                                reference?.phone.replace(
+                                  /(\d{3})(\d{3})(\d{3})(\d{3})/,
+                                  "$1 $2 $3 $4"
+                                )}
                             </small>
                           </div>
                           <button
