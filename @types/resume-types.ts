@@ -11,7 +11,7 @@ export interface ResumeTypes {
   firstName: string
   lastName: string
   email: string
-  phone: string | null
+  phone: string
   street: string
   city: string
   state: string
@@ -64,7 +64,7 @@ export interface ReferenceTypes {
   name: string
   role: string | null
   email: string
-  phone: string
+  phone: string | null
 }
 
 export interface WorkExperienceTypes {
