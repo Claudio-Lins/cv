@@ -11,7 +11,7 @@ export interface ResumeTypes {
   firstName: string
   lastName: string
   email: string
-  phone: string
+  phone: string | null
   street: string
   city: string
   state: string
