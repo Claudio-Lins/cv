@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils"
-import { phoneRegex } from "../zodSchema"
 import {
   FacebookIcon,
   Home,
