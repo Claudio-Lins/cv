@@ -13,7 +13,7 @@ export function Name({ firstName, lastName, picture, pictureUrl }: NameProps) {
     <div className="flex w-full items-center py-20 justify-between print:pb-10 print:pt-0">
       <div
         className={cn(
-          "w-full flex items-center justify-center space-x-2 text-7xl print:text-6xl tracking-[1rem] uppercase"
+          "w-full flex items-center justify-center space-x-2 text-7xl print:text-5xl tracking-[1rem] uppercase"
         )}
       >
         <span className="font-semibold">{firstName}</span>

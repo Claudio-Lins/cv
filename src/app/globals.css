@@ -79,3 +79,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.myPrintingSubTitle {
+  @apply print:text-xs print:font-semibold;
+}
+
+.myPrintingSubText {
+  @apply print:text-[10];
+}

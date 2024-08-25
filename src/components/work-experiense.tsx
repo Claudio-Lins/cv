@@ -30,7 +30,7 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
         "font-light text-zinc-600 tracking-widest  print:border-b print:pb-4"
       )}
     >
-      <h3 className=" uppercase print:text-sm">Work Experience</h3>
+      <h3 className=" uppercase myPrintingSubTitle">Work Experience</h3>
       {workExperiences?.map((workExperience) => (
         <div
           className="flex flex-col mt-6 space-y-4 w-full relative print:mt-0"
@@ -41,47 +41,49 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
             <h4 className=" uppercase font-semibold print:text-xs">
               {workExperience?.title}
             </h4>
-            <small className="print:text-xs">
+            <small className="print:text-[10px]">
               {workExperience?.company} · {workExperience?.employmentType}
             </small>
             <div className="flex items-center justify-start gap-2">
               {workExperience?.isCurrent ? (
                 <>
-                  <small className="print:text-xs">
+                  <small className="print:text-[10px]">
                     {new Intl.DateTimeFormat("pt-PT", {
                       year: "numeric",
                       month: "short",
                     }).format(new Date(workExperience.startDate))}
                   </small>
-                  <small className="text-gray-400 print:text-xs">|</small>
-                  <small className="text-gray-400 text-xs print:text-xs">
+                  <small className="text-gray-400 print:text-[10px]">|</small>
+                  <small className="text-gray-400 text-xs print:text-[10px]">
                     {calculateDuration(
                       workExperience.startDate?.toISOString(),
                       workExperience.endDate?.toISOString()
                     )}
                   </small>
-                  <small className="text-gray-400 print:text-xs">|</small>
-                  <small className="text-gray-400 print:text-xs">Current</small>
+                  <small className="text-gray-400 print:text-[10px]">|</small>
+                  <small className="text-gray-400 print:text-[10px]">
+                    Current
+                  </small>
                 </>
               ) : (
                 <>
-                  <small className="print:text-xs">
+                  <small className="print:text-[10px]">
                     {new Intl.DateTimeFormat("pt-PT", {
                       year: "numeric",
                       month: "short",
                     }).format(new Date(workExperience.startDate))}
                   </small>
-                  <small className="text-gray-400 print:text-xs">|</small>
-                  <small className="print:text-xs">
+                  <small className="text-gray-400 print:text-[10px]">|</small>
+                  <small className="print:text-[10px]">
                     {workExperience.endDate &&
                       new Intl.DateTimeFormat("pt-PT", {
                         year: "numeric",
                         month: "short",
                       }).format(new Date(workExperience.endDate))}
                   </small>
-                  <small className="text-gray-400 print:text-xs">|</small>
-                  <small className="text-gray-400 print:text-xs">
-                    <small className="text-gray-400 text-xs print:text-xs">
+                  <small className="text-gray-400 print:text-[10px]">|</small>
+                  <small className="text-gray-400 print:text-[10px]">
+                    <small className="text-gray-400 text-xs print:text-[10px]">
                       {calculateDuration(
                         workExperience.startDate?.toISOString(),
                         workExperience.endDate?.toISOString()
@@ -96,7 +98,7 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
             </small>
           </div>
 
-          <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:leading-snug print:text-xs">
+          <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:text-[10px] print:leading-relaxed">
             {workExperience?.description}
           </p>
           {workExperience?.link && (
@@ -107,7 +109,10 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <small className="print:text-xs">Visit Website</small>
+                <small className="print:text-[10px]">Visit Website</small>
+                <small className="hidden print:flex print:text-[10px]">
+                  {workExperience?.link}
+                </small>
               </a>
             </div>
           )}

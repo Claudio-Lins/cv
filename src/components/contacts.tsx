@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { phoneRegex } from "../zodSchema"
 import {
   FacebookIcon,
   Home,
@@ -50,26 +51,28 @@ export function Contacts({
         "font-light text-zinc-600 tracking-widest print:tracking-wider"
       )}
     >
-      <h3 className=" uppercase font-light  print:text-xs print:font-semibold">
-        Contacts
-      </h3>
-      <div className="flex flex-col mt-6 space-y-2 print:space-y-0">
+      <h3 className="uppercase font-light myPrintingSubTitle">Contacts</h3>
+      <div className="flex flex-col mt-6 gap-2 print:gap-0">
         {phone && (
-          <div className="flex items-center space-x-2 text-zinc-600">
-            <Phone size={20} className="print:hidden text-sm" />
-            <span className="print:text-[10px]">{phone}</span>
+          <div className="flex items-center gap-2 text-zinc-600">
+            {phone && (
+              <div className="flex items-center gap-2 text-zinc-600">
+                <Phone size={20} className="print:hidden" />
+                <span className="print:text-[10px]">{phone}</span>
+              </div>
+            )}
           </div>
         )}
         {email && (
-          <div className="flex items-center space-x-2 text-zinc-600">
+          <div className="flex items-center gap-2 text-zinc-600">
             <Mail size={20} className="print:hidden" />
             <span className="text-sm print:text-[10px]">{email}</span>
           </div>
         )}
         {street && (
-          <div className="flex items-start space-x-2 text-zinc-600">
-            <Home size={44} className="print:hidden" />
-            <div className="flex gap-x-2 gap-y-1 flex-wrap -mt-0.5 text-sm print:text-[10px] print:gap-y-0">
+          <div className="flex gap-2 text-zinc-600 print:gap-0">
+            <Home size={42} className="-mt-3 print:hidden" />
+            <div className="flex gap-x-2 gap-y-1 flex-wrap -mt-0.5 print:gap-y-0">
               {street && (
                 <p className="w-full text-sm print:text-[8px]">{street}</p>
               )}
