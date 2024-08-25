@@ -24,9 +24,9 @@ export function About({ content }: AboutProps) {
     >
       <h3 className="uppercase print:text-sm">About</h3>
       <ScrollArea className="mt-6 pb-2 h-48 text-zinc-600 text-sm leading-relaxed text-balance whitespace-nowrap print:leading-relaxed print:h-full">
-        <div className="flex flex-col gap-2 print:text-xs">
+        <div className="flex flex-col gap-2 ">
           <p
-            className=""
+            className="print:text-[8px] print:leading-relaxed"
             dangerouslySetInnerHTML={{ __html: sanitizedContent }}
           ></p>
         </div>

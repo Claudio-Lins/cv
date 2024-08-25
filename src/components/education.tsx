@@ -19,26 +19,29 @@ interface EducationProps {
 export function Education({ educations }: EducationProps) {
   return (
     <div
-      className={cn("font-light text-zinc-600 tracking-widest  print:text-xs ")}
+      className={cn(
+        "font-light text-zinc-600 tracking-widest print:tracking-wider"
+      )}
     >
-      <h3 className=" uppercase font-light">Education</h3>
-      <div className="flex flex-col mt-6 space-y-4">
+      <h3 className=" uppercase font-light print:text-xs print:font-semibold">
+        Education
+      </h3>
+      <div className="flex flex-col mt-6 space-y-4 print:space-y-0">
         {educations?.map((edu) => (
-          <div
-            className="flex flex-col text-zinc-600 text-sm print:text-xs"
-            key={edu.id}
-          >
-            <h4 className=" uppercase font-semibold">{edu?.field}</h4>
-            <small>{edu?.school}</small>
+          <div className="flex flex-col space-y-1 print:space-y-0" key={edu.id}>
+            <h4 className=" uppercase  text-zinc-600 text-sm font-semibold print:text:xs">
+              {edu?.field}
+            </h4>
+            <small className="print:text-[8px] text-xs">{edu?.school}</small>
             <div className="flex items-center justify-start gap-2">
-              <small>
+              <small className="print:text-[8px] text-xs">
                 {new Intl.DateTimeFormat("pt-PT", {
                   year: "numeric",
                   month: "short",
                 }).format(edu.startDate)}
               </small>
-              <span>|</span>
-              <small>
+              <span className="print:text-[8px] text-xs">|</span>
+              <small className="print:text-[8px] text-xs">
                 {edu.endDate
                   ? new Intl.DateTimeFormat("pt-PT", {
                       year: "numeric",
@@ -46,7 +49,7 @@ export function Education({ educations }: EducationProps) {
                     }).format(edu.endDate)
                   : "N/A"}
               </small>
-              <small className="text-gray-400 print:hidden">
+              <small className="text-gray-400 print:hidden text-xs">
                 {calculateDuration(
                   edu.startDate.toString(),
                   edu?.endDate?.toString()
