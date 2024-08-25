@@ -6,14 +6,15 @@ export const SocialNetworkSchema = z.object({
   url: z.string().url(),
 })
 
-export const phoneRegex = /^\+?[1-9]\d{1,14}$/
+const phoneRegex = /^\+?[1-9]\d{1,14}$/
 
-const phoneSchema = z.string()
-// .min(10, { message: "Phone number must be at least 10 digits long" })
-// .max(15, { message: "Phone number must be no more than 15 digits long" })
-// .refine((val) => phoneRegex.test(val), {
-//   message: "Invalid phone number format",
-// })
+const phoneSchema = z
+  .string()
+  .min(10, { message: "Phone number must be at least 10 digits long" })
+  .max(15, { message: "Phone number must be no more than 15 digits long" })
+  .refine((val) => phoneRegex.test(val), {
+    message: "Invalid phone number format",
+  })
 
 export const AddressSchema = z.object({
   title: z.string().min(1, "Title is required"),
