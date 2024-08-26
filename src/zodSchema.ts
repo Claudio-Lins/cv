@@ -67,7 +67,7 @@ export const ReferenceSchema = z.object({
   name: z.string().min(3, { message: "Name must be at least 3 characters" }),
   email: z.string().email(),
   role: z.string().optional(),
-  phone: phoneSchema.optional(),
+  phone: z.string().optional(),
 })
 
 export const ResumeSchema = z.object({

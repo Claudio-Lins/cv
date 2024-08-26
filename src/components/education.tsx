@@ -24,10 +24,10 @@ export function Education({ educations }: EducationProps) {
       )}
     >
       <h3 className=" uppercase font-light myPrintingSubTitle">Education</h3>
-      <div className="flex flex-col mt-6 space-y-4 print:space-y-0">
+      <div className="flex flex-col mt-6 space-y-4 print:space-y-4">
         {educations?.map((edu) => (
           <div className="flex flex-col space-y-1 print:space-y-0" key={edu.id}>
-            <h4 className=" uppercase  text-zinc-600 text-sm font-semibold print:text-xs">
+            <h4 className=" uppercase  text-zinc-600 text-sm font-semibold print:text-[10px] print:leading-snug">
               {edu?.field}
             </h4>
             <small className="print:text-[8px] text-xs">{edu?.school}</small>
