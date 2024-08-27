@@ -15,22 +15,22 @@ interface ReferencesProps {
 export function References({ references }: ReferencesProps) {
   return (
     <div className={cn("font-light text-zinc-600 tracking-widest ")}>
-      <h3 className=" uppercase print:text-xs">References</h3>
+      <h3 className=" uppercase myPrintingSubTitle">References</h3>
       <div className=" flex flex-wrap gap-4">
         {references?.map((reference) => {
           return (
             <div
               key={reference.id}
-              className="flex flex-col space-y-1 w-full max-w-[300px] mt-6 relative p-4 border border-dashed border-zinc-300"
+              className="flex flex-col space-y-1 w-full max-w-[300px] mt-6 relative p-4 border border-dashed border-zinc-300 print:max-w-[250px]"
             >
-              <h3 className="font-bold uppercase print:text-xs">
+              <h3 className="font-bold uppercase print:text-[10px]">
                 {reference?.name}
               </h3>
-              <p className="font-semibold text-xs print:text-xs">
+              <p className="font-semibold text-xs print:text-[10px]">
                 {reference?.role}
               </p>
-              <p className="text-xs print:text-xs">{reference?.phone}</p>
-              <p className="text-xs print:text-xs">{reference?.email}</p>
+              <p className="text-xs print:text-[10px]">{reference?.phone}</p>
+              <p className="text-xs print:text-[10px]">{reference?.email}</p>
             </div>
           )
         })}

@@ -64,7 +64,7 @@ export interface ReferenceTypes {
   name: string
   role: string | null
   email: string
-  phone: string
+  phone: string | null
 }
 
 export interface WorkExperienceTypes {

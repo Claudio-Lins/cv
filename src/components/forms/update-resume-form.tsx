@@ -16,6 +16,15 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Switch } from "../ui/switch"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, Controller, FieldError } from "react-hook-form"
@@ -23,7 +32,7 @@ import { ResumeSchema } from "@/zodSchema"
 import * as z from "zod"
 import { Separator } from "../ui/separator"
 import { MyInput } from "./my-input"
-import { startTransition, useTransition } from "react"
+import { startTransition, useState, useTransition } from "react"
 import { updateResume } from "@/actions/resume-action"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
@@ -38,6 +47,9 @@ import { CreateSkillsForm } from "./create-skills-form"
 import { CreateEducationForm } from "./create-eudcation-form"
 import { deleteReference } from "@/actions/reference-action"
 import { CreateReferenceForm } from "./create-reference-form"
+import { DeleteButton } from "../delete-button"
+import { EditButton } from "../edit-button"
+import { UpdateSkillsForm } from "./update-skills-form"
 
 interface UpdateResumeFormProps {
   resume: ResumeTypes
@@ -58,6 +70,9 @@ export function UpdateResumeForm({
   references,
 }: UpdateResumeFormProps) {
   const [isPending, startTransition] = useTransition()
+  const [isOpenDelete, setIsOpenDelete] = useState(false)
+  const [currentSkill, setCurrentSkill] = useState<SkillTypes | null>(null)
+  const [isOpenEdit, setIsOpenEdit] = useState(false)
   const {
     control,
     handleSubmit,
@@ -95,6 +110,7 @@ export function UpdateResumeForm({
         resume?.references?.map((ref) => ({
           ...ref,
           role: ref.role ?? undefined,
+          phone: ref.phone ?? undefined,
         })) || [],
       skills:
         resume?.skills?.map((skill) => ({
@@ -401,7 +417,7 @@ export function UpdateResumeForm({
                   <>
                     {skills.map((skill) => (
                       <div
-                        className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
+                        className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm"
                         key={skill.id}
                         title={skill.type}
                       >
@@ -429,14 +445,83 @@ export function UpdateResumeForm({
                             />
                           )}
                         />
-                        <span className="text-sm">{skill.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => deleteSkill(skill.id)}
-                          className=""
-                        >
-                          <MinusCircle className="text-red-500" size={20} />
-                        </button>
+                        <div className="flex-1 flex flex-col border-l border-r ml-2 px-4">
+                          <span className="text-base font-bold">
+                            {skill.name}
+                          </span>
+                          <span className="text-xs capitalize">
+                            {skill.type}
+                          </span>
+                        </div>
+                        <div className="w-10 flex items-center flex-col gap-2 justify-center">
+                          <Dialog
+                            open={isOpenEdit}
+                            onOpenChange={setIsOpenEdit}
+                          >
+                            <DialogTrigger asChild>
+                              <EditButton
+                                onClick={() => {
+                                  setCurrentSkill(skill)
+                                }}
+                              />
+                            </DialogTrigger>
+                            <DialogContent className="max-w-xs">
+                              <DialogHeader>
+                                <DialogTitle>Edit Skill</DialogTitle>
+                              </DialogHeader>
+                              {currentSkill && (
+                                <UpdateSkillsForm
+                                  skill={currentSkill}
+                                  setIsOpenEdit={setIsOpenEdit}
+                                />
+                              )}
+                            </DialogContent>
+                          </Dialog>
+                          <Dialog
+                            open={isOpenDelete}
+                            onOpenChange={setIsOpenDelete}
+                          >
+                            <DialogTrigger asChild>
+                              <DeleteButton
+                                onClick={() => {
+                                  setCurrentSkill(skill)
+                                }}
+                              />
+                            </DialogTrigger>
+                            <DialogContent className="max-w-xs">
+                              <DialogHeader>
+                                <DialogTitle>Delete Skill</DialogTitle>
+                              </DialogHeader>
+                              <DialogDescription>
+                                Are you sure you want to delete this skill?
+                              </DialogDescription>
+                              <DialogFooter className="w-full">
+                                <div className="flex items-center w-full justify-between">
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => {
+                                      setCurrentSkill(null)
+                                      setIsOpenDelete(false)
+                                    }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    variant="destructive"
+                                    color="error"
+                                    onClick={() => {
+                                      deleteSkill(currentSkill?.id!)
+                                      setCurrentSkill(null)
+                                      setIsOpenDelete(false)
+                                    }}
+                                  >
+                                    Delete
+                                  </Button>
+                                </div>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
                       </div>
                     ))}
                   </>
@@ -568,10 +653,11 @@ export function UpdateResumeForm({
                             {reference.email}
                           </small>
                           <small className="text-zinc-600">
-                            {reference.phone.replace(
-                              /(\d{3})(\d{3})(\d{3})(\d{3})/,
-                              "$1 $2 $3 $4"
-                            )}
+                            {reference.phone &&
+                              reference?.phone.replace(
+                                /(\d{3})(\d{3})(\d{3})(\d{3})/,
+                                "$1 $2 $3 $4"
+                              )}
                           </small>
                         </div>
                         <button

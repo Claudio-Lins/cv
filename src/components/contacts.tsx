@@ -1,5 +1,12 @@
 import { cn } from "@/lib/utils"
-import { FacebookIcon, Home, LinkedinIcon, Mail, Phone } from "lucide-react"
+import {
+  FacebookIcon,
+  Home,
+  HomeIcon,
+  LinkedinIcon,
+  Mail,
+  Phone,
+} from "lucide-react"
 import {
   FaXTwitter,
   FaInstagram,
@@ -7,6 +14,7 @@ import {
   FaYoutube,
   FaFacebook,
   FaLinkedinIn,
+  FaHouseMedical,
 } from "react-icons/fa6"
 
 interface ContactsProps {
@@ -38,33 +46,43 @@ export function Contacts({
 }: ContactsProps) {
   return (
     <div
-      className={cn("font-light text-zinc-600 tracking-widest print:text-xs ")}
+      className={cn(
+        "font-light text-zinc-600 tracking-widest print:tracking-wider"
+      )}
     >
-      <h3 className=" uppercase font-light">Contacts</h3>
-      <div className="flex flex-col mt-6 space-y-2">
+      <h3 className="uppercase font-light myPrintingSubTitle">Contacts</h3>
+      <div className="flex flex-col mt-6 gap-2 print:gap-0">
         {phone && (
-          <div className="flex items-center space-x-2 text-zinc-600 text-sm print:text-xs">
-            <Phone size={14} />
-            <span>{phone}</span>
+          <div className="flex items-center gap-2 text-zinc-600">
+            {phone && (
+              <div className="flex items-center gap-2 text-zinc-600">
+                <Phone size={20} className="print:hidden" />
+                <span className="print:text-[10px]">{phone}</span>
+              </div>
+            )}
           </div>
         )}
         {email && (
-          <div className="flex items-center space-x-2 text-zinc-600 text-sm print:text-xs">
-            <Mail size={14} />
-            <span>{email}</span>
+          <div className="flex items-center gap-2 text-zinc-600">
+            <Mail size={20} className="print:hidden" />
+            <span className="text-sm print:text-[10px]">{email}</span>
           </div>
         )}
         {street && (
-          <div className="flex space-x-2 text-zinc-600 w-full text-sm print:text-xs">
-            <Home className="text-sm" />
-            <div className="flex gap-x-2 gap-y-1 flex-wrap -mt-0.5 text-sm print:text-xs">
-              {street && <p className="w-full">{street}</p>}
-              {city && <p>{city}</p>}
-              {city && <p>|</p>}
-              {state && <p>{state}</p>}
-              {city && <p>|</p>}
-              {zip && <p>{zip}</p>}
-              {country && <p className="w-full">{country}</p>}
+          <div className="flex gap-2 text-zinc-600 print:gap-0">
+            <Home size={42} className="-mt-3 print:hidden" />
+            <div className="flex gap-x-2 gap-y-1 flex-wrap -mt-0.5 print:gap-y-0">
+              {street && (
+                <p className="w-full text-sm print:text-[8px]">{street}</p>
+              )}
+              {city && <p className="text-sm print:text-[8px]">{city}</p>}
+              {city && <p className="text-sm print:text-[8px]">|</p>}
+              {state && <p className="text-sm print:text-[8px]">{state}</p>}
+              {city && <p className="text-sm print:text-[8px]">|</p>}
+              {zip && <p className="text-sm print:text-[8px]">{zip}</p>}
+              {country && (
+                <p className="w-full text-sm print:text-[8px]">{country}</p>
+              )}
             </div>
           </div>
         )}
@@ -74,7 +92,7 @@ export function Contacts({
           <div className="" key={social.id}>
             {social?.name.includes("Github") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaGithub size={14} />
+                <FaGithub size={14} className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
@@ -83,14 +101,14 @@ export function Contacts({
                 >
                   {social?.name}
                 </a>
-                <span className="hidden print:block text-[10px]">
+                <span className="hidden print:block text-[8px]">
                   {social.url.slice(8)}
                 </span>
               </div>
             )}
             {social?.name.includes("LinkedIn") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaLinkedinIn size={14} />
+                <FaLinkedinIn size={14} className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
@@ -99,14 +117,14 @@ export function Contacts({
                 >
                   {social?.name}
                 </a>
-                <span className="hidden print:block text-[10px]">
+                <span className="hidden print:block text-[8px]">
                   {social.url.slice(8)}
                 </span>
               </div>
             )}
             {social?.name.includes("Facebook") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaFacebook size={14} />
+                <FaFacebook size={14} className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
@@ -115,14 +133,14 @@ export function Contacts({
                 >
                   {social?.name}
                 </a>
-                <span className="hidden print:block text-[10px]">
+                <span className="hidden print:block text-[8px]">
                   {social.url.slice(8)}
                 </span>
               </div>
             )}
             {social?.name.includes("Twitter") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaXTwitter size={14} />
+                <FaXTwitter size={14} className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
@@ -131,14 +149,14 @@ export function Contacts({
                 >
                   {social?.name}
                 </a>
-                <span className="hidden print:block text-[10px]">
+                <span className="hidden print:block text-[8px]">
                   {social.url.slice(8)}
                 </span>
               </div>
             )}
             {social?.name.includes("Insta") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaInstagram size={14} />
+                <FaInstagram size={14} className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
@@ -147,14 +165,14 @@ export function Contacts({
                 >
                   {social?.name}
                 </a>
-                <span className="hidden print:block text-[10px]">
+                <span className="hidden print:block text-[8px]">
                   {social.url.slice(8)}
                 </span>
               </div>
             )}
             {social?.name.includes("YouTube") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaYoutube size={14} />
+                <FaYoutube size={14} className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
@@ -163,7 +181,7 @@ export function Contacts({
                 >
                   {social?.name}
                 </a>
-                <span className="hidden print:block text-[10px]">
+                <span className="hidden print:block text-[8px]">
                   {social.url.slice(8)}
                 </span>
               </div>

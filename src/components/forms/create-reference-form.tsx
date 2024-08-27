@@ -49,12 +49,6 @@ export function CreateReferenceForm({}: CreateReferenceFormProps) {
     formState: { errors },
   } = useForm<z.infer<typeof ReferenceSchema>>({
     resolver: zodResolver(ReferenceSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      role: "",
-    },
   })
 
   async function onSubmit(values: ReferenceFormData) {

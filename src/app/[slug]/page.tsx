@@ -1,4 +1,4 @@
-import { About } from "@/components/about.tsx"
+import { About } from "@/components/about"
 import { Contacts } from "@/components/contacts"
 import { Education } from "@/components/education"
 import { Name } from "@/components/name"
@@ -33,7 +33,7 @@ export default async function Resume({ params }: ResumeProps) {
   return (
     <div className={cn("w-full max-w-7xl bg-white pb-20 print:mt-0")}>
       <NavResume slugs={slugs} />
-      <div className="flex w-full max-w-7xl flex-col rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0">
+      <div className="flex w-full max-w-7xl flex-col rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0 print:shadow-none">
         <Name
           picture={false}
           pictureUrl={resume?.pictureUrl || ""}

@@ -23,6 +23,15 @@ async function getSkills() {
   const skills = await prisma.skill.findMany()
   return skills
 }
+
+async function getSkill(id: string) {
+  const skill = await prisma.skill.findUnique({
+    where: {
+      id,
+    },
+  })
+  return skill
+}
 async function getReferences() {
   const references = await prisma.reference.findMany()
   return references
@@ -53,6 +62,7 @@ export default async function Admin({}: AdminProps) {
   const slugs = await getTitle(user?.id!)
   const allResumes = await getAllResume(user?.id!)
   const skills = await getSkills()
+  const skill = await getSkill(skills[0]?.id!)
   const socialNetworks = await getSocialNetworks()
   const workExperiences = await getWorkExperiences()
   const educations = await getEducation()

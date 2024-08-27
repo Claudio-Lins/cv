@@ -47,6 +47,9 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
     formState: { errors },
   } = useForm<z.infer<typeof SkillSchema>>({
     resolver: zodResolver(SkillSchema),
+    defaultValues: {
+      type: $Enums.SkillType.TECHNICAL,
+    },
   })
 
   async function onSubmit(values: SkillsFormData) {
