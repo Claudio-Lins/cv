@@ -417,7 +417,7 @@ export function UpdateResumeForm({
                   <>
                     {skills.map((skill) => (
                       <div
-                        className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
+                        className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm"
                         key={skill.id}
                         title={skill.type}
                       >
@@ -458,7 +458,7 @@ export function UpdateResumeForm({
                             open={isOpenEdit}
                             onOpenChange={setIsOpenEdit}
                           >
-                            <DialogTrigger>
+                            <DialogTrigger asChild>
                               <EditButton
                                 onClick={() => {
                                   setCurrentSkill(skill)
@@ -475,6 +475,50 @@ export function UpdateResumeForm({
                                   setIsOpenEdit={setIsOpenEdit}
                                 />
                               )}
+                            </DialogContent>
+                          </Dialog>
+                          <Dialog
+                            open={isOpenDelete}
+                            onOpenChange={setIsOpenDelete}
+                          >
+                            <DialogTrigger asChild>
+                              <DeleteButton
+                                onClick={() => {
+                                  setCurrentSkill(skill)
+                                }}
+                              />
+                            </DialogTrigger>
+                            <DialogContent className="max-w-xs">
+                              <DialogHeader>
+                                <DialogTitle>Delete Skill</DialogTitle>
+                              </DialogHeader>
+                              <DialogDescription>
+                                Are you sure you want to delete this skill?
+                              </DialogDescription>
+                              <DialogFooter className="w-full">
+                                <div className="flex items-center w-full justify-between">
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => {
+                                      setCurrentSkill(null)
+                                      setIsOpenDelete(false)
+                                    }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    variant="destructive"
+                                    color="error"
+                                    onClick={() => {
+                                      deleteSkill(currentSkill?.id!)
+                                      setCurrentSkill(null)
+                                      setIsOpenDelete(false)
+                                    }}
+                                  >
+                                    Delete
+                                  </Button>
+                                </div>
+                              </DialogFooter>
                             </DialogContent>
                           </Dialog>
                         </div>

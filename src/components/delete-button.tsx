@@ -10,7 +10,7 @@ export function DeleteButton({ onClick }: DeleteButtonProps) {
       onClick={onClick}
       type="button"
       className={cn(
-        "flex items-center justify-center size-6 border p-1 rounded-full bg-red-600"
+        "flex items-center justify-center size-6 border p-1 rounded-full bg-black"
       )}
     >
       <Trash2Icon size={18} className="text-white" />
