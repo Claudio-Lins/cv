@@ -16,6 +16,15 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Switch } from "../ui/switch"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, Controller, FieldError } from "react-hook-form"
@@ -23,7 +32,7 @@ import { ResumeSchema } from "@/zodSchema"
 import * as z from "zod"
 import { Separator } from "../ui/separator"
 import { MyInput } from "./my-input"
-import { startTransition, useTransition } from "react"
+import { startTransition, useState, useTransition } from "react"
 import { updateResume } from "@/actions/resume-action"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
@@ -38,6 +47,9 @@ import { CreateSkillsForm } from "./create-skills-form"
 import { CreateEducationForm } from "./create-eudcation-form"
 import { deleteReference } from "@/actions/reference-action"
 import { CreateReferenceForm } from "./create-reference-form"
+import { DeleteButton } from "../delete-button"
+import { EditButton } from "../edit-button"
+import { UpdateSkillsForm } from "./update-skills-form"
 
 interface UpdateResumeFormProps {
   resume: ResumeTypes
@@ -58,6 +70,9 @@ export function UpdateResumeForm({
   references,
 }: UpdateResumeFormProps) {
   const [isPending, startTransition] = useTransition()
+  const [isOpenDelete, setIsOpenDelete] = useState(false)
+  const [currentSkill, setCurrentSkill] = useState<SkillTypes | null>(null)
+  const [isOpenEdit, setIsOpenEdit] = useState(false)
   const {
     control,
     handleSubmit,
@@ -430,14 +445,39 @@ export function UpdateResumeForm({
                             />
                           )}
                         />
-                        <span className="text-sm">{skill.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => deleteSkill(skill.id)}
-                          className=""
-                        >
-                          <MinusCircle className="text-red-500" size={20} />
-                        </button>
+                        <div className="flex-1 flex flex-col border-l border-r ml-2 px-4">
+                          <span className="text-base font-bold">
+                            {skill.name}
+                          </span>
+                          <span className="text-xs capitalize">
+                            {skill.type}
+                          </span>
+                        </div>
+                        <div className="w-10 flex items-center flex-col gap-2 justify-center">
+                          <Dialog
+                            open={isOpenEdit}
+                            onOpenChange={setIsOpenEdit}
+                          >
+                            <DialogTrigger>
+                              <EditButton
+                                onClick={() => {
+                                  setCurrentSkill(skill)
+                                }}
+                              />
+                            </DialogTrigger>
+                            <DialogContent className="max-w-xs">
+                              <DialogHeader>
+                                <DialogTitle>Edit Skill</DialogTitle>
+                              </DialogHeader>
+                              {currentSkill && (
+                                <UpdateSkillsForm
+                                  skill={currentSkill}
+                                  setIsOpenEdit={setIsOpenEdit}
+                                />
+                              )}
+                            </DialogContent>
+                          </Dialog>
+                        </div>
                       </div>
                     ))}
                   </>

@@ -45,3 +45,25 @@ export async function deleteSkill(id: string) {
 
   return revalidatePath("/admin")
 }
+
+export async function updateSkill(
+  id: string,
+  values: z.infer<typeof SkillSchema>,
+  slug?: string
+) {
+  const validateFields = SkillSchema.safeParse(values)
+  if (!validateFields.success) {
+    throw new Error("Invalid category data")
+  }
+
+  await prisma.skill.update({
+    where: {
+      id,
+    },
+    data: {
+      ...validateFields.data,
+    },
+  })
+
+  return revalidatePath("/admin")
+}

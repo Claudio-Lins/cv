@@ -10,6 +10,16 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
@@ -45,10 +55,14 @@ import { MyInput } from "./my-input"
 import { MyTextArea } from "./my-textArea"
 import { calculateDuration } from "@/utils/caculate-duration-data"
 import { CreateEducationForm } from "./create-eudcation-form"
+import { DeleteButton } from "../delete-button"
+import { EditButton } from "../edit-button"
+import { UpdateSkillsForm } from "./update-skills-form"
 
 interface CreateResumeFormProps {
   socialNetworks: SocialNetworkTypes[]
   skills: SkillTypes[]
+  skill?: SkillTypes
   workExperiences: WorkExperienceTypes[]
   educations: EducationTypes[]
   references: ReferenceTypes[]
@@ -60,10 +74,13 @@ export function CreateResumeForm({
   socialNetworks,
   workExperiences,
   skills,
+  skill,
   educations,
   references,
 }: CreateResumeFormProps) {
   const [output, setOutput] = useState("")
+  const [isOpenDelete, setIsOpenDelete] = useState(false)
+  const [isOpenEdit, setIsOpenEdit] = useState(false)
   const {
     control,
     handleSubmit,
@@ -397,7 +414,7 @@ export function CreateResumeForm({
                     <>
                       {skills.map((skill) => (
                         <div
-                          className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
+                          className=" flex items-center gap-1 bg-white border rounded-md p-4 relative shadow-sm max-w-xs"
                           key={skill.id}
                           title={skill.type}
                         >
@@ -425,14 +442,87 @@ export function CreateResumeForm({
                               />
                             )}
                           />
-                          <span className="text-sm">{skill.name}</span>
-                          <button
-                            type="button"
-                            onClick={() => deleteSkill(skill.id)}
-                            className=""
-                          >
-                            <MinusCircle className="text-red-500" size={20} />
-                          </button>
+                          <div className="flex-1 flex flex-col border-l border-r ml-2 px-4">
+                            <span className="text-base font-bold">
+                              {skill.name}
+                            </span>
+                            <span className="text-xs capitalize">
+                              {skill.type}
+                            </span>
+                          </div>
+                          <div className="w-10 flex items-center flex-col gap-2 justify-center">
+                            <Dialog
+                              open={isOpenEdit}
+                              onOpenChange={setIsOpenEdit}
+                            >
+                              <DialogTrigger>
+                                {/* <EditButton /> */}
+                              </DialogTrigger>
+                              <DialogContent className="max-w-xs">
+                                <DialogHeader>
+                                  <DialogTitle>Edit Skill</DialogTitle>
+                                </DialogHeader>
+
+                                <Separator />
+                                <DialogFooter className="w-full">
+                                  <div className="flex items-center w-full justify-between">
+                                    <Button
+                                      onClick={() => {
+                                        setIsOpenEdit(false)
+                                      }}
+                                      className="border-0 bg-gray-300 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        alert(JSON.stringify(skill, null, 2))
+                                        setIsOpenEdit(false)
+                                      }}
+                                      className="bg-red-500"
+                                    >
+                                      Save
+                                    </Button>
+                                  </div>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                            <Dialog
+                              open={isOpenDelete}
+                              onOpenChange={setIsOpenDelete}
+                            >
+                              <DialogTrigger>
+                                {/* <DeleteButton /> */}
+                              </DialogTrigger>
+                              <DialogContent className="max-w-xs">
+                                <DialogHeader>
+                                  <DialogTitle>
+                                    Are you absolutely sure you want to delete?
+                                  </DialogTitle>
+                                </DialogHeader>
+                                <Separator />
+                                <DialogFooter className="w-full">
+                                  <div className="flex items-center w-full justify-between">
+                                    <Button
+                                      onClick={() => setIsOpenDelete(false)}
+                                      className="border-0 bg-gray-300 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        deleteSkill(skill.id)
+                                        setIsOpenDelete(false)
+                                      }}
+                                      className="bg-red-500"
+                                    >
+                                      Delete
+                                    </Button>
+                                  </div>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
                         </div>
                       ))}
                     </>
