@@ -23,40 +23,48 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray, Controller, FieldError } from "react-hook-form"
+import { deleteReference } from "@/actions/reference-action"
+import { createResume } from "@/actions/resume-action"
+import { deleteSkill } from "@/actions/skill-action"
+import { deleteSocialNetwork } from "@/actions/social-network-action"
+import { cn } from "@/lib/utils"
+import { calculateDuration } from "@/utils/caculate-duration-data"
 import { ResumeSchema } from "@/zodSchema"
-import * as z from "zod"
-import { Switch } from "../ui/switch"
-import { Separator } from "../ui/separator"
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
+  Check,
+  Loader,
+  MinusCircle,
+  MinusIcon,
+  Plus,
+  X,
+  XCircle,
+} from "lucide-react"
+import { startTransition, useEffect, useState, useTransition } from "react"
+import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
+import * as z from "zod"
+import {
+  AddressTypes,
+  EducationTypes,
+  ReferenceTypes,
   ResumeTypes,
   SkillTypes,
-  ReferenceTypes,
-  AddressTypes,
   SocialNetworkTypes,
   WorkExperienceTypes,
-  EducationTypes,
 } from "../../../@types/resume-types"
-import { cn } from "@/lib/utils"
-import { startTransition, useEffect, useState } from "react"
+import { DeleteButton } from "../delete-button"
+import { EditButton } from "../edit-button"
+import { Separator } from "../ui/separator"
+import { Switch } from "../ui/switch"
 import { Textarea } from "../ui/textarea"
-import { Check, MinusCircle, MinusIcon, Plus, X, XCircle } from "lucide-react"
-import { CreateSkillsForm } from "./create-skills-form"
-import { deleteSkill } from "@/actions/skill-action"
+import { CreateEducationForm } from "./create-eudcation-form"
 import { CreateReferenceForm } from "./create-reference-form"
-import { deleteReference } from "@/actions/reference-action"
+import { CreateSkillsForm } from "./create-skills-form"
 import { CreateSocialNetworkForm } from "./create-social-form"
-import { createResume } from "@/actions/resume-action"
-import { deleteSocialNetwork } from "@/actions/social-network-action"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { DatePicker } from "./date-picker"
 import { MyInput } from "./my-input"
 import { MyTextArea } from "./my-textArea"
-import { calculateDuration } from "@/utils/caculate-duration-data"
-import { CreateEducationForm } from "./create-eudcation-form"
-import { DeleteButton } from "../delete-button"
-import { EditButton } from "../edit-button"
 import { UpdateSkillsForm } from "./update-skills-form"
 
 interface CreateResumeFormProps {
@@ -78,6 +86,7 @@ export function CreateResumeForm({
   educations,
   references,
 }: CreateResumeFormProps) {
+  const [isPending, startTransition] = useTransition()
   const [output, setOutput] = useState("")
   const [isOpenDelete, setIsOpenDelete] = useState(false)
   const [isOpenEdit, setIsOpenEdit] = useState(false)
@@ -88,7 +97,7 @@ export function CreateResumeForm({
     reset,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof ResumeSchema>>({
     resolver: zodResolver(ResumeSchema),
   })
@@ -685,13 +694,16 @@ export function CreateResumeForm({
           </CardContent>
           <Separator className="w-[97%] mx-auto" />
           <CardFooter className="flex mt-6 justify-between">
-            <Button type="submit" className="">
-              Create Resume
+            <Button type="submit" className="flex items-center gap-1">
+              <Loader
+                className={cn("hidden", isPending && "block animate-spin")}
+              />
+              <span>Create Resume</span>
             </Button>
           </CardFooter>
         </Card>
       </form>
-      <pre>{output}</pre>
+      {/* <pre>{output}</pre> */}
     </>
   )
 }

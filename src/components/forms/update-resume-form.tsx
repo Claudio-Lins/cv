@@ -76,7 +76,7 @@ export function UpdateResumeForm({
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     register,
     reset,
   } = useForm<z.infer<typeof ResumeSchema>>({

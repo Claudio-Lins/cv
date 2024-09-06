@@ -1,8 +1,8 @@
 "use server"
 
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { prisma } from "@/lib/prisma"
 import { ResumeSchema } from "@/zodSchema"
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import * as z from "zod"
@@ -61,7 +61,7 @@ export async function createResume(values: z.infer<typeof ResumeSchema>) {
     },
   })
 
-  return revalidatePath("/admin")
+  return redirect(`/${values.slug}`)
 }
 
 export async function updateResume(
