@@ -11,9 +11,9 @@ import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
 
-import { getAllResume, getResumeBySlug } from "@/data/resume"
 import { Footer } from "@/components/footer"
 import { References } from "@/components/references"
+import { getAllResume, getResumeBySlug } from "@/data/resume"
 
 interface ResumeProps {
   params: {
@@ -73,6 +73,7 @@ export default async function Resume({ params }: ResumeProps) {
                     resume?.skills?.map((skill) => ({
                       id: skill.id,
                       name: skill.name,
+                      description: skill?.description || "",
                       type: skill.type,
                     })) || []
                   }

@@ -20,8 +20,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { $Enums } from "@prisma/client"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { startTransition, useState } from "react"
-import { Controller, useFieldArray, useForm } from "react-hook-form"
+import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
+import { RichTextEditor } from "../rich-texte-ditor"
 import {
   Select,
   SelectContent,
@@ -30,6 +31,7 @@ import {
   SelectValue,
 } from "../ui/select"
 import { Separator } from "../ui/separator"
+import { MyTextArea } from "./my-textArea"
 
 interface CreateSkillsFormProps {}
 
@@ -97,6 +99,26 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
               </span>
             )}
           </div>
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <RichTextEditor
+                value={field.value || ""}
+                onChange={(value) => field.onChange(value)}
+                registerValue="description"
+                errors={errors as Record<string, FieldError>}
+              />
+            )}
+          />
+          {/* <MyTextArea
+            register={register}
+            errors={errors as Record<string, FieldError>}
+            registerValue="description"
+            label="Description"
+            placeholder="Description of Skill"
+          /> */}
           <div className="flex flex-col space-y-1.5 w-full">
             <Label>Type</Label>
             <Controller
@@ -121,16 +143,16 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
               )}
             />
           </div>
-          <Separator />
-          <DialogFooter className="">
-            <div className="w-full flex items-center justify-between">
-              <DialogClose>Cancel</DialogClose>
-              <Button onClick={handleSubmit(onSubmit)} type="button">
-                Create Skill
-              </Button>
-            </div>
-          </DialogFooter>
         </form>
+        <Separator />
+        <DialogFooter className="">
+          <div className="w-full flex items-center justify-between">
+            <DialogClose>Cancel</DialogClose>
+            <Button onClick={handleSubmit(onSubmit)} type="button">
+              Create Skill
+            </Button>
+          </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
