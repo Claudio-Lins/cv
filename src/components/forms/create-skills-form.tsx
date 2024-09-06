@@ -1,6 +1,4 @@
 "use client"
-import { cn } from "@/lib/utils"
-import { Plus, PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -13,12 +11,17 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
+import { Plus, PlusCircle } from "lucide-react"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray, Controller } from "react-hook-form"
+import { createSkill } from "@/actions/skill-action"
 import { SkillSchema } from "@/zodSchema"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { $Enums } from "@prisma/client"
+import { DialogClose } from "@radix-ui/react-dialog"
+import { startTransition, useState } from "react"
+import { Controller, useFieldArray, useForm } from "react-hook-form"
+import * as z from "zod"
 import {
   Select,
   SelectContent,
@@ -26,10 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select"
-import { DialogClose } from "@radix-ui/react-dialog"
 import { Separator } from "../ui/separator"
-import { createSkill } from "@/actions/skill-action"
-import { startTransition, useState } from "react"
 
 interface CreateSkillsFormProps {}
 
@@ -121,16 +121,16 @@ export function CreateSkillsForm({}: CreateSkillsFormProps) {
               )}
             />
           </div>
+          <Separator />
+          <DialogFooter className="">
+            <div className="w-full flex items-center justify-between">
+              <DialogClose>Cancel</DialogClose>
+              <Button onClick={handleSubmit(onSubmit)} type="button">
+                Create Skill
+              </Button>
+            </div>
+          </DialogFooter>
         </form>
-        <Separator />
-        <DialogFooter className="">
-          <div className="w-full flex items-center justify-between">
-            <DialogClose>Cancel</DialogClose>
-            <Button onClick={handleSubmit(onSubmit)} type="button">
-              Create Skill
-            </Button>
-          </div>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
