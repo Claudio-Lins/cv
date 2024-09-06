@@ -22,6 +22,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useState } from "react"
+import { SkillTypes } from "../../@types/resume-types"
 import { DeleteButton } from "./delete-button"
 import { EditButton } from "./edit-button"
 import { Button } from "./ui/button"
@@ -29,12 +30,16 @@ import { Button } from "./ui/button"
 interface NavResumeProps {
   slugs: {
     title: string
-    slug: string | null
+    slug: string
   }[]
 }
 
 export function NavResume({ slugs }: NavResumeProps) {
   const [isOpenDelete, setIsOpenDelete] = useState(false)
+  const [currentSlug, setCurrentSlug] = useState<{
+    title: string
+    slug: string
+  } | null>(null)
   const pathname = usePathname()
   return (
     <div className="-mt-10 bg-transparent  print:hidden">
@@ -78,7 +83,9 @@ export function NavResume({ slugs }: NavResumeProps) {
                     <DialogTrigger asChild>
                       <DeleteButton
                         onClick={() => {
+                          setCurrentSlug(slug)
                           setIsOpenDelete(true)
+                          console.log("Delete", slug.title)
                         }}
                       />
                       {/* <Button
@@ -95,7 +102,7 @@ export function NavResume({ slugs }: NavResumeProps) {
                       <DialogHeader>
                         <DialogTitle>Are you absolutely sure?</DialogTitle>
                         <DialogDescription>
-                          Deletar {slug.title}?
+                          Deletar {currentSlug?.title}?
                         </DialogDescription>
                       </DialogHeader>
                       <div className="flex items-center justify-between">
@@ -111,7 +118,9 @@ export function NavResume({ slugs }: NavResumeProps) {
                           variant="destructive"
                           color="error"
                           onClick={() => {
-                            deleteResume(slug.slug!)
+                            deleteResume(currentSlug?.slug!)
+                            setCurrentSlug(slug)
+                            console.log("Deleting", slug.title)
                             setIsOpenDelete(false)
                           }}
                         >
