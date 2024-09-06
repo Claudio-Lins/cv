@@ -2,11 +2,12 @@ import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { getAllResume } from "@/data/resume"
+import AdminTabs from "@/components/admin-tabs"
 import { CreateResumeForm } from "@/components/forms/create-resume-form"
 import { UpdateResumeForm } from "@/components/forms/update-resume-form"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { getAllResume } from "@/data/resume"
 
 interface AdminProps {}
 
@@ -70,7 +71,7 @@ export default async function Admin({}: AdminProps) {
 
   return (
     <div className={cn("w-full max-w-7xl mx-auto bg-white")}>
-      <Tabs defaultValue={allResumes[0]?.slug!} className="w-full">
+      {/* <Tabs defaultValue={allResumes[0]?.slug!} className="w-full">
         <TabsList>
           {allResumes.map((resume) => (
             <TabsTrigger key={resume?.slug} value={resume?.slug!}>
@@ -106,7 +107,15 @@ export default async function Admin({}: AdminProps) {
             )}
           </TabsContent>
         ))}
-      </Tabs>
+      </Tabs> */}
+      <AdminTabs
+        allResumes={allResumes}
+        socialNetworks={socialNetworks}
+        workExperiences={workExperiences}
+        skills={skills}
+        educations={educations}
+        references={references}
+      />
     </div>
   )
 }

@@ -113,3 +113,13 @@ export async function updateResume(
 
   return redirect(`/${values.slug}`)
 }
+
+export async function deleteResume(slug: string) {
+  await prisma.resume.delete({
+    where: {
+      slug,
+    },
+  })
+
+  return redirect("/")
+}
