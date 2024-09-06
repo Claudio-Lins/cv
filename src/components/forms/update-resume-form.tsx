@@ -1,21 +1,7 @@
 "use client"
-import { cn } from "@/lib/utils"
-import {
-  EducationTypes,
-  ReferenceTypes,
-  ResumeTypes,
-  SkillTypes,
-  SocialNetworkTypes,
-  WorkExperienceTypes,
-} from "../../../@types/resume-types"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card"
+import { deleteReference } from "@/actions/reference-action"
+import { updateResume } from "@/actions/resume-action"
+import { deleteSkill } from "@/actions/skill-action"
 import {
   Dialog,
   DialogContent,
@@ -25,30 +11,44 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Switch } from "../ui/switch"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, Controller, FieldError } from "react-hook-form"
-import { ResumeSchema } from "@/zodSchema"
-import * as z from "zod"
-import { Separator } from "../ui/separator"
-import { MyInput } from "./my-input"
-import { startTransition, useState, useTransition } from "react"
-import { updateResume } from "@/actions/resume-action"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { Label } from "../ui/label"
-import { MyTextArea } from "./my-textArea"
-import { CreateSocialNetworkForm } from "./create-social-form"
-import { Loader, MinusCircle, XCircle } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { calculateDuration } from "@/utils/caculate-duration-data"
-import { CreateWorkExperienceForm } from "./create-work-experience-form"
-import { deleteSkill } from "@/actions/skill-action"
-import { CreateSkillsForm } from "./create-skills-form"
-import { CreateEducationForm } from "./create-eudcation-form"
-import { deleteReference } from "@/actions/reference-action"
-import { CreateReferenceForm } from "./create-reference-form"
+import { ResumeSchema } from "@/zodSchema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader, MinusCircle, PencilIcon, Trash2, XCircle } from "lucide-react"
+import { startTransition, useState, useTransition } from "react"
+import { Controller, FieldError, useForm } from "react-hook-form"
+import * as z from "zod"
+import {
+  EducationTypes,
+  ReferenceTypes,
+  ResumeTypes,
+  SkillTypes,
+  SocialNetworkTypes,
+  WorkExperienceTypes,
+} from "../../../@types/resume-types"
 import { DeleteButton } from "../delete-button"
 import { EditButton } from "../edit-button"
+import { Button } from "../ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card"
+import { Input } from "../ui/input"
+import { Label } from "../ui/label"
+import { Separator } from "../ui/separator"
+import { Switch } from "../ui/switch"
+import { CreateEducationForm } from "./create-eudcation-form"
+import { CreateReferenceForm } from "./create-reference-form"
+import { CreateSkillsForm } from "./create-skills-form"
+import { CreateSocialNetworkForm } from "./create-social-form"
+import { CreateWorkExperienceForm } from "./create-work-experience-form"
+import { MyInput } from "./my-input"
+import { MyTextArea } from "./my-textArea"
 import { UpdateSkillsForm } from "./update-skills-form"
 
 interface UpdateResumeFormProps {
@@ -459,11 +459,15 @@ export function UpdateResumeForm({
                             onOpenChange={setIsOpenEdit}
                           >
                             <DialogTrigger asChild>
-                              <EditButton
+                              <Button
+                                variant="ghost"
+                                size="icon"
                                 onClick={() => {
                                   setCurrentSkill(skill)
                                 }}
-                              />
+                              >
+                                <PencilIcon size={20} />
+                              </Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-xs">
                               <DialogHeader>
@@ -482,11 +486,15 @@ export function UpdateResumeForm({
                             onOpenChange={setIsOpenDelete}
                           >
                             <DialogTrigger asChild>
-                              <DeleteButton
+                              <Button
+                                variant="ghost"
+                                size="icon"
                                 onClick={() => {
                                   setCurrentSkill(skill)
                                 }}
-                              />
+                              >
+                                <Trash2 size={20} />
+                              </Button>
                             </DialogTrigger>
                             <DialogContent className="max-w-xs">
                               <DialogHeader>
