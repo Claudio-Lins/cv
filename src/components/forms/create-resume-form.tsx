@@ -54,7 +54,6 @@ import {
 } from "../../../@types/resume-types"
 import { DeleteButton } from "../delete-button"
 import { EditButton } from "../edit-button"
-import { SkillsManager } from "../skills/skills-manager"
 import { Separator } from "../ui/separator"
 import { Switch } from "../ui/switch"
 import { Textarea } from "../ui/textarea"
@@ -413,7 +412,132 @@ export function CreateResumeForm({
               </div>
               <Separator className="w-full mx-auto" />
 
-              <SkillsManager skills={skills} onDeleteSkill={deleteSkill} />
+              <div className="w-full flex flex-col gap-4">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-xl">Skills</h3>
+                  <CreateSkillsForm />
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  {skills.length > 0 && (
+                    <>
+                      {skills.map((skill) => (
+                        <div
+                          className=" flex items-center gap-1 bg-white border rounded-md p-4 relative shadow-sm max-w-xs"
+                          key={skill.id}
+                          title={skill.type}
+                        >
+                          <Controller
+                            name="skills"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="checkbox"
+                                {...field}
+                                value={skill.id}
+                                checked={
+                                  Array.isArray(field.value)
+                                    ? field.value.some((s) => s.id === skill.id)
+                                    : false
+                                }
+                                onChange={(e) => {
+                                  const newValue = e.target.checked
+                                    ? [...(field.value || []), skill]
+                                    : (field.value || []).filter(
+                                        (s) => s.id !== skill.id
+                                      )
+                                  field.onChange(newValue)
+                                }}
+                              />
+                            )}
+                          />
+                          <div className="flex-1 flex flex-col border-l border-r ml-2 px-4">
+                            <span className="text-base font-bold">
+                              {skill.name}
+                            </span>
+                            <span className="text-xs capitalize">
+                              {skill.type}
+                            </span>
+                          </div>
+                          <div className="w-10 flex items-center flex-col gap-2 justify-center">
+                            <Dialog
+                              open={isOpenEdit}
+                              onOpenChange={setIsOpenEdit}
+                            >
+                              <DialogTrigger>
+                                {/* <EditButton /> */}
+                              </DialogTrigger>
+                              <DialogContent className="max-w-xs">
+                                <DialogHeader>
+                                  <DialogTitle>Edit Skill</DialogTitle>
+                                </DialogHeader>
+
+                                <Separator />
+                                <DialogFooter className="w-full">
+                                  <div className="flex items-center w-full justify-between">
+                                    <Button
+                                      onClick={() => {
+                                        setIsOpenEdit(false)
+                                      }}
+                                      className="border-0 bg-gray-300 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        alert(JSON.stringify(skill, null, 2))
+                                        setIsOpenEdit(false)
+                                      }}
+                                      className="bg-red-500"
+                                    >
+                                      Save
+                                    </Button>
+                                  </div>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                            <Dialog
+                              open={isOpenDelete}
+                              onOpenChange={setIsOpenDelete}
+                            >
+                              <DialogTrigger>
+                                {/* <DeleteButton /> */}
+                              </DialogTrigger>
+                              <DialogContent className="max-w-xs">
+                                <DialogHeader>
+                                  <DialogTitle>
+                                    Are you absolutely sure you want to delete?
+                                  </DialogTitle>
+                                </DialogHeader>
+                                <Separator />
+                                <DialogFooter className="w-full">
+                                  <div className="flex items-center w-full justify-between">
+                                    <Button
+                                      onClick={() => setIsOpenDelete(false)}
+                                      className="border-0 bg-gray-300 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      onClick={() => {
+                                        deleteSkill(skill.id)
+                                        setIsOpenDelete(false)
+                                      }}
+                                      className="bg-red-500"
+                                    >
+                                      Delete
+                                    </Button>
+                                  </div>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </div>
               <Separator className="w-full mx-auto" />
 
               <div className="w-full flex flex-col gap-4">
