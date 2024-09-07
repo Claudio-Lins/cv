@@ -31,7 +31,7 @@ export default async function Resume({ params }: ResumeProps) {
     return redirect("/admin")
   }
   return (
-    <div className={cn("w-full max-w-7xl bg-white py-20 print:mt-0")}>
+    <div className={cn("w-full max-w-7xl bg-white pb-20 mt-20 print:mt-0")}>
       <NavResume slugs={slugs} />
       <div className="flex w-full max-w-7xl flex-col rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0 print:shadow-none">
         <Name
