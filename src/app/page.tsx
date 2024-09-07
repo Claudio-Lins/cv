@@ -1,6 +1,7 @@
+import { ResumeCard } from "@/components/resume-card"
+import { prisma } from "@/lib/prisma"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
-import { prisma } from "@/lib/prisma"
 
 async function getTitle(userId: string) {
   const slugs = await prisma.resume.findMany({
@@ -13,6 +14,22 @@ async function getTitle(userId: string) {
     },
   })
   return slugs
+}
+
+async function getResumes(userId: string) {
+  const resumes = await prisma.resume.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      socialNetworks: true,
+      educations: true,
+      skills: true,
+      workExperiences: true,
+      references: true,
+    },
+  })
+  return resumes
 }
 
 async function getActiveResume(userId: string) {
@@ -28,19 +45,19 @@ async function getActiveResume(userId: string) {
 export default async function Home() {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
+  const resumes = await getResumes(user?.id!)
 
-  const slugs = await getTitle(user?.id!)
-  const activeResume = await getActiveResume(user?.id!)
-
-  if (!slugs.length) {
-    return redirect("/admin")
-  } else {
-    return redirect(`/${slugs[0].slug}`)
-  }
-
-  // return (
-  //   <div className="w-full flex items-center">
-  //     <h1>{activeResume?.title}</h1>
-  //   </div>
-  // )
+  return (
+    <div className="w-full p-20">
+      <div className="flex flex-wrap justify-center gap-10">
+        {resumes.map((resume) => (
+          <ResumeCard
+            key={resume.id}
+            title={resume.title}
+            summary={resume?.about}
+          />
+        ))}
+      </div>
+    </div>
+  )
 }
