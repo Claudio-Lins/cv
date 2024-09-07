@@ -70,7 +70,7 @@ export default async function Admin({}: AdminProps) {
   const references = await getReferences()
 
   return (
-    <div className={cn("w-full max-w-7xl mx-auto bg-white")}>
+    <div className={cn("w-full max-w-7xl mt-20 mx-auto bg-white")}>
       {/* <Tabs defaultValue={allResumes[0]?.slug!} className="w-full">
         <TabsList>
           {allResumes.map((resume) => (
