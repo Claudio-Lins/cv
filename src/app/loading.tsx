@@ -16,9 +16,9 @@ export default function Loading() {
   }
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-zinc-950">
+    <main className="flex min-h-screen w-full flex-col items-center justify-center bg-white/50 backdrop-blur-sm">
       <div className="relative w-32 h-36">
-        <Loader size="100" className="animate-spin text-white" />
+        <Loader size="100" className="animate-spin text-black" />
       </div>
     </main>
   )
