@@ -2,10 +2,10 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 
+import { ProfileAvatar } from "@/components/profile-avatar"
+import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
-import { cn } from "@/lib/utils"
-import { ProfileAvatar } from "@/components/profile-avatar"
 
 import { getAllResume } from "@/data/resume"
 
@@ -36,7 +36,7 @@ export default async function RootLayout({
       <body
         className={cn(
           inter.className,
-          "bg-purple-100 w-full flex items-center flex-col min-h-dvh mt-20 print:mt-0"
+          "bg-purple-50 w-full flex items-center flex-col min-h-dvh print:mt-0"
         )}
       >
         <ProfileAvatar slug={slug} />
