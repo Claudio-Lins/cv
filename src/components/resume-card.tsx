@@ -33,9 +33,14 @@ export function ResumeCard({ title, summary, slug }: ResumeCardProps) {
         >
           <Eye className="w-6 h-6" />
         </Link>
-        <button className="text-zinc-200 hover:text-zinc-400" aria-label="Edit">
+        <Link
+          href={`/admin?tab=${slug}`}
+          passHref
+          className="text-zinc-200 hover:text-zinc-400"
+          aria-label="Edit"
+        >
           <Edit className="w-6 h-6" />
-        </button>
+        </Link>
         <button
           className="text-zinc-200 hover:text-zinc-400"
           aria-label="Delete"

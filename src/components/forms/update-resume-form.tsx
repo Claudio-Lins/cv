@@ -147,10 +147,10 @@ export function UpdateResumeForm({
         <CardHeader>
           <CardTitle>Edit a Resume</CardTitle>
           <CardDescription className="flex items-center space-x-2">
-            <span className="font-bold text-lg">
+            {/* <span className="font-bold text-lg">
               {resume?.active ? "Active" : "Inactive"}
-            </span>
-            <Switch {...register("active")} defaultChecked={resume.active} />
+            </span> */}
+            {/* <Switch {...register("active")} defaultChecked={resume.active} /> */}
           </CardDescription>
         </CardHeader>
         <Separator className="w-[95%] mx-auto" />
