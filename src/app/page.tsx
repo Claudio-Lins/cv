@@ -52,6 +52,7 @@ export default async function Home() {
       <div className="flex flex-wrap justify-center gap-10">
         {resumes.map((resume) => (
           <ResumeCard
+            slug={resume.slug}
             key={resume.id}
             title={resume.title}
             summary={resume?.about}

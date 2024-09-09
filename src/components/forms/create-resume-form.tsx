@@ -54,6 +54,7 @@ import {
 } from "../../../@types/resume-types"
 import { DeleteButton } from "../delete-button"
 import { EditButton } from "../edit-button"
+import { RichTextEditor } from "../rich-texte-ditor"
 import { Separator } from "../ui/separator"
 import { Switch } from "../ui/switch"
 import { Textarea } from "../ui/textarea"
@@ -226,13 +227,29 @@ export function CreateResumeForm({
                   </span>
                 )}
               </div>
-              <MyTextArea
+              <Label>About</Label>
+              <Controller
+                name="about"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <RichTextEditor
+                    height="100%"
+                    value={field.value || ""}
+                    onChange={(value) => field.onChange(value)}
+                    registerValue="about"
+                    errors={errors as Record<string, FieldError>}
+                  />
+                )}
+              />
+
+              {/* <MyTextArea
                 register={register}
                 errors={errors as Record<string, FieldError>}
                 registerValue="about"
                 label="About"
                 placeholder="About"
-              />
+              /> */}
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-lg">Address</h3>
               </div>

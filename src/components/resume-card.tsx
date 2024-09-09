@@ -1,12 +1,14 @@
 import DOMPurify from "dompurify"
 import { Edit, Eye, Trash2 } from "lucide-react"
+import Link from "next/link"
 
 interface ResumeCardProps {
   title: string
   summary: string
+  slug: string
 }
 
-export function ResumeCard({ title, summary }: ResumeCardProps) {
+export function ResumeCard({ title, summary, slug }: ResumeCardProps) {
   return (
     <div className="shadow-lg rounded-lg  w-96 overflow-hidden flex flex-col">
       <div className="bg-gradient-to-r from-zinc-500 to-zinc-900 p-4 text-white">
@@ -24,9 +26,13 @@ export function ResumeCard({ title, summary }: ResumeCardProps) {
         />
       </div>
       <div className="bg-gradient-to-r from-zinc-500 to-zinc-900  px-4 py-3 flex justify-center space-x-10">
-        <button className="text-zinc-200 hover:text-zinc-400" aria-label="View">
+        <Link
+          href={`/${slug}`}
+          className="text-zinc-200 hover:text-zinc-400"
+          aria-label="View"
+        >
           <Eye className="w-6 h-6" />
-        </button>
+        </Link>
         <button className="text-zinc-200 hover:text-zinc-400" aria-label="Edit">
           <Edit className="w-6 h-6" />
         </button>
