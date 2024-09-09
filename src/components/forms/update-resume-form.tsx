@@ -29,6 +29,7 @@ import {
 } from "../../../@types/resume-types"
 import { DeleteButton } from "../delete-button"
 import { EditButton } from "../edit-button"
+import { RichTextEditor } from "../rich-texte-ditor"
 import { Button } from "../ui/button"
 import {
   Card,
@@ -146,10 +147,10 @@ export function UpdateResumeForm({
         <CardHeader>
           <CardTitle>Edit a Resume</CardTitle>
           <CardDescription className="flex items-center space-x-2">
-            <span className="font-bold text-lg">
+            {/* <span className="font-bold text-lg">
               {resume?.active ? "Active" : "Inactive"}
-            </span>
-            <Switch {...register("active")} defaultChecked={resume.active} />
+            </span> */}
+            {/* <Switch {...register("active")} defaultChecked={resume.active} /> */}
           </CardDescription>
         </CardHeader>
         <Separator className="w-[95%] mx-auto" />
@@ -224,7 +225,22 @@ export function UpdateResumeForm({
                 </span>
               )}
             </div>
-            <MyTextArea
+            <Label>About</Label>
+            <Controller
+              name="about"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <RichTextEditor
+                  height="100%"
+                  value={field.value || ""}
+                  onChange={(value) => field.onChange(value)}
+                  registerValue="about"
+                  errors={errors as Record<string, FieldError>}
+                />
+              )}
+            />
+            {/* <MyTextArea
               register={register}
               rows={10}
               errors={errors as Record<string, FieldError>}
@@ -232,7 +248,7 @@ export function UpdateResumeForm({
               label="About"
               placeholder="About"
               className="py-2"
-            />
+            /> */}
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-lg">Address</h3>
             </div>

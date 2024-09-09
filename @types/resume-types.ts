@@ -1,5 +1,3 @@
-// import { $Enums } from "@prisma/client"
-
 import { $Enums } from "@prisma/client"
 
 export interface ResumeTypes {
@@ -57,6 +55,7 @@ export interface SkillTypes {
   id: string
   name: string
   type: string
+  description: string | null
 }
 
 export interface ReferenceTypes {

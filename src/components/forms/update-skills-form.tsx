@@ -1,12 +1,16 @@
-import { cn } from "@/lib/utils"
+import { createSkill, updateSkill } from "@/actions/skill-action"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, Controller } from "react-hook-form"
+import { cn } from "@/lib/utils"
 import { SkillSchema } from "@/zodSchema"
-import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { $Enums } from "@prisma/client"
+import { startTransition, useState } from "react"
+import { Controller, FieldError, useForm } from "react-hook-form"
+import * as z from "zod"
+import { SkillTypes } from "../../../@types/resume-types"
+import { RichTextEditor } from "../rich-texte-ditor"
 import {
   Select,
   SelectContent,
@@ -14,9 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select"
-import { createSkill, updateSkill } from "@/actions/skill-action"
-import { startTransition, useState } from "react"
-import { SkillTypes } from "../../../@types/resume-types"
+import { MyTextArea } from "./my-textArea"
 
 interface UpdateSkillsFormProps {
   skill: SkillTypes
@@ -43,6 +45,7 @@ export function UpdateSkillsForm({
     defaultValues: {
       name: skill.name,
       type: skill.type as $Enums.SkillType,
+      description: skill.description || "",
     },
   })
 
@@ -79,6 +82,31 @@ export function UpdateSkillsForm({
             </span>
           )}
         </div>
+        <Label>Description</Label>
+        <Controller
+          name="description"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <RichTextEditor
+              height="80%"
+              value={field.value || ""}
+              onChange={(value) => field.onChange(value)}
+              registerValue="description"
+              errors={errors as Record<string, FieldError>}
+            />
+          )}
+        />
+        {/* <MyTextArea
+          max={50}
+          min={10}
+          showCharacterCount={false}
+          register={register}
+          errors={errors as Record<string, FieldError>}
+          registerValue="description"
+          label="Description"
+          placeholder="Description of Skill"
+        /> */}
         <div className="flex flex-col space-y-1.5 w-full">
           <Label>Type</Label>
           <Controller

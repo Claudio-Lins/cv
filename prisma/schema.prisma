@@ -74,9 +74,10 @@ model Education {
 }
 
 model Skill {
-  id   String    @id @default(cuid())
-  name String
-  type SkillType
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  type        SkillType
 
   resumes Resume[]
 }

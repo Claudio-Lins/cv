@@ -11,9 +11,9 @@ import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
 
-import { getAllResume, getResumeBySlug } from "@/data/resume"
 import { Footer } from "@/components/footer"
 import { References } from "@/components/references"
+import { getAllResume, getResumeBySlug } from "@/data/resume"
 
 interface ResumeProps {
   params: {
@@ -31,7 +31,7 @@ export default async function Resume({ params }: ResumeProps) {
     return redirect("/admin")
   }
   return (
-    <div className={cn("w-full max-w-7xl bg-white pb-20 print:mt-0")}>
+    <div className={cn("w-full max-w-7xl bg-white pb-20 mt-20 print:mt-0")}>
       <NavResume slugs={slugs} />
       <div className="flex w-full max-w-7xl flex-col rounded-lg shadow-lg items-center px-16 print:mt-0 print:px-0 print:shadow-none">
         <Name
@@ -73,6 +73,7 @@ export default async function Resume({ params }: ResumeProps) {
                     resume?.skills?.map((skill) => ({
                       id: skill.id,
                       name: skill.name,
+                      description: skill?.description || "",
                       type: skill.type,
                     })) || []
                   }
