@@ -158,44 +158,44 @@ export function AddressIcon({
           <path
             d="M17 18C19.2091 18 21 16.2091 21 14C21 11.7909 19.2091 10 17 10C14.7909 10 13 11.7909 13 14C13 16.2091 14.7909 18 17 18Z"
             stroke={cor}
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 9H7"
             stroke={cor}
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 16H7"
             stroke={cor}
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 23H7"
             stroke={cor}
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M11 21C11.6986 20.0685 12.6045 19.3125 13.6459 18.7918C14.6873 18.2711 15.8357 18 17 18C18.1643 18 19.3127 18.2711 20.3541 18.7918C21.3955 19.3125 22.3014 20.0685 23 21"
             stroke={cor}
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M27 27V5C27 4.44772 26.5523 4 26 4L8 4C7.44772 4 7 4.44772 7 5V27C7 27.5523 7.44772 28 8 28H26C26.5523 28 27 27.5523 27 27Z"
             stroke={cor}
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       )
@@ -212,44 +212,44 @@ export function AddressIcon({
           <path
             d="M17 18C19.2091 18 21 16.2091 21 14C21 11.7909 19.2091 10 17 10C14.7909 10 13 11.7909 13 14C13 16.2091 14.7909 18 17 18Z"
             stroke={cor}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 9H7"
             stroke={cor}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 16H7"
             stroke={cor}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 23H7"
             stroke={cor}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M11 21C11.6986 20.0685 12.6045 19.3125 13.6459 18.7918C14.6873 18.2711 15.8357 18 17 18C18.1643 18 19.3127 18.2711 20.3541 18.7918C21.3955 19.3125 22.3014 20.0685 23 21"
             stroke={cor}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M27 27V5C27 4.44772 26.5523 4 26 4L8 4C7.44772 4 7 4.44772 7 5V27C7 27.5523 7.44772 28 8 28H26C26.5523 28 27 27.5523 27 27Z"
             stroke={cor}
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       )
@@ -266,38 +266,38 @@ export function AddressIcon({
           <path
             d="M17 18C19.2091 18 21 16.2091 21 14C21 11.7909 19.2091 10 17 10C14.7909 10 13 11.7909 13 14C13 16.2091 14.7909 18 17 18Z"
             stroke={cor}
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 9H7"
             stroke={cor}
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 16H7"
             stroke={cor}
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M4 23H7"
             stroke={cor}
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M11 21C11.6986 20.0685 12.6045 19.3125 13.6459 18.7918C14.6873 18.2711 15.8357 18 17 18C18.1643 18 19.3127 18.2711 20.3541 18.7918C21.3955 19.3125 22.3014 20.0685 23 21"
             stroke={cor}
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M27 27V5C27 4.44772 26.5523 4 26 4L8 4C7.44772 4 7 4.44772 7 5V27C7 27.5523 7.44772 28 8 28H26C26.5523 28 27 27.5523 27 27Z"
             stroke={cor}
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
       )
