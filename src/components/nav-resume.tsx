@@ -88,21 +88,12 @@ export function NavResume({ slugs }: NavResumeProps) {
                           console.log("Delete", slug.title)
                         }}
                       />
-                      {/* <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
-                          setIsOpenDelete(true)
-                        }}
-                      >
-                        <Trash2 size={18} />
-                      </Button> */}
                     </DialogTrigger>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Are you absolutely sure?</DialogTitle>
                         <DialogDescription>
-                          Deletar {currentSlug?.title}?
+                          Delete {currentSlug?.title}?
                         </DialogDescription>
                       </DialogHeader>
                       <div className="flex items-center justify-between">
