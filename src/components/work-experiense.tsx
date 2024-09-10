@@ -101,7 +101,7 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
             </small>
           </div>
           <div
-            className="print:text-[10px] print:leading-relaxed"
+            className="print:text-[10px] text-sm leading-relaxed text-balance whitespace-nowrap print:leading-relaxed"
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize
                 ? DOMPurify.sanitize(workExperience?.description)
