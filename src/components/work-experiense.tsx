@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils"
-import { Globe } from "lucide-react"
+import { calculateDuration } from "@/utils/caculate-duration-data"
 import dayjs from "dayjs"
 import duration from "dayjs/plugin/duration"
 import relativeTime from "dayjs/plugin/relativeTime"
-import { calculateDuration } from "@/utils/caculate-duration-data"
+import DOMPurify from "dompurify"
+import { Globe } from "lucide-react"
 
 dayjs.extend(duration)
 
@@ -30,7 +31,9 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
         "font-light text-zinc-600 tracking-widest  print:border-b print:pb-4"
       )}
     >
-      <h3 className=" uppercase myPrintingSubTitle">Work Experience</h3>
+      <h3 className=" uppercase font-light myPrintingSubTitle">
+        Work Experience
+      </h3>
       {workExperiences?.map((workExperience) => (
         <div
           className="flex flex-col mt-6 space-y-4 w-full relative print:mt-0"
@@ -97,10 +100,17 @@ export function WorkExperience({ workExperiences }: WorkExperienceProps) {
               {workExperience?.location} · {workExperience?.workLocation}
             </small>
           </div>
-
-          <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:text-[10px] print:leading-relaxed">
+          <div
+            className="print:text-[10px] print:leading-relaxed"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize
+                ? DOMPurify.sanitize(workExperience?.description)
+                : workExperience?.description,
+            }}
+          />
+          {/* <p className="text-sm leading-relaxed text-balance whitespace-nowrap print:text-[10px] print:leading-relaxed">
             {workExperience?.description}
-          </p>
+          </p> */}
           {workExperience?.link && (
             <div className="mt-4 flex items-center space-x-2">
               <Globe size={14} />

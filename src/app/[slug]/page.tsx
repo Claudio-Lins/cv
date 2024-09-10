@@ -12,6 +12,8 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { redirect } from "next/navigation"
 
 import { Footer } from "@/components/footer"
+import { AddressIcon } from "@/components/icons/address-icon"
+import { PhoneIcon } from "@/components/icons/phone-icon"
 import { References } from "@/components/references"
 import { getAllResume, getResumeBySlug } from "@/data/resume"
 

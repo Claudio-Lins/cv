@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils"
-import { Globe } from "lucide-react"
+import { calculateDuration } from "@/utils/caculate-duration-data"
 import dayjs from "dayjs"
 import duration from "dayjs/plugin/duration"
 import relativeTime from "dayjs/plugin/relativeTime"
-import { calculateDuration } from "@/utils/caculate-duration-data"
+import { Globe } from "lucide-react"
 import { ReferenceTypes } from "../../@types/resume-types"
 
 dayjs.extend(duration)
@@ -15,7 +15,7 @@ interface ReferencesProps {
 export function References({ references }: ReferencesProps) {
   return (
     <div className={cn("font-light text-zinc-600 tracking-widest ")}>
-      <h3 className=" uppercase myPrintingSubTitle">References</h3>
+      <h3 className=" uppercase font-light myPrintingSubTitle">References</h3>
       <div className=" flex flex-wrap gap-4">
         {references?.map((reference) => {
           return (

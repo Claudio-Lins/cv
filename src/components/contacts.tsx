@@ -8,14 +8,20 @@ import {
   Phone,
 } from "lucide-react"
 import {
-  FaXTwitter,
-  FaInstagram,
-  FaGithub,
-  FaYoutube,
   FaFacebook,
-  FaLinkedinIn,
+  FaGithub,
   FaHouseMedical,
+  FaInstagram,
+  FaLinkedinIn,
+  FaXTwitter,
+  FaYoutube,
 } from "react-icons/fa6"
+import { AtIcon } from "./icons/at-icon"
+import { GithubIcon } from "./icons/github-icon"
+import { HouseIcon } from "./icons/house-icon"
+import { InstagramIcon } from "./icons/instagram-icon"
+import { LinkedInIcon } from "./icons/linkedin-icon"
+import { PhoneIcon } from "./icons/phone-icon"
 
 interface ContactsProps {
   phone?: string
@@ -56,7 +62,7 @@ export function Contacts({
           <div className="flex items-center gap-2 text-zinc-600">
             {phone && (
               <div className="flex items-center gap-2 text-zinc-600">
-                <Phone size={20} className="print:hidden" />
+                <PhoneIcon fill="thin" className="print:hidden" />
                 <span className="print:text-[10px]">{phone}</span>
               </div>
             )}
@@ -64,13 +70,13 @@ export function Contacts({
         )}
         {email && (
           <div className="flex items-center gap-2 text-zinc-600">
-            <Mail size={20} className="print:hidden" />
+            <AtIcon fill="thin" className="print:hidden" />
             <span className="text-sm print:text-[10px]">{email}</span>
           </div>
         )}
         {street && (
-          <div className="flex gap-2 text-zinc-600 print:gap-0">
-            <Home size={42} className="-mt-3 print:hidden" />
+          <div className="flex w-full items-start gap-2 text-zinc-600 print:gap-0">
+            <HouseIcon fill="thin" className="print:hidden" />
             <div className="flex gap-x-2 gap-y-1 flex-wrap -mt-0.5 print:gap-y-0">
               {street && (
                 <p className="w-full text-sm print:text-[8px]">{street}</p>
@@ -87,12 +93,14 @@ export function Contacts({
           </div>
         )}
       </div>
-      <div className="mt-4">
+      <div className="mt-4 space-y-2">
         {socialNetworks?.map((social) => (
           <div className="" key={social.id}>
             {social?.name.includes("Github") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaGithub size={14} className="print:hidden" />
+                <div className="print:hidden">
+                  <GithubIcon fill="thin" />
+                </div>
                 <a
                   href={social?.url}
                   target="_blank"
@@ -108,7 +116,7 @@ export function Contacts({
             )}
             {social?.name.includes("LinkedIn") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaLinkedinIn size={14} className="print:hidden" />
+                <LinkedInIcon fill="thin" className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
@@ -156,7 +164,7 @@ export function Contacts({
             )}
             {social?.name.includes("Insta") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <FaInstagram size={14} className="print:hidden" />
+                <InstagramIcon fill="thin" className="print:hidden" />
                 <a
                   href={social?.url}
                   target="_blank"
