@@ -22,6 +22,7 @@ import { DialogClose } from "@radix-ui/react-dialog"
 import { startTransition, useState } from "react"
 import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
+import { RichTextEditor } from "../rich-texte-ditor"
 import {
   Select,
   SelectContent,
@@ -94,14 +95,26 @@ export function CreateWorkExperienceForm() {
             label="Title"
             placeholder="Title"
           />
-
-          <MyTextArea
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <RichTextEditor
+                value={field.value || ""}
+                onChange={(value) => field.onChange(value)}
+                registerValue="description"
+                errors={errors as Record<string, FieldError>}
+              />
+            )}
+          />
+          {/* <MyTextArea
             register={register}
             errors={errors as Record<string, FieldError>}
             registerValue="description"
             label="Description"
             placeholder="Description of the work experience"
-          />
+          /> */}
 
           <MyInput
             register={register}

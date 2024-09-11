@@ -57,7 +57,7 @@ export const WorkExperienceSchema = z.object({
   startDate: z.date(),
   endDate: z.date().optional().nullable(),
   isCurrent: z.boolean().optional(),
-  link: z.string().url().optional(),
+  link: z.string().optional().nullable(),
   employmentType: z.enum(["FREELANCER", "VOLUNTEER", "EMPLOYEE"]),
   workLocation: z.enum(["REMOTE", "ONSITE", "HYBRID"]),
   resumeId: z.string().cuid().optional(),
