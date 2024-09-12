@@ -23,6 +23,7 @@ export interface ResumeTypes {
   references: ReferenceTypes[]
   workExperiences: WorkExperienceTypes[]
   socialNetworks: SocialNetworkTypes[]
+  createdAt: Date
 }
 
 export interface AddressTypes {

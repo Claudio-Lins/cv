@@ -4,30 +4,34 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 
 import { AdminTabs } from "@/components/admin-tabs"
 import { getAllResume } from "@/data/resume"
+import type {
+  EducationTypes,
+  ReferenceTypes,
+  ResumeTypes,
+  SkillTypes,
+  SocialNetworkTypes,
+  WorkExperienceTypes,
+} from "../../../@types/resume-types"
 
 interface AdminProps {}
 
-async function getSkills() {
-  const skills = await prisma.skill.findMany()
-  return skills
+async function getSkills(): Promise<SkillTypes[]> {
+  return prisma.skill.findMany()
 }
 
-async function getReferences() {
-  const references = await prisma.reference.findMany()
-  return references
+async function getReferences(): Promise<ReferenceTypes[]> {
+  return prisma.reference.findMany()
 }
 
-async function getEducation() {
-  const educations = await prisma.education.findMany()
-  return educations
+async function getEducation(): Promise<EducationTypes[]> {
+  return prisma.education.findMany()
 }
 
-async function getSocialNetworks() {
-  const socialNetworks = await prisma.socialNetwork.findMany()
-  return socialNetworks
+async function getSocialNetworks(): Promise<SocialNetworkTypes[]> {
+  return prisma.socialNetwork.findMany()
 }
 
-async function getWorkExperiences() {
+async function getWorkExperiences(): Promise<WorkExperienceTypes[]> {
   const workExperiences = await prisma.workExperience.findMany()
   return workExperiences.map((experience) => ({
     ...experience,
@@ -37,25 +41,40 @@ async function getWorkExperiences() {
 }
 
 export default async function Admin({}: AdminProps) {
-  const { getUser } = getKindeServerSession()
-  const user = await getUser()
-  const allResumes = await getAllResume(user?.id!)
-  const skills = await getSkills()
-  const socialNetworks = await getSocialNetworks()
-  const workExperiences = await getWorkExperiences()
-  const educations = await getEducation()
-  const references = await getReferences()
+  try {
+    const { getUser } = getKindeServerSession()
+    const user = await getUser()
 
-  return (
-    <div className={cn("w-full max-w-7xl mt-20 mx-auto bg-white")}>
-      <AdminTabs
-        allResumes={allResumes}
-        socialNetworks={socialNetworks}
-        workExperiences={workExperiences}
-        skills={skills}
-        educations={educations}
-        references={references}
-      />
-    </div>
-  )
+    const [
+      allResumes,
+      skills,
+      socialNetworks,
+      workExperiences,
+      educations,
+      references,
+    ] = await Promise.all([
+      getAllResume(user?.id!) as Promise<ResumeTypes[]>,
+      getSkills(),
+      getSocialNetworks(),
+      getWorkExperiences(),
+      getEducation(),
+      getReferences(),
+    ])
+
+    return (
+      <div className={cn("w-full max-w-7xl mt-20 mx-auto bg-white")}>
+        <AdminTabs
+          allResumes={allResumes}
+          socialNetworks={socialNetworks}
+          workExperiences={workExperiences}
+          skills={skills}
+          educations={educations}
+          references={references}
+        />
+      </div>
+    )
+  } catch (error) {
+    console.error("Erro ao carregar dados:", error)
+    return <div>Erro ao carregar dados</div>
+  }
 }
