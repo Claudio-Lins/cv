@@ -34,24 +34,39 @@ export function AdminTabs({
 }: AdminTabsProps) {
   const searchParams = useSearchParams()
   const sortedResumes = sortResumesByDate(allResumes)
-  const defaultTab = useDefaultTab(sortedResumes)
+  const [defaultTab, setDefaultTab] = useState<string>(
+    sortedResumes[0]?.slug || "add"
+  )
 
-  function useDefaultTab(sortedResumes: ResumeTypes[]) {
-    const searchParams = useSearchParams()
-    const [defaultTab, setDefaultTab] = useState<string>(sortedResumes[0]?.slug)
+  useEffect(() => {
+    const tabFromUrl = searchParams.get("tab")
+    if (tabFromUrl) {
+      setDefaultTab(tabFromUrl)
+    }
+  }, [searchParams])
+  // const defaultTab = useDefaultTab(sortedResumes)
 
-    useEffect(() => {
-      const newTab = searchParams.get("tab")
-      if (newTab && newTab !== defaultTab) {
-        setDefaultTab(newTab)
-      }
-    }, [searchParams, defaultTab])
+  // function useDefaultTab(sortedResumes: ResumeTypes[]) {
+  //   const searchParams = useSearchParams()
+  //   const [defaultTab, setDefaultTab] = useState<string>(sortedResumes[0]?.slug)
 
-    return defaultTab
-  }
+  //   useEffect(() => {
+  //     const newTab = searchParams.get("tab")
+  //     if (newTab && newTab !== defaultTab) {
+  //       setDefaultTab(newTab)
+  //     }
+  //   }, [searchParams, defaultTab])
+
+  //   return defaultTab
+  // }
 
   return (
-    <Tabs defaultValue={defaultTab} className="w-full">
+    <Tabs
+      defaultValue={defaultTab}
+      value={defaultTab}
+      onValueChange={setDefaultTab}
+      className="w-full"
+    >
       <TabsList>
         {sortedResumes.map((resume) => (
           <TabsTrigger key={resume.slug} value={resume.slug}>
