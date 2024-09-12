@@ -1,51 +1,17 @@
 import { ResumeCard } from "@/components/resume-card"
-import { prisma } from "@/lib/prisma"
+import { getResumeData, getResumes } from "@/services/resumeService"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
-import { redirect } from "next/navigation"
 
-async function getTitle(userId: string) {
-  const slugs = await prisma.resume.findMany({
-    where: {
-      userId,
-    },
-    select: {
-      slug: true,
-      title: true,
-    },
-  })
-  return slugs
+interface ResumeProps {
+  params: {
+    slug: string
+  }
 }
 
-async function getResumes(userId: string) {
-  const resumes = await prisma.resume.findMany({
-    where: {
-      userId,
-    },
-    include: {
-      socialNetworks: true,
-      educations: true,
-      skills: true,
-      workExperiences: true,
-      references: true,
-    },
-  })
-  return resumes
-}
-
-async function getActiveResume(userId: string) {
-  const resume = await prisma.resume.findFirst({
-    where: {
-      userId,
-      active: true,
-    },
-  })
-  return resume
-}
-
-export default async function Home() {
+export default async function Resume({ params }: ResumeProps) {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
-  const resumes = await getResumes(user?.id!)
+  const { resumes, activeResume } = await getResumeData(user?.id!, params.slug)
 
   return (
     <div className="w-full p-20">
