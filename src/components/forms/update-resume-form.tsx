@@ -2,6 +2,7 @@
 import { deleteReference } from "@/actions/reference-action"
 import { updateResume } from "@/actions/resume-action"
 import { deleteSkill } from "@/actions/skill-action"
+import { deleteWorkExperience } from "@/actions/work-experience-action"
 import {
   Dialog,
   DialogContent,
@@ -51,6 +52,7 @@ import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { MyInput } from "./my-input"
 import { MyTextArea } from "./my-textArea"
 import { UpdateSkillsForm } from "./update-skills-form"
+import { UpdateWorkExperienceForm } from "./update-work-experience-form"
 
 interface UpdateResumeFormProps {
   resume: ResumeTypes
@@ -71,9 +73,15 @@ export function UpdateResumeForm({
   references,
 }: UpdateResumeFormProps) {
   const [isPending, startTransition] = useTransition()
-  const [isOpenDelete, setIsOpenDelete] = useState(false)
+  const [isOpenDeleteSkill, setisOpenDeleteSkill] = useState(false)
   const [currentSkill, setCurrentSkill] = useState<SkillTypes | null>(null)
+  const [currentWorkExperience, setCurrentWorkExperience] =
+    useState<WorkExperienceTypes | null>(null)
   const [isOpenEdit, setIsOpenEdit] = useState(false)
+  const [isOpenDeleteWorkExperience, setIsOpenDeleteWorkExperience] =
+    useState(false)
+  const [isOpenEditWorkExperience, setIsOpenEditWorkExperience] =
+    useState(false)
   const {
     control,
     handleSubmit,
@@ -240,15 +248,6 @@ export function UpdateResumeForm({
                 />
               )}
             />
-            {/* <MyTextArea
-              register={register}
-              rows={10}
-              errors={errors as Record<string, FieldError>}
-              registerValue="about"
-              label="About"
-              placeholder="About"
-              className="py-2"
-            /> */}
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-lg">Address</h3>
             </div>
@@ -344,6 +343,7 @@ export function UpdateResumeForm({
               </div>
             </div>
             <Separator className="w-full mx-auto" />
+
             <div className="w-full flex flex-col gap-4">
               <div className="flex items-center gap-1">
                 <h3 className="font-bold text-xl">Work Experience</h3>
@@ -356,7 +356,7 @@ export function UpdateResumeForm({
                       return (
                         <label
                           key={workExperience.id}
-                          className="p-4 border rounded-md border-dashed shadow-sm flex items-center gap-3 cursor-pointer"
+                          className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm"
                         >
                           <Controller
                             name="workExperiences"
@@ -384,7 +384,7 @@ export function UpdateResumeForm({
                               />
                             )}
                           />
-                          <div className="flex flex-col">
+                          <div className="flex-1 flex flex-col border-l border-r ml-2 px-4">
                             <strong className="text-base">
                               {workExperience?.title}
                             </strong>
@@ -413,6 +413,89 @@ export function UpdateResumeForm({
                               )}
                             </span>
                           </div>
+                          <div className="w-10 flex items-center flex-col gap-2 justify-center">
+                            <Dialog
+                              open={isOpenEditWorkExperience}
+                              onOpenChange={setIsOpenEditWorkExperience}
+                            >
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => {
+                                    setCurrentWorkExperience(workExperience)
+                                  }}
+                                >
+                                  <PencilIcon size={20} />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-none sm:max-w-4xl">
+                                <DialogHeader>
+                                  <DialogTitle>
+                                    Edit Work Experience
+                                  </DialogTitle>
+                                </DialogHeader>
+                                {currentWorkExperience && (
+                                  <UpdateWorkExperienceForm
+                                    workExperience={currentWorkExperience}
+                                    setIsOpenEditWorkExperience={
+                                      setIsOpenEditWorkExperience
+                                    }
+                                  />
+                                )}
+                              </DialogContent>
+                            </Dialog>
+                            <Dialog
+                              open={isOpenDeleteWorkExperience}
+                              onOpenChange={setIsOpenDeleteWorkExperience}
+                            >
+                              <DialogTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => {
+                                    setCurrentWorkExperience(workExperience)
+                                  }}
+                                >
+                                  <Trash2 size={20} />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="max-w-xs">
+                                <DialogHeader>
+                                  <DialogTitle>
+                                    Delete Work Experience{" "}
+                                    {currentWorkExperience?.title}?
+                                  </DialogTitle>
+                                </DialogHeader>
+                                <DialogFooter className="w-full">
+                                  <div className="flex items-center w-full justify-between">
+                                    <Button
+                                      variant="outline"
+                                      onClick={() => {
+                                        setCurrentWorkExperience(workExperience)
+                                        setIsOpenDeleteWorkExperience(false)
+                                      }}
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      variant="destructive"
+                                      color="error"
+                                      onClick={() => {
+                                        deleteWorkExperience(
+                                          currentWorkExperience?.id!
+                                        )
+                                        setCurrentWorkExperience(null)
+                                        setIsOpenDeleteWorkExperience(false)
+                                      }}
+                                    >
+                                      Delete
+                                    </Button>
+                                  </div>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
                         </label>
                       )
                     })}
@@ -427,7 +510,6 @@ export function UpdateResumeForm({
                 <h3 className="font-bold text-xl">Skills</h3>
                 <CreateSkillsForm />
               </div>
-
               <div className="flex flex-wrap gap-4">
                 {skills.length > 0 && (
                   <>
@@ -498,8 +580,8 @@ export function UpdateResumeForm({
                             </DialogContent>
                           </Dialog>
                           <Dialog
-                            open={isOpenDelete}
-                            onOpenChange={setIsOpenDelete}
+                            open={isOpenDeleteSkill}
+                            onOpenChange={setisOpenDeleteSkill}
                           >
                             <DialogTrigger asChild>
                               <Button
@@ -525,7 +607,7 @@ export function UpdateResumeForm({
                                     variant="outline"
                                     onClick={() => {
                                       setCurrentSkill(null)
-                                      setIsOpenDelete(false)
+                                      setisOpenDeleteSkill(false)
                                     }}
                                   >
                                     Cancel
@@ -536,7 +618,7 @@ export function UpdateResumeForm({
                                     onClick={() => {
                                       deleteSkill(currentSkill?.id!)
                                       setCurrentSkill(null)
-                                      setIsOpenDelete(false)
+                                      setisOpenDeleteSkill(false)
                                     }}
                                   >
                                     Delete
