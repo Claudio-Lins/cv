@@ -28,7 +28,7 @@ export function RichTextEditor({
 
   return (
     <div className="w-full h-full">
-      <ReactQuill
+      {/* <ReactQuill
         style={{
           height: "100%",
           borderRadius: "5px",
@@ -51,7 +51,7 @@ export function RichTextEditor({
             // ["clean"],
           ],
         }}
-      />
+      /> */}
       <div ref={quillRef} style={{ height: "100%", display: "none" }} />
       {errors?.[registerValue] && (
         <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
