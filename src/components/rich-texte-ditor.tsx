@@ -52,7 +52,7 @@ export function RichTextEditor({
           ],
         }}
       />
-      <div ref={quillRef} style={{ height: "100%" }} />
+      <div ref={quillRef} style={{ height: "100%", display: "none" }} />
       {errors?.[registerValue] && (
         <span className={cn("text-xs font-semibold text-red-600 -mt-2")}>
           {errors[registerValue]?.message}
