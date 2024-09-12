@@ -12,14 +12,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { Contact, Plus, PlusCircle } from "lucide-react"
+import { Contact, Loader, Plus, PlusCircle } from "lucide-react"
 
 import { createWorkExperience } from "@/actions/work-experience-action"
 import { WorkExperienceSchema } from "@/zodSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { $Enums } from "@prisma/client"
 import { DialogClose } from "@radix-ui/react-dialog"
-import { startTransition, useState } from "react"
+import { startTransition, useState, useTransition } from "react"
 import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
 import { RichTextEditor } from "../rich-texte-ditor"
@@ -40,6 +40,7 @@ type WorkExperienceFormData = z.infer<typeof WorkExperienceSchema>
 
 export function CreateWorkExperienceForm() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isPending, startTransition] = useTransition()
   const {
     control,
     handleSubmit,
@@ -108,13 +109,6 @@ export function CreateWorkExperienceForm() {
               />
             )}
           />
-          {/* <MyTextArea
-            register={register}
-            errors={errors as Record<string, FieldError>}
-            registerValue="description"
-            label="Description"
-            placeholder="Description of the work experience"
-          /> */}
 
           <MyInput
             register={register}
@@ -182,11 +176,6 @@ export function CreateWorkExperienceForm() {
                   />
                 )}
               />
-              {/* <Controller
-                control={control}
-                name="endDate"
-                render={({ field }) => <DatePicker field={field} />}
-              /> */}
               {errors?.endDate && (
                 <span
                   className={cn("text-xs font-semibold text-red-600 -mt-2")}
@@ -251,20 +240,19 @@ export function CreateWorkExperienceForm() {
             label="Website"
             placeholder="Website"
           />
-          {/* <Button
-            variant="destructive"
-            size="sm"
-            className="ml-auto"
-            // onClick={() => deleteWorkExperience(index)}
-          >
-            Delete Work Experience
-          </Button> */}
           <Separator />
           <DialogFooter className="">
             <div className="w-full flex items-center justify-between">
               <DialogClose>Cancel</DialogClose>
-              <Button onClick={handleSubmit(onSubmit)} type="button">
-                Create Work Experience
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                type="button"
+                className="flex items-center gap-2"
+              >
+                <Loader
+                  className={cn("hidden", isPending && "block animate-spin")}
+                />
+                <span>Create Work Experience</span>
               </Button>
             </div>
           </DialogFooter>

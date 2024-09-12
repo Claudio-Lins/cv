@@ -1,21 +1,27 @@
 "use client"
 
 import { CreateResumeForm } from "@/components/forms/create-resume-form"
-import { UpdateResumeForm } from "@/components/forms/update-resume-form"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
-import type { ResumeTypes } from "../../@types/resume-types"
+import type {
+  EducationTypes,
+  ReferenceTypes,
+  ResumeTypes,
+  SkillTypes,
+  SocialNetworkTypes,
+  WorkExperienceTypes,
+} from "../../@types/resume-types"
 import { ResumeTabContent } from "./resume-tab-content"
 
 interface AdminTabsProps {
-  allResumes: Array<any>
-  socialNetworks: Array<any>
-  workExperiences: Array<any>
-  skills: Array<any>
-  educations: Array<any>
-  references: Array<any>
+  allResumes: ResumeTypes[]
+  socialNetworks: SocialNetworkTypes[]
+  workExperiences: WorkExperienceTypes[]
+  skills: SkillTypes[]
+  educations: EducationTypes[]
+  references: ReferenceTypes[]
 }
 
 function sortResumesByDate(resumes: ResumeTypes[]): ResumeTypes[] {
@@ -44,21 +50,6 @@ export function AdminTabs({
       setDefaultTab(tabFromUrl)
     }
   }, [searchParams])
-  // const defaultTab = useDefaultTab(sortedResumes)
-
-  // function useDefaultTab(sortedResumes: ResumeTypes[]) {
-  //   const searchParams = useSearchParams()
-  //   const [defaultTab, setDefaultTab] = useState<string>(sortedResumes[0]?.slug)
-
-  //   useEffect(() => {
-  //     const newTab = searchParams.get("tab")
-  //     if (newTab && newTab !== defaultTab) {
-  //       setDefaultTab(newTab)
-  //     }
-  //   }, [searchParams, defaultTab])
-
-  //   return defaultTab
-  // }
 
   return (
     <Tabs

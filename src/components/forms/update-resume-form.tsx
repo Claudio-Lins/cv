@@ -16,8 +16,8 @@ import { cn } from "@/lib/utils"
 import { calculateDuration } from "@/utils/caculate-duration-data"
 import { ResumeSchema } from "@/zodSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader, MinusCircle, PencilIcon, Trash2, XCircle } from "lucide-react"
-import { startTransition, useState, useTransition } from "react"
+import { Loader, PencilIcon, Trash2, XCircle } from "lucide-react"
+import { useState, useTransition } from "react"
 import { Controller, FieldError, useForm } from "react-hook-form"
 import * as z from "zod"
 import {
@@ -28,8 +28,6 @@ import {
   SocialNetworkTypes,
   WorkExperienceTypes,
 } from "../../../@types/resume-types"
-import { DeleteButton } from "../delete-button"
-import { EditButton } from "../edit-button"
 import { RichTextEditor } from "../rich-texte-ditor"
 import { Button } from "../ui/button"
 import {
@@ -43,14 +41,12 @@ import {
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Separator } from "../ui/separator"
-import { Switch } from "../ui/switch"
 import { CreateEducationForm } from "./create-eudcation-form"
 import { CreateReferenceForm } from "./create-reference-form"
 import { CreateSkillsForm } from "./create-skills-form"
 import { CreateSocialNetworkForm } from "./create-social-form"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { MyInput } from "./my-input"
-import { MyTextArea } from "./my-textArea"
 import { UpdateSkillsForm } from "./update-skills-form"
 import { UpdateWorkExperienceForm } from "./update-work-experience-form"
 
@@ -82,16 +78,16 @@ export function UpdateResumeForm({
     useState(false)
   const [isOpenEditWorkExperience, setIsOpenEditWorkExperience] =
     useState(false)
+
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
     register,
     reset,
-  } = useForm<z.infer<typeof ResumeSchema>>({
+  } = useForm<ResumeFormData>({
     resolver: zodResolver(ResumeSchema),
     defaultValues: {
-      // id: resume.id,
       title: resume.title,
       slug: resume?.title.toLowerCase().replace(/ /g, "-"),
       active: resume.active,
@@ -104,9 +100,6 @@ export function UpdateResumeForm({
       state: resume.state,
       country: resume.country,
       zip: resume.zip,
-
-      // birthday: resume.birthday?.toISOString().slice(0, 10),
-      // pictureUrl: resume.pictureUrl || "",
       about: resume.about,
       socialNetworks: resume?.socialNetworks,
       workExperiences:
@@ -136,15 +129,14 @@ export function UpdateResumeForm({
     },
   })
 
-  console.log(errors || {})
+  console.log(errors || "No errors")
   async function updateResumeForm(values: ResumeFormData) {
     startTransition(async () => {
       try {
         console.log("Submitting Resume form...", values)
         await updateResume(resume.id, values)
-        // reset()
       } catch (error) {
-        console.error("Error creating product:", error)
+        console.error("Error updating resume:", error)
       }
     })
   }
@@ -154,12 +146,7 @@ export function UpdateResumeForm({
       <Card className="max-w-none">
         <CardHeader>
           <CardTitle>Edit a Resume</CardTitle>
-          <CardDescription className="flex items-center space-x-2">
-            {/* <span className="font-bold text-lg">
-              {resume?.active ? "Active" : "Inactive"}
-            </span> */}
-            {/* <Switch {...register("active")} defaultChecked={resume.active} /> */}
-          </CardDescription>
+          <CardDescription className="flex items-center space-x-2"></CardDescription>
         </CardHeader>
         <Separator className="w-[95%] mx-auto" />
         <CardContent>
@@ -329,13 +316,6 @@ export function UpdateResumeForm({
                           )}
                         />
                         <span className="text-sm">{socialNetwork.name}</span>
-                        {/* <button
-                          type="button"
-                          onClick={() => deleteSocialNetwork(socialNetwork.id)}
-                          className=""
-                        >
-                          <XCircle className="text-red-500" size={18} />
-                        </button> */}
                       </div>
                     ))}
                   </>
