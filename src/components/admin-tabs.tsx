@@ -15,7 +15,7 @@ interface AdminTabsProps {
   references: Array<any>
 }
 
-export default function AdminTabs({
+export function AdminTabs({
   allResumes,
   socialNetworks,
   workExperiences,
