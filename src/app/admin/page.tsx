@@ -63,14 +63,14 @@ export default async function Admin({}: AdminProps) {
 
     return (
       <div className={cn("w-full max-w-7xl mt-20 mx-auto bg-white")}>
-        <AdminTabs
+        {/* <AdminTabs
           allResumes={allResumes}
           socialNetworks={socialNetworks}
           workExperiences={workExperiences}
           skills={skills}
           educations={educations}
           references={references}
-        />
+        /> */}
       </div>
     )
   } catch (error) {

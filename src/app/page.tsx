@@ -18,10 +18,11 @@ export default async function Resume({ params }: ResumeProps) {
       <div className="flex flex-wrap justify-center gap-10">
         {resumes.map((resume) => (
           <ResumeCard
+            resume={resume}
             slug={resume.slug}
             key={resume.id}
             title={resume.title}
-            summary={resume?.about}
+            about={resume?.about}
           />
         ))}
       </div>

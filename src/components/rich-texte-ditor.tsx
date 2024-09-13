@@ -1,8 +1,11 @@
 import { cn } from "@/lib/utils"
-import React, { useState } from "react"
-import { FieldError, UseFormRegister } from "react-hook-form"
-import ReactQuill from "react-quill"
+import dynamic from "next/dynamic"
+import { useEffect, useState } from "react"
+import { FieldError } from "react-hook-form"
 import "react-quill/dist/quill.snow.css"
+
+// Carrega o ReactQuill apenas no cliente
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false })
 
 interface RichTextEditorProps {
   value: string
@@ -19,15 +22,26 @@ export function RichTextEditor({
   errors,
   registerValue,
 }: RichTextEditorProps) {
+  const [isClient, setIsClient] = useState(false)
+
+  // Garante que o ReactQuill só será renderizado no cliente
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  if (!isClient) {
+    return null // Não renderiza nada no servidor
+  }
+
   const handleChange = (content: string) => {
     onChange(content)
   }
 
   return (
-    <div className="w-full h-full">
+    <div id="editor" className="w-full h-full">
       <ReactQuill
         style={{
-          height: "100%",
+          height: height,
           borderRadius: "5px",
           border: "1px solid #ccc",
           borderTop: "none",
@@ -44,8 +58,7 @@ export function RichTextEditor({
             [{ header: [1, 2, false] }],
             ["bold", "italic", "underline", "strike"],
             [{ list: "ordered" }, { list: "bullet" }],
-            // ["link"],
-            // ["clean"],
+            ["clean"],
           ],
         }}
       />

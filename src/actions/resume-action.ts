@@ -111,7 +111,8 @@ export async function updateResume(
     },
   })
 
-  return redirect(`/${values.slug}`)
+  // return redirect(`/${values.slug}`)
+  return redirect(`/`)
 }
 
 export async function deleteResume(slug: string) {
