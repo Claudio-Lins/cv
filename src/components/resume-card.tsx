@@ -67,20 +67,6 @@ export function ResumeCard({ resume, slug, title, about }: ResumeCardProps) {
             className=" hover:animate-pulse hover:brightness-75"
           />
         </Link>
-        {/* <Link
-          href={`/admin?tab=${slug}`}
-          passHref
-          className="text-zinc-200 hover:text-zinc-400"
-          aria-label="Edit"
-        >
-          <NotePencilIcon
-            width={30}
-            height={30}
-            fill="light"
-            cor="#fcfaf6"
-            className=" hover:animate-pulse hover:brightness-75"
-          />
-        </Link> */}
 
         <Dialog open={isOpenEdit} onOpenChange={setIsOpenEdit}>
           <DialogTrigger asChild>
@@ -102,7 +88,7 @@ export function ResumeCard({ resume, slug, title, about }: ResumeCardProps) {
             <DialogHeader>
               <DialogTitle className="text-4xl">{resume.title}</DialogTitle>
             </DialogHeader>
-            <ScrollArea className="h-[42%] w-full rounded-md border p-4">
+            <ScrollArea className="h-[42%] 3xl:h-[30%] w-full rounded-md border p-4">
               <UpdateResumeForm2
                 title={resume.title!}
                 slug={resume.slug!}
@@ -125,27 +111,6 @@ export function ResumeCard({ resume, slug, title, about }: ResumeCardProps) {
                 resume={resume}
               />
             </ScrollArea>
-            {/* <DialogFooter className="bg-red-500">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setIsOpenDelete(false)
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                color="error"
-                onClick={() => {
-                  deleteResume(currentSlug?.slug!)
-                  setCurrentSlug({ slug, title })
-                  setIsOpenDelete(false)
-                }}
-              >
-                Delete
-              </Button>
-            </DialogFooter> */}
           </DialogContent>
         </Dialog>
 
