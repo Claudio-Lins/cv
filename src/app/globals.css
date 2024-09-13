@@ -110,6 +110,17 @@
   @apply print:text-[10];
 }
 
+.quill {
+  position: relative;
+}
+
+.ql-toolbar {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000000;
+}
+
 .ql-container.ql-snow {
   @apply border-none !important;
 }

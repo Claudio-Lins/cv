@@ -49,6 +49,8 @@ export function RichTextEditor({
           fontSize: "16px",
           fontFamily: "Poppins, sans-serif",
           color: "black",
+          overflow: "scroll",
+          position: "relative",
         }}
         value={value}
         onChange={handleChange}
