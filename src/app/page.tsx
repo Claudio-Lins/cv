@@ -26,7 +26,7 @@ export default async function Resume({ params }: ResumeProps) {
           <div className="p-4 flex-grow flex items-center justify-center">
             <Plus
               size={100}
-              className="text-zinc-400 group-hover:text-zinc-600 transition-all duration-500"
+              className="text-zinc-400 group-hover:text-zinc-600 transition-all duration-500 group-hover:rotate-180"
             />
           </div>
         </div>
