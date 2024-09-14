@@ -88,7 +88,7 @@ export function ResumeCard({ resume, slug, title, about }: ResumeCardProps) {
             <DialogHeader>
               <DialogTitle className="text-4xl">{resume.title}</DialogTitle>
             </DialogHeader>
-            <ScrollArea className="h-[42%] 3xl:h-[30%] w-full rounded-md border p-4">
+            <ScrollArea className="h-[42%] 4xl:h-[30%] w-full rounded-md border p-4">
               <UpdateResumeForm2
                 title={resume.title!}
                 slug={resume.slug!}
