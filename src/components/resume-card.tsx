@@ -84,11 +84,17 @@ export function ResumeCard({ resume, slug, title, about }: ResumeCardProps) {
               />
             </button>
           </DialogTrigger>
-          <DialogContent className="max-w-none md:w-[60%] max-h-[95%] px-4 overflow-hidden">
+          <DialogContent className="max-w-none md:w-[60%] px-4 overflow-hidden">
             <DialogHeader>
               <DialogTitle className="text-4xl">{resume.title}</DialogTitle>
             </DialogHeader>
-            <ScrollArea className="h-[24%] md:h-[35%] 2md:h-[32%] lg:h-[50%] 1xl:h-[35%] 3xl:h-[48%] 3xl:bg-red-500 4xl:h-[74%] w-full rounded-md border p-4">
+            <ScrollArea
+              className="w-full rounded-md border p-4"
+              style={{
+                height: "80vh",
+                maxHeight: "95vh",
+              }}
+            >
               <UpdateResumeForm2
                 title={resume.title!}
                 slug={resume.slug!}
