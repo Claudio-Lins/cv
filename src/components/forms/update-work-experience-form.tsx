@@ -46,9 +46,6 @@ export function UpdateWorkExperienceForm({
     control,
     handleSubmit,
     register,
-    reset,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<z.infer<typeof WorkExperienceSchema>>({
     resolver: zodResolver(WorkExperienceSchema),
@@ -71,7 +68,6 @@ export function UpdateWorkExperienceForm({
       try {
         console.log("Submitting Social form...", values)
         await updateWorkExperience(workExperience?.id, values)
-        // reset()
         setIsOpen(false)
       } catch (error) {
         console.error("Error creating product:", error)
@@ -80,7 +76,7 @@ export function UpdateWorkExperienceForm({
   }
 
   return (
-    <form className="flex flex-col gap-4 py-4">
+    <form className="flex w-full flex-col gap-4 py-4">
       <MyInput
         register={register}
         errors={errors as Record<string, FieldError>}
@@ -94,6 +90,7 @@ export function UpdateWorkExperienceForm({
         defaultValue=""
         render={({ field }) => (
           <RichTextEditor
+            height={300}
             value={field.value || ""}
             onChange={(value) => field.onChange(value)}
             registerValue="description"
@@ -117,7 +114,7 @@ export function UpdateWorkExperienceForm({
         placeholder="Location"
       />
 
-      <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="w-full flex items-center justify-between gap-4">
         <div className="flex flex-col space-y-1.5 w-full">
           <Label htmlFor="startDate">Start Date</Label>
           <Controller
@@ -172,6 +169,8 @@ export function UpdateWorkExperienceForm({
             </span>
           )}
         </div>
+      </div>
+      <div className="w-full flex items-center justify-between gap-4">
         <div className="flex flex-col space-y-1.5 w-full">
           <Label>Work Location</Label>
           <Controller
