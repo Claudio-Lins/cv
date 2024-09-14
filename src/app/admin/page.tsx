@@ -2,7 +2,10 @@ import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 import { AdminTabs } from "@/components/admin-tabs"
+import { WorkExperience } from "@/components/admin/work-experience"
 import { getAllResume } from "@/data/resume"
 import type {
   EducationTypes,
@@ -63,14 +66,26 @@ export default async function Admin({}: AdminProps) {
 
     return (
       <div className={cn("w-full max-w-7xl mt-20 mx-auto bg-white")}>
-        {/* <AdminTabs
-          allResumes={allResumes}
-          socialNetworks={socialNetworks}
-          workExperiences={workExperiences}
-          skills={skills}
-          educations={educations}
-          references={references}
-        /> */}
+        <Tabs defaultValue="work-experience" className="w-full">
+          <TabsList>
+            <TabsTrigger value="work-experience">Work Experience</TabsTrigger>
+            <TabsTrigger value="password">Password</TabsTrigger>
+          </TabsList>
+          <TabsContent
+            value="work-experience"
+            className="p-4 flex flex-wrap gap-4 justify-center w-full"
+          >
+            {workExperiences.map((workExperience) => {
+              return (
+                <WorkExperience
+                  key={workExperience.id}
+                  workExperience={workExperience}
+                />
+              )
+            })}
+          </TabsContent>
+          <TabsContent value="password">Change your password here.</TabsContent>
+        </Tabs>
       </div>
     )
   } catch (error) {

@@ -1,27 +1,17 @@
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { Contact, Plus, PlusCircle } from "lucide-react"
 
-import {
-  createWorkExperience,
-  updateWorkExperience,
-} from "@/actions/work-experience-action"
+import { updateWorkExperience } from "@/actions/work-experience-action"
 import { WorkExperienceSchema } from "@/zodSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { $Enums } from "@prisma/client"
 import { DialogClose } from "@radix-ui/react-dialog"
-import { startTransition, useState } from "react"
+import { useState, useTransition } from "react"
+
+import { Loader } from "lucide-react"
 import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
 import type { WorkExperienceTypes } from "../../../@types/resume-types"
@@ -34,10 +24,7 @@ import {
   SelectValue,
 } from "../ui/select"
 import { Separator } from "../ui/separator"
-import { Textarea } from "../ui/textarea"
-import { DatePicker } from "./date-picker"
 import { MyInput } from "./my-input"
-import { MyTextArea } from "./my-textArea"
 
 type WorkExperienceFormData = z.infer<typeof WorkExperienceSchema>
 
@@ -53,6 +40,7 @@ export function UpdateWorkExperienceForm({
   if (!setIsOpenEditWorkExperience) {
     throw new Error("setIsOpenEdit is not a valid function")
   }
+  const [isPending, startTransition] = useTransition()
   const [isOpen, setIsOpen] = useState(false)
   const {
     control,
@@ -235,14 +223,19 @@ export function UpdateWorkExperienceForm({
         placeholder="Website"
       />
       <Separator />
-      <DialogFooter className="">
+      <div className="">
         <div className="w-full flex items-center justify-between">
-          <DialogClose>Cancel</DialogClose>
-          <Button onClick={handleSubmit(onSubmit)} type="button">
-            Save
+          <Button variant="outline">Cancel</Button>
+          <Button
+            onClick={handleSubmit(onSubmit)}
+            type="button"
+            className="flex items-center gap-2"
+          >
+            {isPending && <Loader className="animate-spin" size={20} />}
+            Edit Work Experience
           </Button>
         </div>
-      </DialogFooter>
+      </div>
     </form>
   )
 }
