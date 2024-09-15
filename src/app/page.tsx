@@ -1,4 +1,5 @@
 import { ResumeCard } from "@/components/resume-card"
+import { getSocialNetworks } from "@/data/social-network"
 import { getResumeData, getResumes } from "@/services/resumeService"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { Plus } from "lucide-react"
@@ -13,7 +14,8 @@ interface ResumeProps {
 export default async function Resume({ params }: ResumeProps) {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
-  const { resumes, activeResume } = await getResumeData(user?.id!, params.slug)
+  const { resumes } = await getResumeData(user?.id!, params.slug)
+  const allSocialNetworks = await getSocialNetworks()
 
   return (
     <div className="w-full p-20">
@@ -31,11 +33,13 @@ export default async function Resume({ params }: ResumeProps) {
         </Link>
         {resumes.map((resume) => (
           <ResumeCard
+            id={resume.id}
             resume={resume}
             slug={resume.slug}
             key={resume.id}
             title={resume.title}
             about={resume?.about}
+            allSocialNetworks={allSocialNetworks}
           />
         ))}
       </div>

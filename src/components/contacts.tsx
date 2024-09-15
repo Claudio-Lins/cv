@@ -178,7 +178,7 @@ export function Contacts({
                 </span>
               </div>
             )}
-            {social?.name.includes("YouTube") && (
+            {social?.name.includes("You") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaYoutube size={14} className="print:hidden" />
                 <a

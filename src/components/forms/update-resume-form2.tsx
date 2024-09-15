@@ -1,17 +1,6 @@
 "use client"
-import { deleteReference } from "@/actions/reference-action"
+
 import { updateResume } from "@/actions/resume-action"
-import { deleteSkill } from "@/actions/skill-action"
-import { deleteWorkExperience } from "@/actions/work-experience-action"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { calculateDuration } from "@/utils/caculate-duration-data"
 import { ResumeSchema } from "@/zodSchema"
@@ -30,14 +19,6 @@ import {
 } from "../../../@types/resume-types"
 import { RichTextEditor } from "../rich-texte-ditor"
 import { Button } from "../ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Separator } from "../ui/separator"
@@ -47,6 +28,8 @@ import { CreateSkillsForm } from "./create-skills-form"
 import { CreateSocialNetworkForm } from "./create-social-form"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { MyInput } from "./my-input"
+
+import { getSocialNetworks } from "@/data/social-network"
 
 interface UpdateResumeFormProps {
   title: string
@@ -68,6 +51,7 @@ interface UpdateResumeFormProps {
   educations: EducationTypes[]
   references: ReferenceTypes[]
   resume: ResumeTypes
+  allSocialNetworks: SocialNetworkTypes[]
 }
 type ResumeFormData = z.infer<typeof ResumeSchema>
 
@@ -90,6 +74,7 @@ export function UpdateResumeForm2({
   educations,
   references,
   resume,
+  allSocialNetworks,
 }: UpdateResumeFormProps) {
   const [isPending, startTransition] = useTransition()
   const [isOpenDeleteSkill, setisOpenDeleteSkill] = useState(false)
@@ -168,6 +153,8 @@ export function UpdateResumeForm2({
     const element = document.getElementById("editor")
     console.log(element)
   }, [])
+
+  console.log("Social Networks", allSocialNetworks)
 
   return (
     <form onSubmit={handleSubmit(updateResumeForm)} className={cn("w-full")}>
@@ -303,44 +290,72 @@ export function UpdateResumeForm2({
           <h3 className="font-bold">Social Network</h3>
           <CreateSocialNetworkForm />
           <div className="flex flex-wrap gap-4">
-            {socialNetworks?.length > 0 && (
-              <>
-                {socialNetworks.map((socialNetwork) => (
-                  <div
-                    className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
-                    key={socialNetwork.id}
-                  >
-                    <Controller
-                      name="socialNetworks"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          type="checkbox"
-                          {...field}
-                          value={socialNetwork.id}
-                          checked={
-                            Array.isArray(field.value)
-                              ? field.value.some(
-                                  (s) => s.id === socialNetwork.id
-                                )
-                              : false
-                          }
-                          onChange={(e) => {
-                            const newValue = e.target.checked
-                              ? [...(field.value || []), socialNetwork]
-                              : (field.value || []).filter(
-                                  (s) => s.id !== socialNetwork.id
-                                )
-                            field.onChange(newValue)
-                          }}
-                        />
-                      )}
-                    />
-                    <span className="text-sm">{socialNetwork.name}</span>
-                  </div>
-                ))}
-              </>
-            )}
+            <>
+              {allSocialNetworks.map((socialNetwork) => (
+                <div
+                  className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
+                  key={socialNetwork.id}
+                >
+                  <Controller
+                    name="socialNetworks"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        type="checkbox"
+                        {...field}
+                        value={socialNetwork.id}
+                        checked={
+                          Array.isArray(field.value)
+                            ? field.value.some((s) => s.id === socialNetwork.id)
+                            : false
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.checked
+                            ? [...(field.value || []), socialNetwork]
+                            : (field.value || []).filter(
+                                (s) => s.id !== socialNetwork.id
+                              )
+                          field.onChange(newValue)
+                        }}
+                      />
+                    )}
+                  />
+                  <span className="text-sm">{socialNetwork.name}</span>
+                </div>
+              ))}
+              {/* {socialNetworks.map((socialNetwork) => (
+                <div
+                  className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
+                  key={socialNetwork.id}
+                >
+                  <Controller
+                    name="socialNetworks"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        type="checkbox"
+                        {...field}
+                        value={socialNetwork.id}
+                        checked={
+                          Array.isArray(field.value)
+                            ? field.value.some((s) => s.id === socialNetwork.id)
+                            : false
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.checked
+                            ? [...(field.value || []), socialNetwork]
+                            : (field.value || []).filter(
+                                (s) => s.id !== socialNetwork.id
+                              )
+                          field.onChange(newValue)
+                        }}
+                      />
+                    )}
+                  />
+                  <span className="text-sm">{socialNetwork.name}</span>
+                </div>
+              ))} */}
+            </>
           </div>
         </div>
         <Separator className="w-full mx-auto" />
