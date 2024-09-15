@@ -111,8 +111,10 @@ export async function updateResume(
     },
   })
 
-  // return redirect(`/${values.slug}`)
-  return redirect(`/`)
+  return redirect(
+    `/${validateFields.data.title.toLowerCase().replace(/\s+/g, "-")}`
+  )
+  // return revalidatePath(`/${values.slug}`)
 }
 
 export async function deleteResume(slug: string) {

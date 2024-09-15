@@ -1,12 +1,15 @@
-import { prisma } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { AdminTabs } from "@/components/admin-tabs"
 import { WorkExperience } from "@/components/admin/work-experience"
+import { getEducation } from "@/data/educations"
+import { getReferences } from "@/data/references"
 import { getAllResume } from "@/data/resume"
+import { getSkills } from "@/data/skills"
+import { getSocialNetworks } from "@/data/social-network"
+import { getWorkExperiences } from "@/data/work-experiences"
 import type {
   EducationTypes,
   ReferenceTypes,
@@ -17,31 +20,6 @@ import type {
 } from "../../../@types/resume-types"
 
 interface AdminProps {}
-
-async function getSkills(): Promise<SkillTypes[]> {
-  return prisma.skill.findMany()
-}
-
-async function getReferences(): Promise<ReferenceTypes[]> {
-  return prisma.reference.findMany()
-}
-
-async function getEducation(): Promise<EducationTypes[]> {
-  return prisma.education.findMany()
-}
-
-async function getSocialNetworks(): Promise<SocialNetworkTypes[]> {
-  return prisma.socialNetwork.findMany()
-}
-
-async function getWorkExperiences(): Promise<WorkExperienceTypes[]> {
-  const workExperiences = await prisma.workExperience.findMany()
-  return workExperiences.map((experience) => ({
-    ...experience,
-    startDate: new Date(experience.startDate),
-    endDate: experience.endDate ? new Date(experience.endDate) : null,
-  }))
-}
 
 export default async function Admin({}: AdminProps) {
   try {

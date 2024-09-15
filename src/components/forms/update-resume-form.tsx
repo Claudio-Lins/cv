@@ -134,6 +134,7 @@ export function UpdateResumeForm({
     startTransition(async () => {
       try {
         console.log("Submitting Resume form...", values)
+        console.log("SLUG: ", values.slug)
         await updateResume(resume.id, values)
       } catch (error) {
         console.error("Error updating resume:", error)
