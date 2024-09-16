@@ -23,6 +23,7 @@ import { DialogClose } from "@radix-ui/react-dialog"
 import { startTransition, useState } from "react"
 import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
+import { PlusIcon } from "../icons/plus-icon"
 import {
   Select,
   SelectContent,
@@ -68,7 +69,7 @@ export function CreateReferenceForm({}: CreateReferenceFormProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Plus size={24} />
+          <PlusIcon width={24} height={24} />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">

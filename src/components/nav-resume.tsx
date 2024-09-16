@@ -75,7 +75,6 @@ export function NavResume({ slugs }: NavResumeProps) {
                     passHref
                   >
                     <NavigationMenuLink className="rounded-b-none bg-transparent">
-                      {/* <Pencil size={14} /> */}
                       <EditButton />
                     </NavigationMenuLink>
                   </Link>

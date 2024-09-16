@@ -22,6 +22,7 @@ import * as z from "zod"
 import { createSocialNetwork } from "@/actions/social-network-action"
 import { DialogClose } from "@radix-ui/react-dialog"
 import { startTransition, useState } from "react"
+import { PlusIcon } from "../icons/plus-icon"
 import {
   Select,
   SelectContent,
@@ -67,7 +68,7 @@ export function CreateSocialNetworkForm({}: CreateSkillsFormProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Plus size={24} />
+          <PlusIcon width={24} height={24} />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-sm">

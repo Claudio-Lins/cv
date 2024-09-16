@@ -282,7 +282,7 @@ export function UpdateResumeForm2({
             placeholder="Zip"
           />
         </div>
-
+        <Separator className="w-full mx-auto" />
         <div className="flex items-center gap-2">
           <h3 className="font-bold">Social Network</h3>
           <CreateSocialNetworkForm />
@@ -320,38 +320,6 @@ export function UpdateResumeForm2({
                   <span className="text-sm">{socialNetwork.name}</span>
                 </div>
               ))}
-              {/* {socialNetworks.map((socialNetwork) => (
-                <div
-                  className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
-                  key={socialNetwork.id}
-                >
-                  <Controller
-                    name="socialNetworks"
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        type="checkbox"
-                        {...field}
-                        value={socialNetwork.id}
-                        checked={
-                          Array.isArray(field.value)
-                            ? field.value.some((s) => s.id === socialNetwork.id)
-                            : false
-                        }
-                        onChange={(e) => {
-                          const newValue = e.target.checked
-                            ? [...(field.value || []), socialNetwork]
-                            : (field.value || []).filter(
-                                (s) => s.id !== socialNetwork.id
-                              )
-                          field.onChange(newValue)
-                        }}
-                      />
-                    )}
-                  />
-                  <span className="text-sm">{socialNetwork.name}</span>
-                </div>
-              ))} */}
             </>
           </div>
         </div>

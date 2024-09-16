@@ -3,6 +3,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
+import { TabsAdmin } from "@/components/admin/tabs-admin"
 import { WorkExperience } from "@/components/admin/work-experience"
 import { getEducation } from "@/data/educations"
 import { getReferences } from "@/data/references"
@@ -44,10 +45,10 @@ export default async function Admin({}: AdminProps) {
 
     return (
       <div className={cn("w-full max-w-7xl mt-20 mx-auto bg-white")}>
-        <Tabs defaultValue="work-experience" className="w-full">
+        {/* <Tabs defaultValue="work-experience" className="w-full">
           <TabsList>
             <TabsTrigger value="work-experience">Work Experience</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value="social-network">Social Network</TabsTrigger>
           </TabsList>
           <TabsContent
             value="work-experience"
@@ -62,8 +63,11 @@ export default async function Admin({}: AdminProps) {
               )
             })}
           </TabsContent>
-          <TabsContent value="password">Change your password here.</TabsContent>
-        </Tabs>
+          <TabsContent value="social-network">
+            Change your social-network here.
+          </TabsContent>
+        </Tabs> */}
+        <TabsAdmin workExperiences={workExperiences} />
       </div>
     )
   } catch (error) {

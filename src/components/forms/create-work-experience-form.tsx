@@ -22,6 +22,7 @@ import { DialogClose } from "@radix-ui/react-dialog"
 import { startTransition, useState, useTransition } from "react"
 import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
+import { PlusIcon } from "../icons/plus-icon"
 import { RichTextEditor } from "../rich-texte-ditor"
 import {
   Select,
@@ -78,7 +79,7 @@ export function CreateWorkExperienceForm() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Plus size={24} />
+          <PlusIcon width={24} height={24} />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-none sm:max-w-4xl">

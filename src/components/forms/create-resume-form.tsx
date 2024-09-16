@@ -1,6 +1,7 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
+
 import {
   Card,
   CardContent,
@@ -10,41 +11,21 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 import { deleteReference } from "@/actions/reference-action"
 import { createResume } from "@/actions/resume-action"
-import { deleteSkill } from "@/actions/skill-action"
-import { deleteSocialNetwork } from "@/actions/social-network-action"
 import { cn } from "@/lib/utils"
 import { calculateDuration } from "@/utils/caculate-duration-data"
 import { ResumeSchema } from "@/zodSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {
-  Check,
-  Loader,
-  MinusCircle,
-  MinusIcon,
-  Plus,
-  X,
-  XCircle,
-} from "lucide-react"
+import { Loader, XCircle } from "lucide-react"
+import Link from "next/link"
 import { startTransition, useEffect, useState, useTransition } from "react"
 import { Controller, FieldError, useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
 import {
-  AddressTypes,
   EducationTypes,
   ReferenceTypes,
   ResumeTypes,
@@ -52,21 +33,15 @@ import {
   SocialNetworkTypes,
   WorkExperienceTypes,
 } from "../../../@types/resume-types"
-import { DeleteButton } from "../delete-button"
-import { EditButton } from "../edit-button"
+import { NotePencilIcon } from "../icons/note-pencil-icon"
 import { RichTextEditor } from "../rich-texte-ditor"
 import { Separator } from "../ui/separator"
-import { Switch } from "../ui/switch"
-import { Textarea } from "../ui/textarea"
 import { CreateEducationForm } from "./create-eudcation-form"
 import { CreateReferenceForm } from "./create-reference-form"
 import { CreateSkillsForm } from "./create-skills-form"
 import { CreateSocialNetworkForm } from "./create-social-form"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
-import { DatePicker } from "./date-picker"
 import { MyInput } from "./my-input"
-import { MyTextArea } from "./my-textArea"
-import { UpdateSkillsForm } from "./update-skills-form"
 
 interface CreateResumeFormProps {
   socialNetworks: SocialNetworkTypes[]
@@ -242,14 +217,6 @@ export function CreateResumeForm({
                   />
                 )}
               />
-
-              {/* <MyTextArea
-                register={register}
-                errors={errors as Record<string, FieldError>}
-                registerValue="about"
-                label="About"
-                placeholder="About"
-              /> */}
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-lg">Address</h3>
               </div>
@@ -293,15 +260,29 @@ export function CreateResumeForm({
                 />
               </div>
 
-              <div className="flex items-center gap-2">
-                <h3 className="font-bold">Social Network</h3>
-                <CreateSocialNetworkForm />
+              <Separator className="w-full mx-auto" />
+
+              <div className="w-full flex flex-col gap-2">
+                <div className="flex items-center gap-1">
+                  <h3 className="font-bold">Social Network</h3>
+                  <CreateSocialNetworkForm />
+                  <Link
+                    className={buttonVariants({ variant: "ghost" })}
+                    href={`/admin?tab=${"social-network"}`}
+                  >
+                    <NotePencilIcon
+                      className="cursor-pointer"
+                      width={24}
+                      height={24}
+                    />
+                  </Link>
+                </div>
                 <div className="flex flex-wrap gap-4">
                   {socialNetworks?.length > 0 && (
                     <>
                       {socialNetworks.map((socialNetwork) => (
-                        <div
-                          className=" flex items-center gap-1 bg-white border rounded-md px-2 py-1 shadow-sm"
+                        <label
+                          className=" flex items-center gap-1 border rounded-md pl-4 py-4 relative shadow-sm max-w-xs cursor-pointer"
                           key={socialNetwork.id}
                         >
                           <Controller
@@ -330,17 +311,12 @@ export function CreateResumeForm({
                               />
                             )}
                           />
-                          <span className="text-sm">{socialNetwork.name}</span>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              deleteSocialNetwork(socialNetwork.id)
-                            }
-                            className=""
-                          >
-                            <XCircle className="text-red-500" size={18} />
-                          </button>
-                        </div>
+                          <div className="flex-1 flex flex-col border-l ml-2 px-4">
+                            <span className="text-sm font-bold">
+                              {socialNetwork.name}
+                            </span>
+                          </div>
+                        </label>
                       ))}
                     </>
                   )}
@@ -349,10 +325,20 @@ export function CreateResumeForm({
 
               <Separator className="w-full mx-auto" />
 
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <div className="flex items-center gap-1">
                   <h3 className="font-bold text-xl">Work Experience</h3>
                   <CreateWorkExperienceForm />
+                  <Link
+                    className={buttonVariants({ variant: "ghost" })}
+                    href={`/admin?tab=${"work-experience"}`}
+                  >
+                    <NotePencilIcon
+                      className="cursor-pointer"
+                      width={24}
+                      height={24}
+                    />
+                  </Link>
                 </div>
                 <div className="flex flex-wrap gap-4">
                   {workExperiences?.length > 0 && (
@@ -361,7 +347,7 @@ export function CreateResumeForm({
                         return (
                           <label
                             key={workExperience.id}
-                            className="p-4 border rounded-md border-dashed shadow-sm flex items-center gap-3 cursor-pointer"
+                            className=" flex items-center gap-1 border rounded-md pl-4 py-4 relative shadow-sm max-w-xs cursor-pointer"
                           >
                             <Controller
                               name="workExperiences"
@@ -389,7 +375,7 @@ export function CreateResumeForm({
                                 />
                               )}
                             />
-                            <div className="flex flex-col">
+                            <div className="flex-1 flex flex-col border-l ml-2 px-4">
                               <strong className="text-base">
                                 {workExperience?.title}
                               </strong>
@@ -429,18 +415,28 @@ export function CreateResumeForm({
               </div>
               <Separator className="w-full mx-auto" />
 
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-xl">Skills</h3>
                   <CreateSkillsForm />
+                  <Link
+                    className={buttonVariants({ variant: "ghost" })}
+                    href={`/admin?tab=${"skills"}`}
+                  >
+                    <NotePencilIcon
+                      className="cursor-pointer"
+                      width={24}
+                      height={24}
+                    />
+                  </Link>
                 </div>
 
                 <div className="flex flex-wrap gap-4">
                   {skills.length > 0 && (
                     <>
                       {skills.map((skill) => (
-                        <div
-                          className=" flex items-center gap-1 bg-white border rounded-md p-4 relative shadow-sm max-w-xs"
+                        <label
+                          className=" flex items-center gap-1 border rounded-md pl-4 py-4 relative shadow-sm max-w-xs cursor-pointer"
                           key={skill.id}
                           title={skill.type}
                         >
@@ -468,7 +464,7 @@ export function CreateResumeForm({
                               />
                             )}
                           />
-                          <div className="flex-1 flex flex-col border-l border-r ml-2 px-4">
+                          <div className="flex-1 flex flex-col border-l ml-2 px-4">
                             <span className="text-base font-bold">
                               {skill.name}
                             </span>
@@ -476,80 +472,7 @@ export function CreateResumeForm({
                               {skill.type}
                             </span>
                           </div>
-                          <div className="w-10 flex items-center flex-col gap-2 justify-center">
-                            <Dialog
-                              open={isOpenEdit}
-                              onOpenChange={setIsOpenEdit}
-                            >
-                              <DialogTrigger>
-                                {/* <EditButton /> */}
-                              </DialogTrigger>
-                              <DialogContent className="max-w-xs">
-                                <DialogHeader>
-                                  <DialogTitle>Edit Skill</DialogTitle>
-                                </DialogHeader>
-
-                                <Separator />
-                                <DialogFooter className="w-full">
-                                  <div className="flex items-center w-full justify-between">
-                                    <Button
-                                      onClick={() => {
-                                        setIsOpenEdit(false)
-                                      }}
-                                      className="border-0 bg-gray-300 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                    >
-                                      Cancel
-                                    </Button>
-                                    <Button
-                                      onClick={() => {
-                                        alert(JSON.stringify(skill, null, 2))
-                                        setIsOpenEdit(false)
-                                      }}
-                                      className="bg-red-500"
-                                    >
-                                      Save
-                                    </Button>
-                                  </div>
-                                </DialogFooter>
-                              </DialogContent>
-                            </Dialog>
-                            <Dialog
-                              open={isOpenDelete}
-                              onOpenChange={setIsOpenDelete}
-                            >
-                              <DialogTrigger>
-                                {/* <DeleteButton /> */}
-                              </DialogTrigger>
-                              <DialogContent className="max-w-xs">
-                                <DialogHeader>
-                                  <DialogTitle>
-                                    Are you absolutely sure you want to delete?
-                                  </DialogTitle>
-                                </DialogHeader>
-                                <Separator />
-                                <DialogFooter className="w-full">
-                                  <div className="flex items-center w-full justify-between">
-                                    <Button
-                                      onClick={() => setIsOpenDelete(false)}
-                                      className="border-0 bg-gray-300 hover:bg-gray-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                    >
-                                      Cancel
-                                    </Button>
-                                    <Button
-                                      onClick={() => {
-                                        deleteSkill(skill.id)
-                                        setIsOpenDelete(false)
-                                      }}
-                                      className="bg-red-500"
-                                    >
-                                      Delete
-                                    </Button>
-                                  </div>
-                                </DialogFooter>
-                              </DialogContent>
-                            </Dialog>
-                          </div>
-                        </div>
+                        </label>
                       ))}
                     </>
                   )}
@@ -557,10 +480,20 @@ export function CreateResumeForm({
               </div>
               <Separator className="w-full mx-auto" />
 
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <div className="flex items-center gap-1">
                   <h3 className="font-bold text-xl">Education</h3>
                   <CreateEducationForm />
+                  <Link
+                    className={buttonVariants({ variant: "ghost" })}
+                    href={`/admin?tab=${"education"}`}
+                  >
+                    <NotePencilIcon
+                      className="cursor-pointer"
+                      width={24}
+                      height={24}
+                    />
+                  </Link>
                 </div>
                 <div className="flex flex-wrap gap-4">
                   {educations.length > 0 && (
@@ -632,10 +565,20 @@ export function CreateResumeForm({
               </div>
               <Separator className="w-full mx-auto" />
 
-              <div className="w-full flex flex-col gap-4">
+              <div className="w-full flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-xl">References</h3>
                   <CreateReferenceForm />
+                  <Link
+                    className={buttonVariants({ variant: "ghost" })}
+                    href={`/admin?tab=${"references"}`}
+                  >
+                    <NotePencilIcon
+                      className="cursor-pointer"
+                      width={24}
+                      height={24}
+                    />
+                  </Link>
                 </div>
 
                 <div className="flex flex-wrap gap-6">
