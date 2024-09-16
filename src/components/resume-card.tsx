@@ -5,7 +5,14 @@ import { Button } from "@/components/ui/button"
 import DOMPurify from "dompurify"
 import Link from "next/link"
 import { useState } from "react"
-import type { ResumeTypes, SocialNetworkTypes } from "../../@types/resume-types"
+import type {
+  EducationTypes,
+  ReferenceTypes,
+  ResumeTypes,
+  SkillTypes,
+  SocialNetworkTypes,
+  WorkExperienceTypes,
+} from "../../@types/resume-types"
 import { UpdateResumeForm } from "./forms/update-resume-form"
 import { UpdateResumeForm2 } from "./forms/update-resume-form2"
 import { EyeIcon } from "./icons/eye-icon"
@@ -24,11 +31,15 @@ import { ScrollArea } from "./ui/scroll-area"
 
 interface ResumeCardProps {
   id: string
-  allSocialNetworks: SocialNetworkTypes[]
   resume: ResumeTypes
   slug: string
   title: string
   about: string
+  allSocialNetworks: SocialNetworkTypes[]
+  allWorkExperiences: WorkExperienceTypes[]
+  allSkills: SkillTypes[]
+  allEducations: EducationTypes[]
+  allReferences: ReferenceTypes[]
 }
 
 export function ResumeCard({
@@ -37,6 +48,10 @@ export function ResumeCard({
   title,
   about,
   allSocialNetworks,
+  allWorkExperiences,
+  allSkills,
+  allEducations,
+  allReferences,
 }: ResumeCardProps) {
   const [isOpenDelete, setIsOpenDelete] = useState(false)
   const [isOpenEdit, setIsOpenEdit] = useState(false)
@@ -124,6 +139,10 @@ export function ResumeCard({
                 references={resume.references ?? []}
                 resume={resume}
                 allSocialNetworks={allSocialNetworks}
+                allWorkExperiences={allWorkExperiences}
+                allSkills={allSkills}
+                allEducations={allEducations}
+                allReferences={allReferences}
               />
             </ScrollArea>
           </DialogContent>

@@ -29,8 +29,6 @@ import { CreateSocialNetworkForm } from "./create-social-form"
 import { CreateWorkExperienceForm } from "./create-work-experience-form"
 import { MyInput } from "./my-input"
 
-import { getSocialNetworks } from "@/data/social-network"
-
 interface UpdateResumeFormProps {
   title: string
   slug: string
@@ -52,6 +50,10 @@ interface UpdateResumeFormProps {
   references: ReferenceTypes[]
   resume: ResumeTypes
   allSocialNetworks: SocialNetworkTypes[]
+  allWorkExperiences: WorkExperienceTypes[]
+  allSkills: SkillTypes[]
+  allEducations: EducationTypes[]
+  allReferences: ReferenceTypes[]
 }
 type ResumeFormData = z.infer<typeof ResumeSchema>
 
@@ -75,17 +77,12 @@ export function UpdateResumeForm2({
   references,
   resume,
   allSocialNetworks,
+  allWorkExperiences,
+  allSkills,
+  allEducations,
+  allReferences,
 }: UpdateResumeFormProps) {
   const [isPending, startTransition] = useTransition()
-  const [isOpenDeleteSkill, setisOpenDeleteSkill] = useState(false)
-  const [currentSkill, setCurrentSkill] = useState<SkillTypes | null>(null)
-  const [currentWorkExperience, setCurrentWorkExperience] =
-    useState<WorkExperienceTypes | null>(null)
-  const [isOpenEdit, setIsOpenEdit] = useState(false)
-  const [isOpenDeleteWorkExperience, setIsOpenDeleteWorkExperience] =
-    useState(false)
-  const [isOpenEditWorkExperience, setIsOpenEditWorkExperience] =
-    useState(false)
 
   const {
     control,
@@ -366,74 +363,70 @@ export function UpdateResumeForm2({
             <CreateWorkExperienceForm />
           </div>
           <div className="flex flex-wrap gap-4">
-            {workExperiences?.length > 0 && (
-              <>
-                {workExperiences.map((workExperience) => {
-                  return (
-                    <label
-                      key={workExperience.id}
-                      className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm cursor-pointer"
-                    >
-                      <Controller
-                        name="workExperiences"
-                        control={control}
-                        render={({ field }) => (
-                          <input
-                            type="checkbox"
-                            {...field}
-                            value={workExperience.id}
-                            checked={
-                              Array.isArray(field.value)
-                                ? field.value.some(
-                                    (s) => s.id === workExperience.id
-                                  )
-                                : false
-                            }
-                            onChange={(e) => {
-                              const newValue = e.target.checked
-                                ? [...(field.value || []), workExperience]
-                                : (field.value || []).filter(
-                                    (s) => s.id !== workExperience.id
-                                  )
-                              field.onChange(newValue)
-                            }}
-                          />
-                        )}
-                      />
-                      <div className="flex-1 flex flex-col border-l ml-2 px-4">
-                        <strong className="text-base">
-                          {workExperience?.title}
-                        </strong>
-                        <span className="text-sm">
-                          {workExperience?.company}
-                        </span>
-                        <span className="text-sm capitalize">
-                          {workExperience?.employmentType.toLowerCase()}
-                        </span>
-                        <span className="text-sm">
-                          {new Intl.DateTimeFormat("en-US", {
+            <>
+              {allWorkExperiences.map((workExperience) => {
+                return (
+                  <label
+                    key={workExperience.id}
+                    className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm cursor-pointer"
+                  >
+                    <Controller
+                      name="workExperiences"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          type="checkbox"
+                          {...field}
+                          value={workExperience.id}
+                          checked={
+                            Array.isArray(field.value)
+                              ? field.value.some(
+                                  (s) => s.id === workExperience.id
+                                )
+                              : false
+                          }
+                          onChange={(e) => {
+                            const newValue = e.target.checked
+                              ? [...(field.value || []), workExperience]
+                              : (field.value || []).filter(
+                                  (s) => s.id !== workExperience.id
+                                )
+                            field.onChange(newValue)
+                          }}
+                        />
+                      )}
+                    />
+                    <div className="flex-1 flex flex-col border-l ml-2 px-4">
+                      <strong className="text-base">
+                        {workExperience?.title}
+                      </strong>
+                      <span className="text-sm">{workExperience?.company}</span>
+                      <span className="text-sm capitalize">
+                        {workExperience?.employmentType.toLowerCase()}
+                      </span>
+                      <span className="text-sm">
+                        {new Intl.DateTimeFormat("en-US", {
+                          year: "numeric",
+                          month: "short",
+                        } as any).format(workExperience?.startDate)}{" "}
+                        -{" "}
+                        {workExperience?.endDate &&
+                          new Intl.DateTimeFormat("en-US", {
                             year: "numeric",
                             month: "short",
-                          } as any).format(workExperience?.startDate)}{" "}
-                          -{" "}
-                          {workExperience?.endDate &&
-                            new Intl.DateTimeFormat("en-US", {
-                              year: "numeric",
-                              month: "short",
-                            } as any).format(workExperience?.endDate)}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {calculateDuration(
-                            workExperience?.startDate?.toISOString(),
-                            workExperience?.endDate?.toISOString()
-                          )}
-                        </span>
-                      </div>
-                    </label>
-                  )
-                })}
-              </>
-            )}
+                          } as any).format(workExperience?.endDate)}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {calculateDuration(
+                          workExperience?.startDate?.toISOString(),
+                          workExperience?.endDate?.toISOString()
+                        )}
+                      </span>
+                    </div>
+                  </label>
+                )
+              })}
+            </>
           </div>
         </div>
 
@@ -445,46 +438,44 @@ export function UpdateResumeForm2({
             <CreateSkillsForm />
           </div>
           <div className="flex flex-wrap gap-4">
-            {skills.length > 0 && (
-              <>
-                {skills.map((skill) => (
-                  <Label
-                    className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm cursor-pointer"
-                    key={skill.id}
-                    title={skill.type}
-                  >
-                    <Controller
-                      name="skills"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          type="checkbox"
-                          {...field}
-                          value={skill.id}
-                          checked={
-                            Array.isArray(field.value)
-                              ? field.value.some((s) => s.id === skill.id)
-                              : false
-                          }
-                          onChange={(e) => {
-                            const newValue = e.target.checked
-                              ? [...(field.value || []), skill]
-                              : (field.value || []).filter(
-                                  (s) => s.id !== skill.id
-                                )
-                            field.onChange(newValue)
-                          }}
-                        />
-                      )}
-                    />
-                    <div className="flex-1 flex flex-col border-l ml-2 px-4">
-                      <span className="text-base font-bold">{skill.name}</span>
-                      <span className="text-xs capitalize">{skill.type}</span>
-                    </div>
-                  </Label>
-                ))}
-              </>
-            )}
+            <>
+              {allSkills.map((skill) => (
+                <Label
+                  className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm cursor-pointer"
+                  key={skill.id}
+                  title={skill.type}
+                >
+                  <Controller
+                    name="skills"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        type="checkbox"
+                        {...field}
+                        value={skill.id}
+                        checked={
+                          Array.isArray(field.value)
+                            ? field.value.some((s) => s.id === skill.id)
+                            : false
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.checked
+                            ? [...(field.value || []), skill]
+                            : (field.value || []).filter(
+                                (s) => s.id !== skill.id
+                              )
+                          field.onChange(newValue)
+                        }}
+                      />
+                    )}
+                  />
+                  <div className="flex-1 flex flex-col border-l ml-2 px-4">
+                    <span className="text-base font-bold">{skill.name}</span>
+                    <span className="text-xs capitalize">{skill.type}</span>
+                  </div>
+                </Label>
+              ))}
+            </>
           </div>
         </div>
 
@@ -496,67 +487,63 @@ export function UpdateResumeForm2({
             <CreateEducationForm />
           </div>
           <div className="flex flex-wrap gap-4">
-            {educations.length > 0 && (
-              <>
-                {educations.map((education) => {
-                  return (
-                    <label
-                      key={education.id}
-                      className="p-4 border rounded-md border-dashed shadow-sm flex items-center gap-3 cursor-pointer"
-                    >
-                      <Controller
-                        name="educations"
-                        control={control}
-                        render={({ field }) => (
-                          <input
-                            type="checkbox"
-                            {...field}
-                            value={education.id}
-                            checked={
-                              Array.isArray(field.value)
-                                ? field.value.some((s) => s.id === education.id)
-                                : false
-                            }
-                            onChange={(e) => {
-                              const newValue = e.target.checked
-                                ? [...(field.value || []), education]
-                                : (field.value || []).filter(
-                                    (s) => s.id !== education.id
-                                  )
-                              field.onChange(newValue)
-                            }}
-                          />
-                        )}
-                      />
-                      <div className="flex flex-col">
-                        <strong className="text-base">
-                          {education?.field}
-                        </strong>
-                        <span className="text-sm">{education?.school}</span>
-                        <span className="text-sm">
-                          {new Intl.DateTimeFormat("en-US", {
+            <>
+              {allEducations.map((education) => {
+                return (
+                  <label
+                    key={education.id}
+                    className="p-4 border rounded-md border-dashed shadow-sm flex items-center gap-3 cursor-pointer"
+                  >
+                    <Controller
+                      name="educations"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          type="checkbox"
+                          {...field}
+                          value={education.id}
+                          checked={
+                            Array.isArray(field.value)
+                              ? field.value.some((s) => s.id === education.id)
+                              : false
+                          }
+                          onChange={(e) => {
+                            const newValue = e.target.checked
+                              ? [...(field.value || []), education]
+                              : (field.value || []).filter(
+                                  (s) => s.id !== education.id
+                                )
+                            field.onChange(newValue)
+                          }}
+                        />
+                      )}
+                    />
+                    <div className="flex flex-col">
+                      <strong className="text-base">{education?.field}</strong>
+                      <span className="text-sm">{education?.school}</span>
+                      <span className="text-sm">
+                        {new Intl.DateTimeFormat("en-US", {
+                          year: "numeric",
+                          month: "short",
+                        } as any).format(education?.startDate)}{" "}
+                        -{" "}
+                        {education?.endDate &&
+                          new Intl.DateTimeFormat("en-US", {
                             year: "numeric",
                             month: "short",
-                          } as any).format(education?.startDate)}{" "}
-                          -{" "}
-                          {education?.endDate &&
-                            new Intl.DateTimeFormat("en-US", {
-                              year: "numeric",
-                              month: "short",
-                            } as any).format(education?.endDate)}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {calculateDuration(
-                            education?.startDate?.toISOString(),
-                            education?.endDate?.toISOString()
-                          )}
-                        </span>
-                      </div>
-                    </label>
-                  )
-                })}
-              </>
-            )}
+                          } as any).format(education?.endDate)}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {calculateDuration(
+                          education?.startDate?.toISOString(),
+                          education?.endDate?.toISOString()
+                        )}
+                      </span>
+                    </div>
+                  </label>
+                )
+              })}
+            </>
           </div>
         </div>
 
@@ -569,58 +556,56 @@ export function UpdateResumeForm2({
           </div>
 
           <div className="flex flex-wrap gap-6">
-            {references.length > 0 && (
-              <>
-                {references.map((reference) => (
-                  <Label
-                    className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm cursor-pointer max-w-xs"
-                    key={reference.id}
-                    title={reference.name}
-                    htmlFor={reference.id}
-                  >
-                    <Controller
-                      name="references"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          id={reference.id}
-                          type="checkbox"
-                          {...field}
-                          value={reference.id}
-                          checked={
-                            Array.isArray(field.value)
-                              ? field.value.some((s) => s.id === reference.id)
-                              : false
-                          }
-                          onChange={(e) => {
-                            const newValue = e.target.checked
-                              ? [...(field.value || []), reference]
-                              : (field.value || []).filter(
-                                  (s) => s.id !== reference.id
-                                )
-                            field.onChange(newValue)
-                          }}
-                        />
-                      )}
-                    />
-                    <div className="flex-1 flex-col gap-y-1 flex border-l ml-2 pl-4">
-                      <strong className="text-lg">{reference.name}</strong>
-                      <span className="text-zinc-600 leading-relaxed">
-                        {reference.role}
-                      </span>
-                      <span className="text-zinc-600">{reference.email}</span>
-                      <span className="text-zinc-600">
-                        {reference.phone &&
-                          reference?.phone.replace(
-                            /(\d{3})(\d{3})(\d{3})(\d{3})/,
-                            "$1 $2 $3 $4"
-                          )}
-                      </span>
-                    </div>
-                  </Label>
-                ))}
-              </>
-            )}
+            <>
+              {allReferences.map((reference) => (
+                <Label
+                  className=" flex items-center gap-1 bg-white border rounded-md p-2 pl-3 shadow-sm cursor-pointer max-w-xs"
+                  key={reference.id}
+                  title={reference.name}
+                  htmlFor={reference.id}
+                >
+                  <Controller
+                    name="references"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        id={reference.id}
+                        type="checkbox"
+                        {...field}
+                        value={reference.id}
+                        checked={
+                          Array.isArray(field.value)
+                            ? field.value.some((s) => s.id === reference.id)
+                            : false
+                        }
+                        onChange={(e) => {
+                          const newValue = e.target.checked
+                            ? [...(field.value || []), reference]
+                            : (field.value || []).filter(
+                                (s) => s.id !== reference.id
+                              )
+                          field.onChange(newValue)
+                        }}
+                      />
+                    )}
+                  />
+                  <div className="flex-1 flex-col gap-y-1 flex border-l ml-2 pl-4">
+                    <strong className="text-lg">{reference.name}</strong>
+                    <span className="text-zinc-600 leading-relaxed">
+                      {reference.role}
+                    </span>
+                    <span className="text-zinc-600">{reference.email}</span>
+                    <span className="text-zinc-600">
+                      {reference.phone &&
+                        reference?.phone.replace(
+                          /(\d{3})(\d{3})(\d{3})(\d{3})/,
+                          "$1 $2 $3 $4"
+                        )}
+                    </span>
+                  </div>
+                </Label>
+              ))}
+            </>
           </div>
         </div>
         <Separator className="w-full mx-auto" />

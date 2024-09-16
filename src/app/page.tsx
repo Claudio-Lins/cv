@@ -1,5 +1,9 @@
 import { ResumeCard } from "@/components/resume-card"
+import { getEducation } from "@/data/educations"
+import { getReferences } from "@/data/references"
+import { getSkills } from "@/data/skills"
 import { getSocialNetworks } from "@/data/social-network"
+import { getWorkExperiences } from "@/data/work-experiences"
 import { getResumeData, getResumes } from "@/services/resumeService"
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { Plus } from "lucide-react"
@@ -16,6 +20,10 @@ export default async function Resume({ params }: ResumeProps) {
   const user = await getUser()
   const { resumes } = await getResumeData(user?.id!, params.slug)
   const allSocialNetworks = await getSocialNetworks()
+  const allWorkExperiences = await getWorkExperiences()
+  const allSkills = await getSkills()
+  const allEducations = await getEducation()
+  const allReferences = await getReferences()
 
   return (
     <div className="w-full p-20">
@@ -40,6 +48,10 @@ export default async function Resume({ params }: ResumeProps) {
             title={resume.title}
             about={resume?.about}
             allSocialNetworks={allSocialNetworks}
+            allWorkExperiences={allWorkExperiences}
+            allSkills={allSkills}
+            allEducations={allEducations}
+            allReferences={allReferences}
           />
         ))}
       </div>
