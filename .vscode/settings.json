@@ -1,5 +1,7 @@
 {
-  "cSpell.words": ["kinde", "nextjs"],
-  "WillLuke.nextjs.addTypesOnSave": true,
-  "WillLuke.nextjs.hasPrompted": true
+	"cSpell.words": ["kinde", "nextjs"],
+	"WillLuke.nextjs.addTypesOnSave": true,
+	"WillLuke.nextjs.hasPrompted": true,
+	"editor.defaultFormatter": "biomejs.biome",
+	"notebook.defaultFormatter": "biomejs.biome"
 }
