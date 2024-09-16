@@ -162,22 +162,23 @@ export function Contacts({
                 </span>
               </div>
             )}
-            {social?.name.includes("Insta") && (
-              <div className="flex items-center gap-x-2 text-sm print:text-xs">
-                <InstagramIcon fill="thin" className="print:hidden" />
-                <a
-                  href={social?.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="print:hidden"
-                >
-                  {social?.name}
-                </a>
-                <span className="hidden print:block text-[8px]">
-                  {social.url.slice(8)}
-                </span>
-              </div>
-            )}
+            {social?.name.includes("Instagram") ||
+              (social?.name.includes("Instagran") && (
+                <div className="flex items-center gap-x-2 text-sm print:text-xs">
+                  <InstagramIcon fill="thin" className="print:hidden" />
+                  <a
+                    href={social?.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="print:hidden"
+                  >
+                    {social?.name}
+                  </a>
+                  <span className="hidden print:block text-[8px]">
+                    {social.url.slice(8)}
+                  </span>
+                </div>
+              ))}
             {social?.name.includes("You") && (
               <div className="flex items-center gap-x-2 text-sm print:text-xs">
                 <FaYoutube size={14} className="print:hidden" />

@@ -1,8 +1,8 @@
 "use server"
 
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { prisma } from "@/lib/prisma"
 import { SocialNetworkSchema } from "@/zodSchema"
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import * as z from "zod"
@@ -35,7 +35,7 @@ export async function createSocialNetwork(
     },
   })
 
-  return revalidatePath("/admin")
+  return revalidatePath("/admin/create")
 }
 
 export async function deleteSocialNetwork(id: string) {
@@ -45,5 +45,5 @@ export async function deleteSocialNetwork(id: string) {
     },
   })
 
-  return revalidatePath("/admin")
+  return revalidatePath("/admin/create")
 }
