@@ -9,8 +9,8 @@ import { $Enums } from '@prisma/client'
 import { Loader } from 'lucide-react'
 import { useTransition } from 'react'
 import { Controller, FieldError, useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { SkillTypes } from '../../../@types/resume-types'
+import type * as z from 'zod'
+import type { SkillTypes } from '../../../@types/resume-types'
 import { RichTextEditor } from '../rich-texte-ditor'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
@@ -39,11 +39,10 @@ export function UpdateSkillsForm({ skill }: UpdateSkillsFormProps) {
 
 	async function onSubmit(values: SkillsFormData) {
 		console.log(errors ? errors : 'No errors')
+		console.log(values ? values : 'No values')
 		startTransition(async () => {
 			try {
-				await updateSkill, skill.id, values
-
-				// reset()
+				await updateSkill(skill.id, values)
 			} catch (error) {
 				console.error('Error creating product:', error)
 			}
@@ -70,7 +69,7 @@ export function UpdateSkillsForm({ skill }: UpdateSkillsFormProps) {
 					defaultValue=''
 					render={({ field }) => (
 						<RichTextEditor
-							height='150px'
+							// height='250px'
 							value={field.value || ''}
 							onChange={(value) => field.onChange(value)}
 							registerValue='description'

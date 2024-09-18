@@ -46,7 +46,7 @@ export async function deleteSkill(id: string) {
 	return revalidatePath('/admin')
 }
 
-export async function updateSkill(id: string, values: z.infer<typeof SkillSchema>, slug?: string) {
+export async function updateSkill(id: string, values: z.infer<typeof SkillSchema>) {
 	const validateFields = SkillSchema.safeParse(values)
 	if (!validateFields.success) {
 		throw new Error('Invalid category data')
@@ -61,5 +61,5 @@ export async function updateSkill(id: string, values: z.infer<typeof SkillSchema
 		},
 	})
 
-	revalidatePath(`/admin?tab=${'skills'}`)
+	return revalidatePath(`/admin?tab=${'skills'}`)
 }

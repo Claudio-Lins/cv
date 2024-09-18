@@ -150,7 +150,7 @@ export function UpdateWorkExperienceForm({ workExperience }: WorkExperienceProps
 					<Label>Work Location</Label>
 					<Controller
 						control={control}
-						name={`workLocation`}
+						name={'workLocation'}
 						render={({ field }) => (
 							<Select onValueChange={field.onChange} defaultValue={field.value}>
 								<SelectTrigger>
@@ -171,9 +171,9 @@ export function UpdateWorkExperienceForm({ workExperience }: WorkExperienceProps
 					<Label>Employment Tpe</Label>
 					<Controller
 						control={control}
-						name={`employmentType`}
+						name={'employmentType'}
 						render={({ field }) => (
-							<Select onValueChange={field.onChange} defaultValue={field.value}>
+							<Select onValueChange={field.onChange} defaultValue={field?.value}>
 								<SelectTrigger>
 									<SelectValue placeholder='Employment Type' />
 								</SelectTrigger>

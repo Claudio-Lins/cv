@@ -14,7 +14,7 @@ export function Skills({ skill }: SkillsProps) {
 	return (
 		<div className={cn('w-full max-w-sm')}>
 			<Card className=' w-full overflow-hidden'>
-				<CardHeader className='bg-zinc-900 text-center flex items-center justify-center h-24'>
+				<CardHeader className='bg-zinc-900 text-center flex items-center justify-center'>
 					<CardTitle className='text-white text-ellipsis overflow-hidden'>{skill.name}</CardTitle>
 				</CardHeader>
 				<CardContent className=' mt-4'>

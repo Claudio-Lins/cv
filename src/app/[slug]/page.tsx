@@ -24,8 +24,8 @@ interface ResumeProps {
 export default async function Resume({ params }: ResumeProps) {
 	const { getUser } = getKindeServerSession()
 	const user = await getUser()
-	const resume = await getResumeBySlug(params.slug, user?.id!)
-	const slugs = await getAllResume(user?.id!)
+	const resume = await getResumeBySlug(params.slug, user?.id ? user.id : '')
+	const slugs = await getAllResume(user?.id ? user.id : '')
 
 	if (!resume?.id) {
 		return redirect('/admin')
