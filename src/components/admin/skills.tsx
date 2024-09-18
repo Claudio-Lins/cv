@@ -19,7 +19,6 @@ export function Skills({ skill }: SkillsProps) {
 				</CardHeader>
 				<CardContent className=' mt-4'>
 					<UpdateSkillsForm skill={skill} />
-					{/* <UpdateWorkExperienceForm workExperience={workExperience} setIsOpenEditWorkExperience={() => {}} /> */}
 				</CardContent>
 			</Card>
 		</div>
