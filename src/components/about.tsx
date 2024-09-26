@@ -21,10 +21,10 @@ export function About({ content }: AboutProps) {
 			<h3 className='uppercase font-light print:text-sm'>About</h3>
 			<ScrollArea className='mt-6 pb-2 h-48 text-zinc-600 text-sm leading-relaxed text-balance whitespace-nowrap print:leading-relaxed print:h-full print:mt-2'>
 				<div className='flex flex-col gap-2 '>
-					<p
+					<
 						className='print:text-[10px] print:leading-relaxed'
 						dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-					></p>
+					></>
 				</div>
 			</ScrollArea>
 		</div>
